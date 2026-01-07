@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
-import { useUserStore } from "../zustand/useUserStore";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "../zustand/useUserStore";
 
 export function useAuth() {
-  const setUser = useUserStore((state) => state.setUser);
+  const setUser = useUserStore(state => state.setUser);
 
   return useQuery({
     queryKey: ["auth"],
@@ -25,7 +25,7 @@ export function useAuth() {
 export function useLogout() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const setUser = useUserStore((state) => state.setUser);
+  const setUser = useUserStore(state => state.setUser);
 
   return useMutation({
     mutationFn: async () => {

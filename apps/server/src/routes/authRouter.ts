@@ -66,7 +66,7 @@ authRouter.get("/me", (req, res) => {
       },
     });
   } catch {
-    res.status(401).json({ user: null });
+    res.status(200).json({ user: null });
   }
 });
 
