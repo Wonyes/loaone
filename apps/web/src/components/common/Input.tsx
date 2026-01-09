@@ -19,26 +19,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         e.preventDefault();
         onEnter();
       }
-      // 기존 onKeyDown도 실행
       props.onKeyDown?.(e);
     };
     return (
-      <div className="relative w-full">
-        <input
-          ref={ref}
-          className={`w-full rounded-xl border border-emerald-500/20 bg-slate-900/60 px-6 py-4 text-white transition-colors focus:border-emerald-500/50 focus:outline-none ${className}`}
-          {...props}
-          onKeyDown={handleKeyDown}
-        />
+      <div className="relative flex w-full items-center gap-4 rounded-xl border border-emerald-500/20 bg-slate-900/60 px-4 py-2">
         {showSearchButton && onSearch && (
           <button
             onClick={onSearch}
             type="button"
-            className="absolute top-1/2 right-2 -translate-y-1/2 rounded-lg bg-emerald-500 px-6 py-2 transition-colors hover:bg-emerald-600"
+            className="cursor-pointer rounded-lg"
           >
             <Search className="h-5 w-5" />
           </button>
         )}
+        <input
+          ref={ref}
+          className={`w-full text-white transition-colors focus:border-emerald-500/50 focus:outline-none ${className}`}
+          {...props}
+          onKeyDown={handleKeyDown}
+        />
       </div>
     );
   }

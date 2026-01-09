@@ -2,7 +2,7 @@ import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 
 export default function NotFoundPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 p-4">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
       <div className="text-center">
         <div className="relative mb-8">
           <h1 className="bg-gradient-to-b from-amber-400 to-amber-600 bg-clip-text text-[180px] leading-none font-black text-transparent">
@@ -34,18 +34,24 @@ export default function NotFoundPage() {
           요청하신 페이지가 삭제되었거나 주소가 변경되었습니다.
         </p>
 
-        <div className="flex justify-center gap-4">
-          <button className="group relative overflow-hidden rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-4 font-bold text-white transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(251,191,36,0.5)]">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 opacity-0 transition-opacity group-hover:opacity-100"></div>
-            <span className="relative flex items-center gap-2">
+        <div className="flex flex-col gap-4 sm:flex-row">
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="group relative overflow-hidden rounded-lg border-t-2 border-emerald-400/50 bg-gradient-to-b from-emerald-500 to-emerald-700 px-8 py-4 font-bold text-white transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.6)]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-emerald-400 to-emerald-600 opacity-0 transition-opacity group-hover:opacity-100"></div>
+            <span className="relative flex items-center gap-2 drop-shadow-lg">
               <Home className="h-5 w-5" />
-              홈으로 돌아가기
+              마을로 귀환
             </span>
           </button>
 
-          <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 font-bold text-white backdrop-blur-sm transition-all hover:border-white/20 hover:bg-white/10">
+          <button
+            onClick={() => window.location.reload()}
+            className="flex items-center justify-center gap-2 rounded-lg border-t-2 border-slate-500/50 bg-gradient-to-b from-slate-700 to-slate-800 px-8 py-4 font-bold text-white shadow-lg backdrop-blur-sm transition-all hover:from-slate-600 hover:to-slate-700"
+          >
             <RefreshCw className="h-5 w-5" />
-            새로고침
+            다시 시도
           </button>
         </div>
 

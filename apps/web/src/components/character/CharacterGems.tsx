@@ -3,11 +3,10 @@ export function CharacterGems({ gemsData }: { gemsData: any }) {
 
   // 레벨별 배경색
   const getGemBgColor = (level: number) => {
-    if (level >= 10)
-      return "bg-gradient-to-br from-[#dcc999] to-[#f4e4c1] border-amber-400/50";
+    if (level >= 10) return "bg-gradient-to-br from-[#3d3325] to-[#dcc999]";
     if (level >= 8)
       return "bg-gradient-to-br from-[#341a09] to-[#a24006] border-orange-700/50";
-    return "bg-gradient-to-br from-[#9e5f04] to-[#c17a1a] border-amber-800/50";
+    return "bg-gradient-to-br from-[#362003] to-[#9e5f04] border-amber-800/50";
   };
 
   // 딜증과 쿨감 분리

@@ -1,6 +1,6 @@
-import CharacterInfo from "@/components/character/CharacterInfo";
+import CharacterPage from "@/components/character/CharacterPage";
 
-export default async function CharacterPage({
+export default async function CharacterPageRoute({
   params,
 }: {
   params: Promise<{ name: string }>;
@@ -9,5 +9,5 @@ export default async function CharacterPage({
   const { name } = resolvedParams;
 
   const decodedValue = decodeURIComponent(name);
-  return <CharacterInfo name={decodedValue} />;
+  return <CharacterPage name={decodedValue} />;
 }
