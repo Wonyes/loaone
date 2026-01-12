@@ -80,10 +80,19 @@ export function useCCollectibles(name: string) {
   });
 }
 
+export function useCSiblings(name: string) {
+  return useQuery({
+    queryKey: ["lostark", "siblings", name],
+    queryFn: () => fetchCharacterData(name, "siblings"),
+    enabled: !!name,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
 export function useCArkgirds(name: string) {
   return useQuery({
-    queryKey: ["lostark", "arkgirds", name],
-    queryFn: () => fetchCharacterData(name, "arkgirds"),
+    queryKey: ["lostark", "arkgrid", name],
+    queryFn: () => fetchCharacterData(name, "arkgrid"),
     enabled: !!name,
     staleTime: 5 * 60 * 1000,
   });

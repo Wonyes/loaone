@@ -1,11 +1,12 @@
-// components/CharacterCards.tsx
+import { GRADE_TEXT_COLORS } from "@/constants/lostark/styles";
+import { SectionHeader } from "./CharacterPage";
+import { GRADE_POSITIONS } from "@/constants/lostark/option";
+
 export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
   if (!engravingsCard?.Cards || engravingsCard.Cards.length === 0) {
     return (
-      <div className="design-card rounded-lg border border-white/10 p-0">
-        <div className="border-b border-white/10 p-3">
-          <h3 className="font-bold">카드</h3>
-        </div>
+      <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
+        <SectionHeader title="카드" />
         <div className="p-4">
           <div className="py-8 text-center text-sm text-gray-400">
             장착된 카드가 없습니다
@@ -15,91 +16,108 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
     );
   }
 
-  // 전체 각성 계산
-  const totalAwakening = engravingsCard.Cards.reduce(
-    (sum: number, card: any) => sum + (card.AwakeCount || 0),
-    0
-  );
-
-  // 활성화된 세트 효과
   const activeCardSets = engravingsCard.Effects || [];
 
   return (
-    <div className="design-card rounded-lg border border-white/10 p-0">
-      <div className="flex items-center justify-between border-b border-white/10 p-3">
+    <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
+      <div className="flex items-center justify-between border-b border-white/10 bg-slate-900/30 p-4">
         <h3 className="font-bold">카드</h3>
-        <span className="text-sm font-bold text-amber-400">
-          {totalAwakening}각성
-        </span>
       </div>
       <div className="space-y-4 p-4">
         {activeCardSets.length > 0 && (
-          <div className="space-y-3">
+          <div className="space-y-2">
             {activeCardSets.map((effect: any, idx: number) => {
-              const setName = effect.Items?.[0]?.Name || "카드 세트";
-              const setCount = effect.Items?.length || 0;
+              const activeIndex = effect.Index;
+              const activeItem = effect.Items?.[activeIndex];
+
+              if (!activeItem) return null;
+
+              const setName = activeItem.Name.replace(/\s*\d+세트/, "").replace(
+                /\s*\(\d+각성합계\)/,
+                ""
+              );
+
+              const setCardSlots = effect.CardSlots || [];
+              const setAwakening = setCardSlots.reduce(
+                (sum: number, slotIndex: number) => {
+                  const card = engravingsCard.Cards[slotIndex];
+                  return sum + (card?.AwakeCount || 0);
+                },
+                0
+              );
 
               return (
                 <div
                   key={idx}
-                  className="flex justify-between rounded-lg border border-gray-700/30 bg-gray-800/30 p-3"
+                  className="flex items-center justify-between rounded-lg border border-amber-500/20 bg-amber-500/10 p-2"
                 >
-                  {/* 세트 헤더 */}
                   <span className="text-sm font-semibold text-amber-300">
-                    {setName.replace(/\s*\(\d+각성합계\)/, "")}{" "}
+                    {setName}
                   </span>
-                  <span className="text-xs text-gray-400">{setCount}세트</span>
+                  <span className="text-sm font-bold text-amber-400">
+                    {setAwakening}각성
+                  </span>
                 </div>
               );
             })}
           </div>
         )}
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="flex gap-2">
           {engravingsCard.Cards.map((card: any, cardIdx: number) => {
+            const gradePos = GRADE_POSITIONS[card.Grade] || "0%";
+            const textColor = GRADE_TEXT_COLORS[card.Grade] || "text-gray-400";
             const awakening = card.AwakeCount || 0;
-            const awakeTotal = card.AwakeTotal || 5;
 
             return (
-              <div key={cardIdx} className="group relative">
-                <div className="relative aspect-[2/3] w-full overflow-hidden rounded-lg border-2 border-amber-600/40 bg-gradient-to-b from-gray-900 to-gray-950 shadow-lg transition-all hover:scale-105 hover:border-amber-500/60">
-                  {card.Icon ? (
-                    <img
-                      src={card.Icon}
-                      alt={card.Name}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <div className="text-xs text-gray-700">?</div>
-                    </div>
-                  )}
-
-                  <div className="absolute bottom-0 w-full px-[10%] pb-[8%]">
-                    <div className="drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
-                      <div className="relative h-2.5 overflow-hidden rounded-full border border-gray-700/50 bg-gray-900/90">
-                        <div className="absolute inset-0 flex items-center justify-between px-1">
-                          {[...Array(awakeTotal)].map((_, i) => (
-                            <div
-                              key={i}
-                              className={`h-full w-1.5 rounded-full transition-all ${
-                                i < awakening
-                                  ? "bg-gradient-to-b from-yellow-300 via-amber-400 to-amber-600 shadow-[0_0_6px_rgba(251,191,36,0.9)]"
-                                  : "bg-gray-700"
-                              }`}
-                            />
-                          ))}
-                        </div>
+              <div key={cardIdx} className="group relative w-full">
+                <div className="relative aspect-248/362">
+                  <div className="absolute inset-0 pt-[5.2%] pr-[4.2%] pl-[1.8%]">
+                    {card.Icon ? (
+                      <img
+                        src={card.Icon}
+                        alt={card.Name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-gray-950">
+                        <div className="text-xs text-gray-700">?</div>
                       </div>
-                    </div>
+                    )}
                   </div>
 
-                  {awakening > 0 && (
-                    <div className="absolute top-2 right-2 rounded bg-black/80 px-2 py-1 text-xs font-bold text-amber-300 shadow-lg">
-                      {awakening}각
+                  <div
+                    className="absolute inset-0 aspect-248/362 bg-cover"
+                    style={{
+                      backgroundPosition: `${gradePos} 0`,
+                      backgroundImage: `url(https://pica.korlark.com/2018/obt/assets/images/pc/profile/img_card_grade.png?f9e0ffc8a709611354db408dd0e7a7bb)`,
+                    }}
+                  />
+
+                  <div className="absolute right-[7.5%] bottom-[6.5%] left-[5%] overflow-hidden">
+                    <div
+                      className="relative aspect-10/3 bg-cover drop-shadow-xl"
+                      style={{
+                        backgroundImage: `url(https://pica.korlark.com/2018/obt/assets/images/pc/profile/img_profile_awake.png)`,
+                      }}
+                    >
+                      <div
+                        className="absolute top-0 bottom-0 w-full bg-cover"
+                        style={{
+                          backgroundImage: `url(https://pica.korlark.com/2018/obt/assets/images/pc/profile/img_profile_awake.png)`,
+                          backgroundPosition: `0 100%`,
+                          left: `${-100 + (awakening / 5) * 100}%`,
+                        }}
+                      />
                     </div>
-                  )}
+                  </div>
                 </div>
+
+                <p
+                  className={`mt-1.5 -mb-2 w-full px-1 text-center text-xs font-medium break-keep ${textColor}`}
+                >
+                  {card.Name}
+                </p>
               </div>
             );
           })}

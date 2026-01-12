@@ -9,7 +9,7 @@ export function Header() {
   const router = useRouter();
 
   return (
-    <header className="design-card sticky top-4 z-50 m-0 mx-auto flex h-16 w-full items-center rounded-full px-6">
+    <header className="design-card sticky top-4 z-50 mb-8 flex h-16 w-full items-center rounded-full px-6 backdrop-blur-sm">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
           <div
@@ -31,9 +31,6 @@ export function Header() {
               </Link>
               <Link href="/market" className="block">
                 <span>거래소</span>
-              </Link>
-              <Link href="/trader" className="block">
-                <span>떠돌이 상인</span>
               </Link>
               <Link href="/guild" className="block">
                 <span>길드</span>

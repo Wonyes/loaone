@@ -157,6 +157,19 @@
   }
 }
 
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background: linear-gradient(to bottom right, #050a06, #0d2115, #080c0a);
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
+
 @layer components {
   .text-bage {
     color: #f3e6cb;

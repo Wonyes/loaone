@@ -5,6 +5,27 @@ export interface AccessoryStat {
   tierColor: string;
 }
 
+// 옵션 축약어 매핑
+const OPTION_ABBREVIATIONS: Record<string, string> = {
+  "아군 공격력 강화 효과": "아공강",
+  "아군 피해량 강화 효과": "아피강",
+  "치명타 적중률": "치적",
+  "치명타 피해": "치피",
+  "세레나데, 신앙, 조화 게이지 획득량": "아덴",
+  "추가 피해": "추피",
+  "적에게 주는 피해": "적추피",
+  "상태이상 공격 지속시간": "상태이상",
+  "최대 생명력": "최생",
+  공격력: "공격력",
+  무기공격력: "무공",
+  "무기 공격력": "무공",
+  "최대 마나": "최마",
+  "전투 중 생명력 회복량": "생회",
+  낙인력: "낙인력",
+  "파티원 회복 효과": "회복",
+  "파티원 보호막 효과": "보호막",
+};
+
 // 옵션별 티어 기준값
 const TIER_RANGES: Record<string, { low: number; mid: number; high: number }> =
   {
@@ -14,17 +35,13 @@ const TIER_RANGES: Record<string, { low: number; mid: number; high: number }> =
     "무기 공격력": { low: 195, mid: 480, high: 960 },
     "최대 마나": { low: 6, mid: 15, high: 30 },
     "전투 중 생명력 회복량": { low: 10, mid: 25, high: 50 },
-
     "상태이상 공격 지속시간": { low: 0.2, mid: 0.5, high: 1.0 },
-
     "적에게 주는 피해": { low: 0.55, mid: 1.2, high: 2.0 },
     "추가 피해": { low: 0.7, mid: 1.6, high: 2.6 },
     낙인력: { low: 2.15, mid: 4.8, high: 8.0 },
     "세레나데, 신앙, 조화 게이지 획득량": { low: 1.6, mid: 3.6, high: 6.0 },
-
     "파티원 회복 효과": { low: 0.95, mid: 2.1, high: 3.5 },
     "파티원 보호막 효과": { low: 0.95, mid: 2.1, high: 3.5 },
-
     "아군 공격력 강화 효과": { low: 1.35, mid: 3.0, high: 5.0 },
     "아군 피해량 강화 효과": { low: 2.0, mid: 4.5, high: 7.5 },
     "치명타 적중률": { low: 0.4, mid: 0.95, high: 1.55 },
@@ -58,7 +75,6 @@ export function parseAccessoryOptions(tooltip: any): AccessoryStat[] {
   const text =
     typeof element001 === "string" ? element001 : JSON.stringify(element001);
 
-  // % 포함 옵션과 숫자만 있는 옵션을 한 번에 매칭
   const allMatches = text.matchAll(/([가-힣\s]+?)\s*\+(\d+\.?\d*)(%)?/g);
 
   for (const match of allMatches) {
@@ -67,11 +83,14 @@ export function parseAccessoryOptions(tooltip: any): AccessoryStat[] {
 
     if (!cleanName) continue;
 
+    // 축약어로 변환
+    const displayName = OPTION_ABBREVIATIONS[cleanName] || cleanName;
+
     // 중복 체크
     if (
       stats.some(
         s =>
-          s.name === cleanName &&
+          s.name === displayName &&
           s.value === (hasPercent ? `${valueStr}%` : `+${valueStr}`)
       )
     ) {
@@ -82,7 +101,7 @@ export function parseAccessoryOptions(tooltip: any): AccessoryStat[] {
     const { tier, tierColor } = getOptionTier(cleanName, value);
 
     stats.push({
-      name: cleanName,
+      name: displayName, // 축약어 사용
       value: hasPercent ? `${valueStr}%` : `+${valueStr}`,
       tier,
       tierColor,

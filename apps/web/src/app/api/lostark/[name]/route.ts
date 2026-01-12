@@ -79,6 +79,8 @@ export async function GET(
     gems: `/armories/characters/${name}/gems`,
     cards: `/armories/characters/${name}/cards`,
     collectibles: `/armories/characters/${name}/collectibles`,
+    arkgrid: `/armories/characters/${name}/arkgrid`,
+    arkpassive: `/armories/characters/${name}/arkpassive`,
   };
 
   if (!type || !endpoints[type]) {

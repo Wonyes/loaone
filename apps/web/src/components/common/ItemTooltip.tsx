@@ -25,7 +25,6 @@ const ColoredText: React.FC<{
 
 export const ItemTooltip: React.FC<ItemTooltipProps> = ({ tooltipData }) => {
   const parsed = parseTooltipData(tooltipData);
-  console.log("Parsed Tooltip Data:", parsed);
   return (
     <div className="max-w-md rounded-lg bg-gray-900 p-4 text-white shadow-xl">
       {/* 아이템 이름 */}

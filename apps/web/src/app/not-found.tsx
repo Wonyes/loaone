@@ -48,7 +48,7 @@ export default function NotFoundPage() {
 
           <button
             onClick={() => window.location.reload()}
-            className="flex items-center justify-center gap-2 rounded-lg border-t-2 border-slate-500/50 bg-gradient-to-b from-slate-700 to-slate-800 px-8 py-4 font-bold text-white shadow-lg backdrop-blur-sm transition-all hover:from-slate-600 hover:to-slate-700"
+            className="flex items-center justify-center gap-2 rounded-lg border-t-2 border-slate-500/50 bg-gradient-to-b from-slate-700 to-slate-800 px-8 py-4 font-bold text-white shadow-lg transition-all hover:from-slate-600 hover:to-slate-700"
           >
             <RefreshCw className="h-5 w-5" />
             다시 시도

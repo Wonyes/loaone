@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 function LoadingContent() {
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-black/60"></div>
 
       <div className="relative z-10 flex flex-col items-center justify-center">
         <div className="relative mb-8 flex h-32 items-end justify-center gap-5">

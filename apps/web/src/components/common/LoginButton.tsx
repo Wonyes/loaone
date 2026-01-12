@@ -1,6 +1,7 @@
 "use client";
 
-import { LogOut, Gamepad2, ChevronDown, User } from "lucide-react";
+import { LogOut, ChevronDown, User } from "lucide-react";
+import { FaDiscord } from "react-icons/fa"; // 추가
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,7 +48,7 @@ export function LoginButton() {
               <AvatarImage src={avatarUrl} alt={user.username} />
             </Avatar>
 
-            <span className="flex max-w-[100px] items-center truncate pb-px leading-none font-semibold text-[var(--chart-2)]">
+            <span className="flex max-w-[100px] items-center truncate pb-px text-[14px] leading-none font-semibold">
               {user.username || "User"}
             </span>
 
@@ -88,7 +89,7 @@ export function LoginButton() {
       onClick={loginWithDiscord}
       className="position flex items-center gap-2 rounded-full bg-[#5865F2]/80 px-5 py-2 text-sm font-bold text-white shadow-md shadow-indigo-500/20 transition-all hover:scale-105 hover:bg-[#5865F2]"
     >
-      <Gamepad2 className="h-4 w-4" />
+      <FaDiscord className="h-5 w-5" />
       <span className="whitespace-nowrap">로그인</span>
     </button>
   );
