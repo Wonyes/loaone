@@ -15,7 +15,7 @@ export function Card({
 }: CardProps) {
   return (
     <div
-      className={`design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0 ${className}`}
+      className={`design-card rounded-xl border border-white/10 bg-slate-900/50 p-0 ${className}`}
     >
       {title && (
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">

@@ -1,20 +1,23 @@
 "use client";
 
-import { useCProfile } from "@/hooks/query/useLostarkApi";
-import { Suspense, useState } from "react";
-import Loading from "@/app/loading";
+import Link from "next/link";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+
 import { TABS } from "@/constants/lostark/option";
+import { useCProfile } from "@/hooks/query/useLostarkApi";
+
+import Loading from "@/app/loading";
 import Equipment from "./equipment/Equipment";
 import { CharacterHeader } from "./CharacterHeader";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import AvatarPage from "./AvatarPage";
 
 function CharacterContent({ name }: { name: string }) {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "equipment";
 
   const { data: profileData, isLoading: isProfileLoading } = useCProfile(name);
-
+  console.log(profileData);
   const topValues = [...(profileData?.Stats || [])]
     .map(s => Number(s.Value))
     .sort((a, b) => b - a)
@@ -34,11 +37,13 @@ function CharacterContent({ name }: { name: string }) {
           profileData={profileData}
         />
       )}
-      {/* {activeTab === "avatar" && <Avatar name={name} />}
-      {activeTab === "skill" && <Skill name={name} />}
+      {activeTab === "avatar" && (
+        <AvatarPage profileData={profileData} name={name} />
+      )}
+      {/* {activeTab === "skill" && <Skill name={name} />}
       {activeTab === "history" && <History name={name} />}
       {activeTab === "characters" && <Characters name={name} />}
-      {activeTab === "guild" && <Guild name={name} />} */}
+      {activeTab === "guild" && <Guild name={name} />}  */}
     </div>
   );
 }
@@ -61,7 +66,7 @@ export function TabNavigation({
   characterName,
 }: TabNavigationProps) {
   return (
-    <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-2">
+    <div className="design-card rounded-xl border border-white/10 bg-slate-900/50 p-2">
       <div className="flex gap-1 overflow-x-auto">
         {TABS.map(tab => (
           <Link
