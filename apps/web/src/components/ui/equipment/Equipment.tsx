@@ -7,7 +7,7 @@ import {
   useCEquipment,
   useCGems,
 } from "@/hooks/query/useLostarkApi";
-import { Crown, Flame, Gem, Sword } from "lucide-react";
+import { Crown, Flame } from "lucide-react";
 import { parseAccessoryOptions } from "@/utils/accessoryParser";
 import Loading from "@/app/loading";
 import { GRADE_STYLES } from "@/constants/lostark/styles";
@@ -16,7 +16,6 @@ import {
   EQUIPMENT_AEC,
   EQUIPMENT_ORDER,
   SPRITEPOSITIONS,
-  TABS,
 } from "@/constants/lostark/option";
 import { EmptyCard } from "@/components/common/NoItems";
 
@@ -24,28 +23,15 @@ import { CharacterBracelet } from "@/components/character/CharacterBracelet";
 import { CharacterGems } from "@/components/character/CharacterGems";
 import { CharacterCards } from "@/components/character/CharacterCards";
 import { SectionHeader } from "@/components/character/CharacterPage";
-
-export const getQualityStyles = (qualityValue: number) => {
-  if (qualityValue === 100)
-    return "bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold shadow-sm";
-  if (qualityValue >= 90)
-    return "bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold shadow-sm";
-  if (qualityValue >= 70)
-    return "bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-semibold shadow-sm";
-  return "bg-gray-600/80 text-gray-200 font-medium";
-};
-
-export function getTierNumber(leftStr2: string): number | null {
-  if (!leftStr2) return null;
-  const match = leftStr2.match(/티어\s*(\d+)/);
-  return match ? parseInt(match[1]) : null;
-}
-
-export function getLevelNumber(leftStr2: string): number | null {
-  if (!leftStr2) return null;
-  const match = leftStr2.match(/레벨\s*(\d+)/);
-  return match ? parseInt(match[1]) : null;
-}
+import { ItemIcon } from "@/components/common/ItemIcon";
+import { Badge } from "@/components/common/Badge";
+import { Card } from "@/components/common/Card";
+import { StatRow } from "@/components/common/StatRow";
+import {
+  getLevelNumber,
+  getQualityStyles,
+  getTierNumber,
+} from "@/utils/lostarkUtils";
 
 export default function Equipment({
   name,
@@ -81,8 +67,9 @@ export default function Equipment({
   if (isLoading) return <Loading />;
 
   return (
-    <>
-      <div className="w-[700px] space-y-3">
+    <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
+      {/* 장비: 5/12 */}
+      <div className="space-y-3 xl:col-span-5">
         <EquipmentTab
           gemsData={gemsData}
           equipmentData={equipmentData}
@@ -90,17 +77,20 @@ export default function Equipment({
           engravingsCard={engravingsCard}
         />
       </div>
-      <div className="w-[550px] space-y-3">
+
+      {/* 아크: 4/12 */}
+      <div className="space-y-3 xl:col-span-4">
         <ArkGridPanel arkgridData={arkgridData} />
         <ArkPassivePanel arkpassiveData={arkpassiveData} />
       </div>
 
-      <div className="w-[330px] space-y-3">
+      {/* 스탯: 3/12 */}
+      <div className="space-y-3 xl:col-span-3">
         <StatsPanel stats={profileData?.Stats} topValues={topValues} />
         <EngravingsPanel engravingsData={engravingsData} />
         <CollectibleSummary collectiblesData={collectiblesData} />
       </div>
-    </>
+    </div>
   );
 }
 
@@ -138,277 +128,157 @@ function ArkGridPanel({ arkgridData }: { arkgridData: any }) {
     return { coreType, corePoint, coreOptions, coreCondition };
   };
 
+  const slots = arkgridData.Slots || [];
+  const effects = arkgridData.Effects || [];
+  const allItems = [
+    ...slots.map((slot: any) => ({ type: "slot", data: slot })),
+    ...effects.map((effect: any) => ({ type: "effect", data: effect })),
+  ];
+
   return (
     <div className="design-card rounded-xl border border-white/10 bg-slate-900/50 p-0">
       <SectionHeader title="아크 그리드" />
 
-      <div className="flex gap-4 p-4">
-        <div className="flex-1 space-y-2">
-          <h4 className="mb-3 text-sm font-bold text-purple-300">장착 슬롯</h4>
-          {arkgridData.Slots?.map((slot: any) => {
-            const gradeStyle =
-              GRADE_STYLES[slot.Grade as keyof typeof GRADE_STYLES] ||
-              GRADE_STYLES.전설;
-            const { coreType, corePoint, coreOptions, coreCondition } =
-              parseTooltip(slot);
+      <div className="p-4">
+        <div className="grid grid-cols-2 gap-3">
+          {allItems.map((item, idx) => {
+            if (item.type === "slot") {
+              const slot = item.data;
+              const gradeStyle =
+                GRADE_STYLES[slot.Grade as keyof typeof GRADE_STYLES] ||
+                GRADE_STYLES.전설;
+              const { coreType, corePoint, coreOptions, coreCondition } =
+                parseTooltip(slot);
 
-            return (
-              <div
-                key={slot.Index}
-                className={`group relative flex items-center gap-3 rounded-lg border bg-slate-800/30 p-2 transition-colors hover:bg-slate-800/50 ${gradeStyle.bg} ${gradeStyle.border}`}
-              >
+              return (
                 <div
-                  className={`flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded border ${gradeStyle.bg} ${gradeStyle.border}`}
+                  key={`slot-${idx}`}
+                  className={`group relative flex items-center gap-3 rounded-lg border bg-slate-800/30 p-2 transition-colors hover:bg-slate-800/50 ${gradeStyle.bg} ${gradeStyle.border}`}
                 >
-                  <img
-                    src={slot.Icon}
-                    alt={slot.Name}
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-                <div className="flex-1">
-                  <p className={`text-sm font-semibold`}>{slot.Name}</p>
-                </div>
-                <span
-                  className={`rounded-md bg-black/40 px-2 py-1 text-xs font-bold`}
-                >
-                  {slot.Point}P
-                </span>
+                  <div
+                    className={`flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded border ${gradeStyle.bg} ${gradeStyle.border}`}
+                  >
+                    <img
+                      src={slot.Icon}
+                      alt={slot.Name}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className={`truncate text-[13px] font-semibold`}>
+                      {slot.Name}
+                    </p>
+                  </div>
+                  <span className="absolute -top-1.5 -right-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 px-2 py-0.5 text-xs font-bold text-white shadow-lg ring-2 ring-slate-900">
+                    {slot.Point}P
+                  </span>
 
-                <div className="pointer-events-none absolute top-full left-0 z-50 mt-2 hidden w-96 rounded-lg border border-gray-700 bg-gray-900/98 p-4 shadow-2xl group-hover:block">
-                  <div className="space-y-3">
-                    <div className="border-b border-gray-700 pb-2">
-                      <p className={`text-base font-bold`}>{slot.Name}</p>
-                      <div className="mt-1 flex items-center gap-3">
-                        {coreType && (
-                          <span className="text-xs text-gray-400">
-                            {coreType}
-                          </span>
-                        )}
-                        {corePoint && (
-                          <span className="rounded bg-purple-500/30 px-2 py-0.5 text-xs font-semibold text-purple-300">
-                            {corePoint}
-                          </span>
-                        )}
+                  <div className="pointer-events-none absolute top-full left-0 z-50 mt-2 hidden w-96 rounded-lg border border-gray-700 bg-gray-900/98 p-4 shadow-2xl group-hover:block">
+                    <div className="space-y-3">
+                      <div className="border-b border-gray-700 pb-2">
+                        <p className={`text-base font-bold`}>{slot.Name}</p>
+                        <div className="mt-1 flex items-center gap-3">
+                          {coreType && (
+                            <span className="text-xs text-gray-400">
+                              {coreType}
+                            </span>
+                          )}
+                          {corePoint && (
+                            <span className="rounded bg-purple-500/30 px-2 py-0.5 text-xs font-semibold text-purple-300">
+                              {corePoint}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
 
-                    {coreOptions && (
-                      <div className="space-y-1.5">
-                        <p className="mb-2 text-xs font-bold text-emerald-400">
-                          ■ 코어 옵션
-                        </p>
+                      {coreOptions && (
                         <div className="space-y-1.5">
-                          {(() => {
-                            const parts = coreOptions.split(/(?=\[\d+P\])/);
+                          <p className="mb-2 text-xs font-bold text-emerald-400">
+                            ■ 코어 옵션
+                          </p>
+                          <div className="space-y-1.5">
+                            {(() => {
+                              const parts = coreOptions.split(/(?=\[\d+P\])/);
 
-                            return parts
-                              .filter(part => part.trim())
-                              .map((opt: string, i: number) => {
-                                const match = opt.match(
-                                  /^\[(\d+P)\]\s*([\s\S]+)/
-                                );
+                              return parts
+                                .filter(part => part.trim())
+                                .map((opt: string, i: number) => {
+                                  const match = opt.match(
+                                    /^\[(\d+P)\]\s*([\s\S]+)/
+                                  );
 
-                                if (!match) {
+                                  if (!match) {
+                                    return (
+                                      <div
+                                        key={i}
+                                        className="text-xs leading-relaxed text-gray-200"
+                                      >
+                                        {opt.trim()}
+                                      </div>
+                                    );
+                                  }
+
+                                  const [, point, desc] = match;
+
                                   return (
                                     <div
                                       key={i}
-                                      className="text-xs leading-relaxed text-gray-200"
+                                      className="flex items-start gap-2"
                                     >
-                                      {opt.trim()}
+                                      <span className="flex-shrink-0 rounded bg-orange-600 px-2 py-0.5 text-[11px] font-bold text-white">
+                                        {point}
+                                      </span>
+                                      <span className="text-xs leading-relaxed text-gray-200">
+                                        {desc.trim()}
+                                      </span>
                                     </div>
                                   );
-                                }
-
-                                const [, point, desc] = match;
-
-                                return (
-                                  <div
-                                    key={i}
-                                    className="flex items-start gap-2"
-                                  >
-                                    <span className="flex-shrink-0 rounded bg-orange-600 px-2 py-0.5 text-[11px] font-bold text-white">
-                                      {point}
-                                    </span>
-                                    <span className="text-xs leading-relaxed text-gray-200">
-                                      {desc.trim()}
-                                    </span>
-                                  </div>
-                                );
-                              });
-                          })()}
+                                });
+                            })()}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
 
-                    {coreCondition && coreCondition.trim() && (
-                      <div className="rounded-md border border-amber-500/30 bg-amber-500/10 p-3">
-                        <p className="mb-1.5 text-xs font-bold text-amber-400">
-                          ■ 발동 조건
-                        </p>
-                        <p className="text-xs leading-relaxed whitespace-pre-wrap text-gray-300">
-                          {coreCondition}
-                        </p>
-                      </div>
-                    )}
+                      {coreCondition && coreCondition.trim() && (
+                        <div className="rounded-md border border-amber-500/30 bg-amber-500/10 p-3">
+                          <p className="mb-1.5 text-xs font-bold text-amber-400">
+                            ■ 발동 조건
+                          </p>
+                          <p className="text-xs leading-relaxed whitespace-pre-wrap text-gray-300">
+                            {coreCondition}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
+              );
+            } else {
+              // effect
+              const effect = item.data;
+              return (
+                <div
+                  key={`effect-${idx}`}
+                  className="group relative rounded-lg border border-white/10 bg-slate-800/30 p-3 transition-colors hover:bg-slate-800/50"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-gray-200">
+                      {effect.Name}
+                    </span>
+                    <span className="rounded-md bg-emerald-500/20 px-2 py-1 text-xs font-bold text-emerald-400">
+                      Lv.{effect.Level}
+                    </span>
+                  </div>
+
+                  {effect.Tooltip && (
+                    <div className="pointer-events-none absolute top-full left-0 z-50 mt-2 hidden w-64 rounded-lg border border-gray-700 bg-gray-900/95 p-3 shadow-xl group-hover:block">
+                      <p className="text-xs text-gray-300">{effect.Tooltip}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            }
           })}
-        </div>
-
-        {arkgridData.Effects && arkgridData.Effects.length > 0 && (
-          <div className="flex-1 space-y-2">
-            <h4 className="mb-3 text-sm font-bold text-gray-300">활성 효과</h4>
-            {arkgridData.Effects.map((effect: any, idx: number) => (
-              <div
-                key={idx}
-                className="group relative rounded-lg border border-white/10 bg-slate-800/30 p-3 transition-colors hover:bg-slate-800/50"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-gray-200">
-                    {effect.Name}
-                  </span>
-                  <span className="rounded-md bg-emerald-500/20 px-2 py-1 text-xs font-bold text-emerald-400">
-                    Lv.{effect.Level}
-                  </span>
-                </div>
-
-                {effect.Tooltip && (
-                  <div className="pointer-events-none absolute top-full left-0 z-50 mt-2 hidden w-64 rounded-lg border border-gray-700 bg-gray-900/95 p-3 shadow-xl group-hover:block">
-                    <p className="text-xs text-gray-300">{effect.Tooltip}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function TabNavigation({
-  activeTab,
-  onTabChange,
-}: {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-}) {
-  return (
-    <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-2">
-      <div className="flex gap-1 overflow-x-auto">
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`cursor-pointer rounded px-5 py-1 text-base font-bold whitespace-nowrap transition-colors ${
-              activeTab === tab.id
-                ? "border border-emerald-500/30 bg-emerald-500/20 text-emerald-400"
-                : "text-gray-500 hover:text-gray-300"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CharacterHeader({ profileData }: { profileData: any }) {
-  return (
-    <div className="design-card relative overflow-hidden rounded-xl bg-[#0b0f1a] bg-slate-900/50 p-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1230] via-[#0b0f1a] to-black" />
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1230] via-[#0b0f1a] to-black" />
-
-      {profileData?.CharacterImage && (
-        <img
-          src={profileData.CharacterImage}
-          alt={profileData.CharacterName}
-          className="pointer-events-none absolute top-[5px] left-1/2 h-[520px] w-[360px] -translate-x-1/2 scale-[1.3] [mask-image:linear-gradient(90deg,transparent,black_30%_80%,transparent)] [mask-image:linear-gradient(to_top,transparent_5%,black_55%)] object-cover object-[50%_15%] mix-blend-lighten drop-shadow-[0_0_80px_rgba(168,85,247,0.55)] [-webkit-mask-image:linear-gradient(90deg,transparent,black_30%_80%,transparent)]"
-        />
-      )}
-
-      <div className="relative z-10 flex min-h-[240px] items-end justify-between p-6">
-        <div className="flex flex-col gap-6">
-          <div className="flex gap-6">
-            <div className="flex items-center gap-2">
-              <div className="rounded-lg bg-emerald-500/20 p-2">
-                <Gem className="h-5 w-5 text-emerald-400" />
-              </div>
-              <div>
-                <p className="text-xm text-gray-400">아이템 레벨</p>
-                <p className="text-xl font-black text-emerald-400">
-                  {profileData?.ItemAvgLevel}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="rounded-lg bg-violet-500/20 p-2">
-                <Sword className="h-5 w-5 text-violet-400" />
-              </div>
-              <div>
-                <p className="text-xm text-gray-400">전투력</p>
-                <p className="text-xl font-black text-violet-400">
-                  {profileData?.CombatPower?.toLocaleString()}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div className="mb-3 flex gap-2">
-              <span className="text-xm rounded-lg bg-slate-800/80 px-3 py-1.5 font-semibold text-gray-300">
-                {profileData?.ServerName}
-              </span>
-              <span className="text-xm rounded-lg bg-slate-800/80 px-3 py-1.5 font-semibold text-gray-300">
-                {profileData?.CharacterClassName}
-              </span>
-            </div>
-
-            <h1 className="mb-3 text-4xl font-black tracking-tight">
-              {profileData?.CharacterName}
-            </h1>
-
-            <div className="text-xm flex gap-6">
-              <div>
-                <span className="text-gray-400">전투 </span>
-                <span className="font-bold text-white">
-                  Lv.{profileData?.CharacterLevel}
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-400">원정대 </span>
-                <span className="font-bold text-white">
-                  Lv.{profileData?.ExpeditionLevel}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-xm flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <span className="text-gray-400">길드</span>
-            <span className="font-bold text-emerald-400">
-              {profileData?.GuildName || "-"}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-400">영지</span>
-            <span className="font-semibold text-white">
-              {profileData?.TownName || "-"}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-400">명예</span>
-            <span className="font-semibold text-white">
-              {profileData?.HonorPoint || "-"}
-            </span>
-          </div>
         </div>
       </div>
     </div>
@@ -529,7 +399,7 @@ function ArkPassivePanel({ arkpassiveData }: { arkpassiveData: any }) {
                         >
                           {effectName}
                         </p>
-                        <p className={`text-[10px] font-bold ${colors.text}`}>
+                        <p className={`text-[12px] font-bold ${colors.text}`}>
                           Lv.{effectLevel}
                         </p>
                       </div>
@@ -574,9 +444,7 @@ function EquipmentTab({ equipmentData, gemsData, engravingsCard }: any) {
 
   return (
     <>
-      <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
-        <SectionHeader title="장비" />
-
+      <Card title="장비">
         <div className="grid grid-cols-2 gap-2 p-2">
           <div className="space-y-1.5">
             {armorItems?.map((item: any, idx: number) => (
@@ -594,21 +462,39 @@ function EquipmentTab({ equipmentData, gemsData, engravingsCard }: any) {
           </div>
         </div>
 
-        {braceletItems?.map((item: any, idx: number) => (
-          <div key={idx} className="border-t border-white/10 p-3">
-            <div className="flex gap-3">
-              <img src={item.Icon} className="h-12 w-12 rounded" alt="" />
-              <div className="flex-1">
-                <div className="mb-1 flex items-center gap-2">
-                  <p className="text-xm text-gray-400">{item.Type}</p>
-                  <p className="text-xm font-bold">{item.Name}</p>
+        {braceletItems?.map((item: any, idx: number) => {
+          const gradeStyle =
+            GRADE_STYLES[item.Grade as keyof typeof GRADE_STYLES] ||
+            GRADE_STYLES.전설;
+
+          return (
+            <div key={idx} className="border-t border-white/10 p-3">
+              <div className="flex gap-3">
+                <div
+                  className={`relative h-12 w-12 flex-shrink-0 overflow-hidden rounded border ${gradeStyle.bg} ${gradeStyle.border}`}
+                >
+                  <img
+                    src={item.Icon}
+                    className="h-full w-full object-cover"
+                    alt={item.Name}
+                  />
                 </div>
-                <CharacterBracelet item={item} />
+                <div className="min-w-0 flex-1">
+                  <div className="mb-2 flex items-center gap-2">
+                    <p className="text-xs text-gray-400">{item.Type}</p>
+                    <p
+                      className={`hidden text-sm font-bold md:block ${gradeStyle.text}`}
+                    >
+                      {item.Name}
+                    </p>
+                  </div>
+                  <CharacterBracelet item={item} />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          );
+        })}
+      </Card>
 
       <CharacterGems gemsData={gemsData} />
 
@@ -622,41 +508,28 @@ function EquipmentCard({ item }: { item: any }) {
   const gradeStyle =
     GRADE_STYLES[item.Grade as keyof typeof GRADE_STYLES] || GRADE_STYLES.전설;
   const qualityValue = item.tooltip?.Element_001?.value?.qualityValue;
-  const qualityStyle = qualityValue ? getQualityStyles(qualityValue) : "";
   const tierNumber = getTierNumber(item.tooltip?.Element_001?.value?.leftStr2);
   const levelNumber = getLevelNumber(
     item.tooltip?.Element_001?.value?.leftStr2
   );
 
   let refinementStep = 0;
-
   if (item.tooltip?.Element_005?.value) {
     const value = item.tooltip.Element_005.value;
     const text = typeof value === "string" ? value : JSON.stringify(value);
     const match = text.match(/\[상급 재련\]\s*(\d+)단계/);
-    if (match) {
-      refinementStep = parseInt(match[1]);
-    }
+    if (match) refinementStep = parseInt(match[1]);
   }
 
   return (
     <div className="design-card flex h-[64px] gap-2 rounded p-1.5 transition-colors hover:border-amber-500/30">
-      <div
-        className={`relative ${gradeStyle.bg} h-11 w-11 flex-shrink-0 overflow-hidden rounded border ${gradeStyle.border}`}
-      >
-        {item.Icon && (
-          <img
-            src={item.Icon}
-            alt={item.Name}
-            className="h-full w-full object-cover"
-          />
-        )}
-        {tierNumber !== null && (
-          <div className="absolute top-0 right-0 h-3.5 w-3.5 rounded bg-amber-600/90 text-center text-[12px] leading-[14px] font-bold text-white">
-            T{tierNumber}
-          </div>
-        )}
-      </div>
+      <ItemIcon
+        src={item.Icon}
+        alt={item.Name}
+        grade={item.Grade}
+        tier={tierNumber}
+        size="sm"
+      />
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
@@ -665,31 +538,41 @@ function EquipmentCard({ item }: { item: any }) {
           </p>
           {qualityValue > 0 && (
             <>
-              <span
-                className={`${qualityStyle} rounded px-1 py-0.5 text-[12px]`}
-              >
-                {qualityValue}
-              </span>
-              <span className={`rounded bg-gray-700 px-1 py-0.5 text-[12px]`}>
-                {levelNumber}
-              </span>
+              <Badge variant="quality" quality={qualityValue} />
+              <Badge variant="level">{levelNumber}</Badge>
             </>
           )}
         </div>
-        <p className="truncate text-[11px] font-bold">
+
+        {/* 모바일에서는 장비 이름 숨김 */}
+        <p className="hidden truncate font-bold md:block">
           {enhanceLevel && (
-            <span className={`text-xm ${gradeStyle.text} `}>
+            <span className={`text-[12px] ${gradeStyle.text}`}>
               +{enhanceLevel}
             </span>
           )}
           {refinementStep > 0 && (
-            <span className="mr-1 ml-1 rounded bg-purple-500/20 px-1 py-0.5 text-[12px]">
+            <Badge variant="purple" className="mx-1">
               {refinementStep}단계
-            </span>
+            </Badge>
           )}
-          <span className={`text-xm ${gradeStyle.text}`}>
+          <span className={`text-[12px] ${gradeStyle.text}`}>
             {item.Name?.replace(/\+\d+\s*/, "")}
           </span>
+        </p>
+
+        {/* 모바일에서는 강화 수치만 표시 */}
+        <p className="truncate font-bold md:hidden">
+          {enhanceLevel && (
+            <span className={`text-[12px] ${gradeStyle.text}`}>
+              +{enhanceLevel}
+            </span>
+          )}
+          {refinementStep > 0 && (
+            <Badge variant="purple" className="ml-1">
+              {refinementStep}단계
+            </Badge>
+          )}
         </p>
       </div>
     </div>
@@ -707,10 +590,11 @@ function AccessoryCard({ item }: { item: any }) {
   const tierNumber = getTierNumber(leftStr2);
 
   return (
-    <div className="design-card flex h-[64px] gap-1.5 rounded p-1.5 transition-colors hover:border-amber-500/30">
-      <div className="flex min-w-0 gap-1.5">
+    <div className="design-card flex h-[64px] gap-2 rounded p-1.5 transition-colors hover:border-amber-500/30">
+      {/* 왼쪽: 아이콘 + 타입/품질/이름 */}
+      <div className="flex min-w-0 flex-1 gap-1.5">
         <div
-          className={`relative ${gradeStyle.bg} h-11 w-11 flex-shrink-0 overflow-hidden rounded border ${gradeStyle.border}`}
+          className={`relative ${gradeStyle.bg} h-10 w-10 flex-shrink-0 overflow-hidden rounded border ${gradeStyle.border}`}
         >
           {item.Icon && (
             <img
@@ -723,31 +607,37 @@ function AccessoryCard({ item }: { item: any }) {
             T{tierNumber}
           </div>
         </div>
-        <div className="min-w-[90] flex-1">
-          <div className="flex items-center gap-1.5">
-            <p className="text-[11px] text-gray-400">{item.Type}</p>
+        <div className="min-w-0 flex-1">
+          {/* 타입 + 품질: 넓을 때 가로, 좁을 때 세로 */}
+          <div className="flex flex-col gap-0.5 md:flex-row md:items-center md:gap-1.5">
+            <p className="text-[10px] text-gray-400">{item.Type}</p>
             {qualityValue > 0 && (
               <span
-                className={`${qualityStyle} rounded px-1 py-0.5 text-[12px]`}
+                className={`${qualityStyle} w-fit rounded px-1 py-0.5 text-[10px]`}
               >
                 {qualityValue}
               </span>
             )}
           </div>
-          <p className={`truncate text-[11px] font-bold ${gradeStyle.text}`}>
+
+          {/* 이름: 768px 이상에서만 표시 */}
+          <p
+            className={`hidden truncate text-[12px] font-bold md:block ${gradeStyle.text}`}
+          >
             {item.Name}
           </p>
         </div>
       </div>
 
+      {/* 오른쪽: 옵션 (항상 세로 배치) */}
       {accessoryStats.length > 0 && (
-        <div className="flex flex-shrink-0 flex-col items-start justify-center gap-0.5">
+        <div className="flex flex-shrink-0 flex-col items-end justify-center gap-0.5">
           {accessoryStats.map((stat, statIdx) => (
             <span
               key={statIdx}
-              className={`ml-3 rounded text-[12px] font-semibold ${stat.tierColor} bg-gray-800/50 whitespace-nowrap`}
+              className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${stat.tierColor} bg-gray-800/50 whitespace-nowrap`}
             >
-              [{stat.tier}] {stat.name} {stat.value}
+              {stat.tier} {stat.name} {stat.value}
             </span>
           ))}
         </div>
@@ -775,10 +665,11 @@ function StoneCard({ item }: { item: any }) {
   const tierNumber = getTierNumber(item.tooltip?.Element_001?.value?.leftStr2);
 
   return (
-    <div className="design-card flex h-[64px] gap-1.5 rounded p-1.5 transition-colors hover:border-amber-500/30">
-      <div className="flex items-center gap-2">
+    <div className="design-card flex h-[64px] gap-2 rounded p-1.5 transition-colors hover:border-amber-500/30">
+      {/* 왼쪽: 아이콘 + 스톤/이름 */}
+      <div className="flex flex-1 items-center gap-2">
         <div
-          className={`relative h-11 w-11 flex-shrink-0 overflow-hidden rounded border ${gradeStyle.bg} ${gradeStyle.border} p-0.5`}
+          className={`relative h-10 w-10 flex-shrink-0 overflow-hidden rounded border ${gradeStyle.bg} ${gradeStyle.border} p-0.5`}
         >
           <img
             src={item.Icon}
@@ -789,31 +680,33 @@ function StoneCard({ item }: { item: any }) {
             T{tierNumber}
           </div>
         </div>
-        <div className="min-w-[90] flex-1">
+        <div className="min-w-0 flex-1">
           <p className="mb-0.5 text-[12px] font-bold tracking-wider text-gray-500 uppercase">
             스톤
           </p>
-          <p className={`truncate text-[11px] font-bold ${gradeStyle.text}`}>
+
+          {/* 768px 이상에서만 이름 표시 */}
+          <p
+            className={`hidden truncate text-[11px] font-bold md:block ${gradeStyle.text}`}
+          >
             {item.Name}
           </p>
         </div>
       </div>
 
-      <div className="ml-3 flex flex-col justify-center gap-0.5">
+      {/* 오른쪽: 각인 (세로 배치) */}
+      <div className="flex flex-col justify-center gap-0.5">
         {inscriptions.map((ins: any, iIdx: number) => (
-          <div key={iIdx} className="flex items-center">
-            <span
-              className={`h-1.5 w-1.5 rounded-full ${ins.isDebuff ? "bg-red-500" : "bg-blue-400"}`}
-            />
-            <span
-              className={`mr-1 ml-2 text-xs ${ins.isDebuff ? "text-red-400" : "text-slate-300"}`}
-            >
-              {ins.name}
-            </span>
+          <div key={iIdx} className="flex items-center gap-1">
             <span
               className={`text-xs font-black ${ins.isDebuff ? "text-red-500" : "text-blue-400"}`}
             >
               Lv.{ins.level}
+            </span>
+            <span
+              className={`text-xs ${ins.isDebuff ? "text-red-400" : "text-slate-300"}`}
+            >
+              {ins.name}
             </span>
           </div>
         ))}
@@ -830,106 +723,76 @@ function StatsPanel({
   topValues: number[];
 }) {
   return (
-    <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
-      <SectionHeader title="전투 특성" />
-
+    <Card title="전투 특성">
       <div className="space-y-2 p-1">
         {stats?.map((stat: any, idx: number) => {
           const isTop3 = topValues[2] === Number(stat.Value);
           const isTop4 = topValues[3] === Number(stat.Value);
+          const highlight = isTop3 ? "emerald" : isTop4 ? "violet" : "none";
 
           return (
-            <div
+            <StatRow
               key={idx}
-              className={`flex items-center justify-between rounded-lg p-1.5 transition-colors ${
-                isTop3
-                  ? "bg-emerald-500/10"
-                  : isTop4
-                    ? "bg-violet-500/10"
-                    : "hover:bg-slate-800/50"
-              }`}
-            >
-              <span
-                className={`font-medium ${
-                  isTop3
-                    ? "text-emerald-400"
-                    : isTop4
-                      ? "text-violet-400"
-                      : "text-gray-300"
-                }`}
-              >
-                {stat.Type}
-              </span>
-              <div className="flex items-center gap-2">
-                {isTop3 && (
+              label={stat.Type}
+              value={
+                stat.Value >= 10000
+                  ? Number(stat.Value).toLocaleString("ko-KR")
+                  : stat.Value
+              }
+              highlight={highlight}
+              icon={
+                isTop3 ? (
                   <Crown className="h-4 w-4 text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-                )}
-                {isTop4 && (
+                ) : isTop4 ? (
                   <Flame className="h-4 w-4 text-violet-400 drop-shadow-[0_0_8px_rgba(167,139,250,0.6)]" />
-                )}
-                <span
-                  className={`font-bold ${
-                    isTop3
-                      ? "text-emerald-400"
-                      : isTop4
-                        ? "text-violet-400"
-                        : "text-white"
-                  }`}
-                >
-                  {stat.Value != null && Number(stat.Value) >= 10000
-                    ? Number(stat.Value).toLocaleString("ko-KR")
-                    : stat.Value}
-                </span>
-              </div>
-            </div>
+                ) : undefined
+              }
+            />
           );
         })}
       </div>
-    </div>
+    </Card>
   );
 }
 
 function CollectibleSummary({ collectiblesData }: { collectiblesData: any }) {
   return (
-    <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
-      <SectionHeader title="수집형 포인트" />
+    <Card title="수집형 포인트">
       <div className="space-y-2 p-3">
-        {collectiblesData &&
-          collectiblesData?.map((col: any, idx: number) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between rounded-lg p-0 transition-colors hover:bg-slate-800/50"
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className="inline-block"
-                  style={{
-                    backgroundImage: `url("https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_profile.png")`,
-                    backgroundPosition: SPRITEPOSITIONS[col.Type] || "0 0",
-                    width: "22px",
-                    height: "22px",
-                  }}
-                />
-                <span className="font-medium text-gray-300">{col.Type}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-emerald-400">{col.Point}</span>
-                <span className="text-gray-500">/</span>
-                <span className="font-semibold text-gray-400">
-                  {col.MaxPoint}
-                </span>
-              </div>
+        {collectiblesData?.map((col: any, idx: number) => (
+          <div
+            key={idx}
+            className="flex items-center justify-between rounded-lg p-0 transition-colors hover:bg-slate-800/50"
+          >
+            <div className="flex items-center gap-3">
+              <span
+                className="inline-block"
+                style={{
+                  backgroundImage: `url("https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_profile.png")`,
+                  backgroundPosition: SPRITEPOSITIONS[col.Type] || "0 0",
+                  width: "22px",
+                  height: "22px",
+                }}
+              />
+              <span className="font-medium text-gray-300">{col.Type}</span>
             </div>
-          ))}
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-emerald-400">{col.Point}</span>
+              <span className="text-gray-500">/</span>
+              <span className="font-semibold text-gray-400">
+                {col.MaxPoint}
+              </span>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </Card>
   );
 }
 
 function EngravingsPanel({ engravingsData }: { engravingsData: any }) {
   return (
-    <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
-      <SectionHeader title="각인" />
+    <Card title="각인">
       <div className="space-y-2 p-3">
         {engravingsData?.ArkPassiveEffects.map((eng: any, idx: number) => (
           <div
@@ -937,12 +800,10 @@ function EngravingsPanel({ engravingsData }: { engravingsData: any }) {
             className="flex items-center justify-between rounded-lg border border-emerald-500/20 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 p-2"
           >
             <span className="font-semibold text-emerald-300">{eng.Name}</span>
-            <span className="text-xm rounded-md bg-emerald-500/20 px-2.5 py-1 font-black text-emerald-400 shadow-sm">
-              Lv.{eng.Level}
-            </span>
+            <Badge variant="emerald">Lv.{eng.Level}</Badge>
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }

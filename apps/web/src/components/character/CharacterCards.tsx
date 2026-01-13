@@ -1,28 +1,17 @@
 import { GRADE_TEXT_COLORS } from "@/constants/lostark/styles";
-import { SectionHeader } from "./CharacterPage";
 import { GRADE_POSITIONS } from "@/constants/lostark/option";
+import { Card } from "../common/Card";
+import { EmptyCard } from "../common/NoItems";
 
 export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
   if (!engravingsCard?.Cards || engravingsCard.Cards.length === 0) {
-    return (
-      <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
-        <SectionHeader title="카드" />
-        <div className="p-4">
-          <div className="py-8 text-center text-sm text-gray-400">
-            장착된 카드가 없습니다
-          </div>
-        </div>
-      </div>
-    );
+    return <EmptyCard title="카드" />;
   }
 
   const activeCardSets = engravingsCard.Effects || [];
 
   return (
-    <div className="design-card overflow-hidden rounded-xl border border-white/10 bg-slate-900/50 p-0">
-      <div className="flex items-center justify-between border-b border-white/10 bg-slate-900/30 p-4">
-        <h3 className="font-bold">카드</h3>
-      </div>
+    <Card title="카드">
       <div className="space-y-4 p-4">
         {activeCardSets.length > 0 && (
           <div className="space-y-2">
@@ -123,6 +112,6 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
           })}
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
