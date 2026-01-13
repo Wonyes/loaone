@@ -1,7 +1,7 @@
 "use client";
 
 import { GRADE_STYLES } from "@/constants/lostark/styles";
-import { Card } from "../common/Card";
+import { Card } from "../../common/Card";
 
 export function CharacterGems({ gemsData }: { gemsData: any }) {
   if (!gemsData?.Effects?.Skills || !gemsData?.Gems) return null;

@@ -19,10 +19,9 @@ import {
 } from "@/constants/lostark/option";
 import { EmptyCard } from "@/components/common/NoItems";
 
-import { CharacterBracelet } from "@/components/character/CharacterBracelet";
-import { CharacterGems } from "@/components/character/CharacterGems";
-import { CharacterCards } from "@/components/character/CharacterCards";
-import { SectionHeader } from "@/components/character/CharacterPage";
+import { CharacterBracelet } from "@/components/character/equipment/CharacterBracelet";
+import { CharacterGems } from "@/components/character/equipment/CharacterGems";
+import { CharacterCards } from "@/components/character/equipment/CharacterCards";
 import { ItemIcon } from "@/components/common/ItemIcon";
 import { Badge } from "@/components/common/Badge";
 import { Card } from "@/components/common/Card";
@@ -32,6 +31,7 @@ import {
   getQualityStyles,
   getTierNumber,
 } from "@/utils/lostarkUtils";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 export default function Equipment({
   name,

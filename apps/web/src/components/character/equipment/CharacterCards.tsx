@@ -1,7 +1,7 @@
 import { GRADE_TEXT_COLORS } from "@/constants/lostark/styles";
 import { GRADE_POSITIONS } from "@/constants/lostark/option";
-import { Card } from "../common/Card";
-import { EmptyCard } from "../common/NoItems";
+import { Card } from "../../common/Card";
+import { EmptyCard } from "../../common/NoItems";
 
 export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
   if (!engravingsCard?.Cards || engravingsCard.Cards.length === 0) {

@@ -1,4 +1,3 @@
-import { SectionHeader } from "../character/CharacterPage";
 import { Card } from "./Card";
 
 interface EmptyCardProps {
