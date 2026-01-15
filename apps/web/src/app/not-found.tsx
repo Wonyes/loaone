@@ -1,3 +1,5 @@
+"use client";
+
 import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 
 export default function NotFoundPage() {
