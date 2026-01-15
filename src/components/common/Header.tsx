@@ -13,7 +13,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="design-card sticky top-4 z-50 mb-8 flex h-16 w-full items-center rounded-full px-4 backdrop-blur-sm xl:px-6">
+    <header className="design-card sticky top-4 z-50 mb-8 flex h-16 w-full items-center rounded-full px-4 xl:px-6">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
           <div
@@ -30,7 +30,6 @@ export function Header() {
 
           <div className="hidden pl-10 lg:block">
             <nav className="flex items-center gap-6">
-             
               <Link href="/market" className="block">
                 <span>거래소</span>
               </Link>
@@ -61,7 +60,7 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="absolute top-full right-0 left-0 mt-2 rounded-xl border border-white/10 bg-slate-900/95 p-4 backdrop-blur-sm xl:hidden">
+        <div className="absolute top-full right-0 left-0 mt-2 rounded-xl border border-white/10 bg-slate-900/95 p-4 xl:hidden">
           <div className="mb-4">
             <CharacterSearch />
           </div>

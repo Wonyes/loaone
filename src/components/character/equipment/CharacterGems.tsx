@@ -2,6 +2,7 @@
 
 import { GRADE_STYLES } from "@/constants/lostark/styles";
 import { Card } from "../../common/Card";
+import { Gem } from "lucide-react";
 
 export function CharacterGems({ gemsData }: { gemsData: any }) {
   if (!gemsData?.Effects?.Skills || !gemsData?.Gems) return null;
@@ -29,14 +30,16 @@ export function CharacterGems({ gemsData }: { gemsData: any }) {
   const totalGems = cooldownGems.length + damageGems.length;
 
   return (
-    <Card title="보석">
+    <Card
+      title="보석"
+      icon={<Gem size={18} className="h-full text-indigo-400" />}
+      className="h-full"
+    >
       <div className="p-4">
-        {/* 1줄, 균등 분할, 구분선 */}
         <div
           className="grid gap-1"
           style={{ gridTemplateColumns: `repeat(${totalGems}, 1fr)` }}
         >
-          {/* 쿨감 보석 */}
           {cooldownGems.map(({ skill, gem }: any, idx: number) => {
             const gradeStyle = getGradeStyle(gem);
             return (

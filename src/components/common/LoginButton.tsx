@@ -45,7 +45,7 @@ export function LoginButton() {
       user.user_metadata.full_name || user.user_metadata.name || "User";
 
     return (
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <button className="flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/50 py-1 pr-4 pl-1 text-sm font-medium text-white transition-colors outline-none hover:bg-slate-800 focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900">
             <Avatar className="h-8 w-8 border border-white/10">

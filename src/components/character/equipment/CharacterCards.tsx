@@ -1,24 +1,33 @@
-import { GRADE_TEXT_COLORS } from "@/constants/lostark/styles";
+"use client";
+
+import { GRADE_TEXT_COLORS, GRADE_STYLES } from "@/constants/lostark/styles";
 import { GRADE_POSITIONS } from "@/constants/lostark/option";
 import { Card } from "../../common/Card";
 import { EmptyCard } from "../../common/NoItems";
+import { Library, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
   if (!engravingsCard?.Cards || engravingsCard.Cards.length === 0) {
-    return <EmptyCard title="카드" />;
+    return <EmptyCard title="카드" icon={<Library size={18} />} />;
   }
 
   const activeCardSets = engravingsCard.Effects || [];
 
   return (
-    <Card title="카드">
-      <div className="space-y-4 p-4">
+    <Card
+      title="카드 세트 및 수집"
+      icon={
+        <Library size={18} className="flex h-full flex-col text-amber-400" />
+      }
+      className="h-full"
+    >
+      <div className="flex-1 space-y-6 p-5">
         {activeCardSets.length > 0 && (
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {activeCardSets.map((effect: any, idx: number) => {
               const activeIndex = effect.Index;
               const activeItem = effect.Items?.[activeIndex];
-
               if (!activeItem) return null;
 
               const setName = activeItem.Name.replace(/\s*\d+세트/, "").replace(
@@ -38,54 +47,81 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
               return (
                 <div
                   key={idx}
-                  className="flex items-center justify-between rounded-lg border border-amber-500/20 bg-amber-500/10 p-2"
+                  className="group relative flex items-center justify-between overflow-hidden rounded-xl border border-amber-500/20 bg-gradient-to-r from-amber-500/10 to-transparent p-2 transition-all hover:border-amber-500/40 hover:from-amber-500/20"
                 >
-                  <span className="text-sm font-semibold text-amber-300">
-                    {setName}
-                  </span>
-                  <span className="text-sm font-bold text-amber-400">
-                    {setAwakening}각성
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <div className="rounded-full bg-amber-500/20 p-0.5 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+                      <Sparkles size={14} className="text-amber-400" />
+                    </div>
+                    <span className="text-[13px] font-black tracking-tight whitespace-nowrap text-amber-100/90 transition-colors group-hover:text-white">
+                      {setName}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs font-black whitespace-nowrap text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
+                      {setAwakening} 각성
+                    </span>
+                  </div>
+
+                  <div className="absolute -right-4 -bottom-4 opacity-5 transition-opacity group-hover:opacity-10">
+                    <Library size={60} className="text-white" />
+                  </div>
                 </div>
               );
             })}
           </div>
         )}
 
-        <div className="flex gap-2">
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
           {engravingsCard.Cards.map((card: any, cardIdx: number) => {
             const gradePos = GRADE_POSITIONS[card.Grade] || "0%";
             const textColor = GRADE_TEXT_COLORS[card.Grade] || "text-gray-400";
             const awakening = card.AwakeCount || 0;
+            const gradeStyle =
+              GRADE_STYLES[card.Grade as keyof typeof GRADE_STYLES] ||
+              GRADE_STYLES.전설;
 
             return (
-              <div key={cardIdx} className="group relative w-full">
-                <div className="relative aspect-248/362">
-                  <div className="absolute inset-0 pt-[5.2%] pr-[4.2%] pl-[1.8%]">
+              <div
+                key={cardIdx}
+                className="group relative flex flex-col items-center"
+              >
+                {/* 카드 본체 */}
+                <div className="relative aspect-[248/362] w-full">
+                  <div
+                    className={cn(
+                      "absolute inset-0 rounded-lg opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-40",
+                      gradeStyle.bg
+                    )}
+                  />
+
+                  {/* 실제 카드 이미지 레이어 */}
+                  <div className="absolute inset-0 z-10 pt-[5.2%] pr-[4.2%] pl-[1.8%]">
                     {card.Icon ? (
                       <img
                         src={card.Icon}
                         alt={card.Name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full rounded-[4px] object-cover"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-gray-950">
-                        <div className="text-xs text-gray-700">?</div>
+                      <div className="flex h-full w-full items-center justify-center rounded-[4px] bg-slate-900">
+                        <span className="text-xs text-slate-700">?</span>
                       </div>
                     )}
                   </div>
 
+                  {/* 카드 테두리 (Stove CDN) */}
                   <div
-                    className="absolute inset-0 aspect-248/362 bg-cover"
+                    className="absolute inset-0 z-20 aspect-[248/362] bg-cover"
                     style={{
                       backgroundPosition: `${gradePos} 0`,
                       backgroundImage: `url(https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_card_grade.png)`,
                     }}
                   />
 
-                  <div className="absolute right-[7.5%] bottom-[6.5%] left-[5%] overflow-hidden">
-                    <div
-                      className="relative aspect-10/3 bg-cover drop-shadow-xl">
+                  {/* 각성 표시 (Stove CDN) */}
+                  <div className="absolute right-[7.5%] bottom-[6.5%] left-[5%] z-30 overflow-hidden">
+                    <div className="relative aspect-[10/3] bg-cover drop-shadow-[0_0_5px_rgba(0,0,0,0.8)]">
                       <div
                         className="absolute top-0 bottom-0 w-full bg-cover"
                         style={{
@@ -98,8 +134,12 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
                   </div>
                 </div>
 
+                {/* 카드 이름 (텍스트 가독성 강화) */}
                 <p
-                  className={`mt-1.5 -mb-2 w-full px-1 text-center text-xs font-medium break-keep ${textColor}`}
+                  className={cn(
+                    "mt-3 line-clamp-1 text-center text-[10px] leading-tight font-bold tracking-tighter transition-colors group-hover:text-white",
+                    textColor
+                  )}
                 >
                   {card.Name}
                 </p>

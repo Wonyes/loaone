@@ -4,14 +4,13 @@ import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { EmptyCard } from "../common/NoItems";
 import { Star } from "lucide-react";
-import { Card } from "../common/Card";
 
 interface Event {
-  Title: string;
-  Thumbnail: string;
   Link: string;
-  StartDate: string;
+  Title: string;
   EndDate: string;
+  Thumbnail: string;
+  StartDate: string;
 }
 
 export function EventSlider({ events }: { events?: Event[] }) {
@@ -81,9 +80,10 @@ export function EventSlider({ events }: { events?: Event[] }) {
       <div className="pointer-events-none absolute bottom-4 left-2 z-30">
         <motion.div
           key={`text-${currentIndex}`}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
         >
           <div className="flex items-center gap-2 rounded-full px-3 py-2">
             <div className="flex items-center gap-1">
