@@ -1,7 +1,7 @@
 // components/character/avatar/Avatar.tsx
 "use client";
 
-import { useCAvatars } from "@/hooks/query/useLostarkApi";
+import { useCAvatars } from "@/hooks/query/lostark/character/useLostarkApi";
 import { Card } from "@/components/common/Card";
 import Loading from "@/app/loading";
 import { GRADE_STYLES } from "@/constants/lostark/styles";
@@ -45,7 +45,7 @@ export default function AvatarPage({
   return (
     <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
       <div className="xl:col-span-4">
-        <Card title="캐릭터 프리뷰" className="h-full">
+        <Card title="캐릭터 프리뷰" className="h-full overflow-hidden">
           <div className="relative h-full min-h-[500px] overflow-hidden rounded-b-xl xl:min-h-[600px]">
             <div className="absolute inset-x-0 top-0 bottom-0 bg-gradient-to-br from-[#1a1230] via-[#0b0f1a] to-black" />
 
@@ -53,7 +53,7 @@ export default function AvatarPage({
               <img
                 src={profileData.CharacterImage}
                 alt={profileData.CharacterName}
-                className="pointer-events-none absolute top-[80px] left-1/2 h-auto w-[280px] -translate-x-1/2 scale-[1.2] object-cover object-[50%_15%] mix-blend-lighten drop-shadow-[0_0_80px_rgba(168,85,247,0.55)] sm:h-[480px] sm:w-[320px] xl:h-[520px] xl:w-[360px] xl:scale-[1.3]"
+                className="pointer-events-none absolute top-[50px] left-1/2 h-auto w-[280px] -translate-x-1/2 scale-[1.2] object-cover object-[50%_15%] mix-blend-lighten drop-shadow-[0_0_80px_rgba(168,85,247,0.55)] sm:h-[480px] sm:w-[320px] xl:h-[520px] xl:w-[360px] xl:scale-[1.3]"
                 style={{
                   maskImage:
                     "linear-gradient(90deg, transparent, black 10% 80%, transparent), linear-gradient(to top, transparent 5%, black 20%)",

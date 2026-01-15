@@ -15,7 +15,6 @@ export function Header() {
   return (
     <header className="design-card sticky top-4 z-50 mb-8 flex h-16 w-full items-center rounded-full px-4 backdrop-blur-sm xl:px-6">
       <div className="flex w-full items-center justify-between">
-        {/* 로고 */}
         <div className="flex items-center gap-2">
           <div
             onClick={() => router.push("/")}
@@ -29,12 +28,9 @@ export function Header() {
             />
           </div>
 
-          {/* 데스크탑 네비게이션 */}
-          <div className="hidden pl-10 xl:block">
+          <div className="hidden pl-10 lg:block">
             <nav className="flex items-center gap-6">
-              <Link href="/ranking" className="block">
-                <span>랭킹</span>
-              </Link>
+             
               <Link href="/market" className="block">
                 <span>거래소</span>
               </Link>
@@ -48,18 +44,15 @@ export function Header() {
           </div>
         </div>
 
-        {/* 오른쪽 액션 */}
         <div className="flex items-center gap-4">
-          {/* 검색 - 데스크탑만 */}
-          <div className="hidden xl:block">
+          <div className="hidden lg:block">
             <CharacterSearch />
           </div>
 
           <LoginButton />
 
-          {/* 모바일 메뉴 버튼 */}
           <button
-            className="xl:hidden"
+            className="lg:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -67,7 +60,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* 모바일 메뉴 */}
       {mobileMenuOpen && (
         <div className="absolute top-full right-0 left-0 mt-2 rounded-xl border border-white/10 bg-slate-900/95 p-4 backdrop-blur-sm xl:hidden">
           <div className="mb-4">

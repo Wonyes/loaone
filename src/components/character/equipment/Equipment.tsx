@@ -6,7 +6,7 @@ import {
   useCEngravings,
   useCEquipment,
   useCGems,
-} from "@/hooks/query/useLostarkApi";
+} from "@/hooks/query/lostark/character/useLostarkApi";
 import { Crown, Flame } from "lucide-react";
 import { parseAccessoryOptions } from "@/utils/accessoryParser";
 import Loading from "@/app/loading";
@@ -55,6 +55,7 @@ export default function Equipment({
   const { data: arkpassiveData, isLoading: isAkrpassiveLoading } =
     useCArkpassive(name);
 
+    console.log(equipmentData)
   const isLoading =
     isEquipmentLoading ||
     isGemsLoading ||

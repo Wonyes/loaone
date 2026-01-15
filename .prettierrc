@@ -5,14 +5,5 @@
   "trailingComma": "es5",
   "printWidth": 80,
   "arrowParens": "avoid",
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "tailwindFunctions": ["clsx", "cn", "cva"],
-  "overrides": [
-    {
-      "files": ["*.tsx", "*.ts", "*.jsx", "*.js"],
-      "options": {
-        "parser": "typescript"
-      }
-    }
-  ]
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

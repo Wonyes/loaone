@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { TABS } from "@/constants/lostark/option";
-import { useCProfile } from "@/hooks/query/useLostarkApi";
+import { useCProfile } from "@/hooks/query/lostark/character/useLostarkApi";
 
 import Loading from "@/app/loading";
 import Equipment from "./equipment/Equipment";
@@ -17,7 +17,6 @@ function CharacterContent({ name }: { name: string }) {
   const activeTab = searchParams.get("tab") || "equipment";
 
   const { data: profileData, isLoading: isProfileLoading } = useCProfile(name);
-  console.log(profileData);
   const topValues = [...(profileData?.Stats || [])]
     .map(s => Number(s.Value))
     .sort((a, b) => b - a)
@@ -28,7 +27,7 @@ function CharacterContent({ name }: { name: string }) {
   return (
     <div className="flex flex-col gap-2">
       <TabNavigation activeTab={activeTab} characterName={name} />
-      <CharacterHeader profileData={profileData} />
+      <CharacterHeader name={name} profileData={profileData} />
 
       {activeTab === "equipment" && (
         <Equipment

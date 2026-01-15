@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Loading from "@/app/loading";
-import { signInWithDiscord, signOut } from "@/lib/supabase";
+import { signInWithDiscord, signOut } from "@/lib/supabase/discode/discode";
 import { useUser } from "@/hooks/useUesr";
 
 export function LoginButton() {
   const { user, loading } = useUser();
-  console.log(user)
+
   const handleLogin = async () => {
     try {
       await signInWithDiscord();
@@ -29,7 +29,7 @@ export function LoginButton() {
   const handleLogout = async () => {
     try {
       await signOut();
-      window.location.href = "/";
+      window.location.reload();
     } catch (error) {
       console.error("로그아웃 실패:", error);
     }
@@ -41,7 +41,8 @@ export function LoginButton() {
 
   if (user) {
     const avatarUrl = user.user_metadata.avatar_url;
-    const username = user.user_metadata.full_name || user.user_metadata.name || "User";
+    const username =
+      user.user_metadata.full_name || user.user_metadata.name || "User";
 
     return (
       <DropdownMenu>

@@ -79,21 +79,17 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
                     className="absolute inset-0 aspect-248/362 bg-cover"
                     style={{
                       backgroundPosition: `${gradePos} 0`,
-                      backgroundImage: `url(https://pica.korlark.com/2018/obt/assets/images/pc/profile/img_card_grade.png?f9e0ffc8a709611354db408dd0e7a7bb)`,
+                      backgroundImage: `url(https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_card_grade.png)`,
                     }}
                   />
 
                   <div className="absolute right-[7.5%] bottom-[6.5%] left-[5%] overflow-hidden">
                     <div
-                      className="relative aspect-10/3 bg-cover drop-shadow-xl"
-                      style={{
-                        backgroundImage: `url(https://pica.korlark.com/2018/obt/assets/images/pc/profile/img_profile_awake.png)`,
-                      }}
-                    >
+                      className="relative aspect-10/3 bg-cover drop-shadow-xl">
                       <div
                         className="absolute top-0 bottom-0 w-full bg-cover"
                         style={{
-                          backgroundImage: `url(https://pica.korlark.com/2018/obt/assets/images/pc/profile/img_profile_awake.png)`,
+                          backgroundImage: `url(https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png)`,
                           backgroundPosition: `0 100%`,
                           left: `${-100 + (awakening / 5) * 100}%`,
                         }}

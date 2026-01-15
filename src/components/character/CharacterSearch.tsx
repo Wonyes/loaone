@@ -15,7 +15,7 @@ export function CharacterSearch() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-150">
+    <div className="mx-auto w-full max-w-full lg:max-w-[240px]">
       <Input
         name="characterName"
         value={name}

@@ -1,11 +1,12 @@
 import { Gem, Sword } from "lucide-react";
+import FavoriteButton from "./favorite/FavoriteButton";
 
-export function CharacterHeader({ profileData }: { profileData: any }) {
+export function CharacterHeader({ name ,profileData }: {name:string; profileData: any }) {
+  console.log(profileData)
   return (
     <div className="design-card relative overflow-hidden rounded-xl bg-slate-900/50 p-4">
       <div className="absolute inset-0 bg-gradient-to-br from-[#1a1230] via-[#0b0f1a] to-black" />
 
-      {/* 캐릭터 이미지 - 항상 표시, 반응형 크기 */}
       {profileData?.CharacterImage && (
         <img
           src={profileData.CharacterImage}
@@ -21,6 +22,11 @@ export function CharacterHeader({ profileData }: { profileData: any }) {
           }}
         />
       )}
+
+      <FavoriteButton
+      characterName={name}
+      profileData={profileData}
+      />
 
       <div className="relative z-10 flex min-h-[200px] flex-col items-start justify-between gap-4 p-4 sm:min-h-[220px] xl:min-h-[240px] xl:flex-row xl:items-end xl:gap-6 xl:p-6">
         <div className="flex flex-col gap-3 xl:gap-6">

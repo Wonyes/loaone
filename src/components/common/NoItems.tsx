@@ -1,7 +1,7 @@
 import { Card } from "./Card";
 
 interface EmptyCardProps {
-  title: string;
+  title?: string;
   message?: string;
 }
 

@@ -42,8 +42,8 @@ function deepParse(obj: any): any {
     ) {
       try {
         const parsed = JSON.parse(value);
-        result.tooltip = deepParse(parsed); 
-        result.tooltipRaw = value; 
+        result.tooltip = deepParse(parsed); // 파싱된 것도 재귀 처리
+        result.tooltipRaw = value; // 원본 보관 (필요시)
       } catch (e) {
         result.tooltip = value;
       }
@@ -61,26 +61,15 @@ function deepParse(obj: any): any {
   return result;
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ name: string }> }
-) {
-  const { name } = await params;
+export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const type = searchParams.get("type");
 
   const endpoints: { [key: string]: string } = {
-    siblings: `/characters/${name}/siblings`,
-    profile: `/armories/characters/${name}/profiles`,
-    equipment: `/armories/characters/${name}/equipment`,
-    avatars: `/armories/characters/${name}/avatars`,
-    skills: `/armories/characters/${name}/combat-skills`,
-    engravings: `/armories/characters/${name}/engravings`,
-    gems: `/armories/characters/${name}/gems`,
-    cards: `/armories/characters/${name}/cards`,
-    collectibles: `/armories/characters/${name}/collectibles`,
-    arkgrid: `/armories/characters/${name}/arkgrid`,
-    arkpassive: `/armories/characters/${name}/arkpassive`,
+    notices: "/news/notices",
+    events: "/news/events",
+    alarms: "/news/alarms",
+    calendar: "/gamecontents/calendar",
   };
 
   if (!type || !endpoints[type]) {
