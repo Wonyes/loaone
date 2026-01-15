@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className="min-h-screen bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900">
+      <body className="min-h-screen p-4 bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900">
         <Providers>
           <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
             <Header />
