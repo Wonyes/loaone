@@ -9,6 +9,7 @@ import { signInWithDiscord } from "@/lib/supabase/discode/discode";
 import { useNoticeStore } from "@/hooks/store/useNoticeStore";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Loading from "@/app/loading";
 
 export default function FavoriteButton({
   characterName,
@@ -17,8 +18,8 @@ export default function FavoriteButton({
   profileData: any;
   characterName: string;
 }) {
-  const { user } = useUser();
-  const { data } = useFavoriteStatus(characterName);
+  const { user, loading } = useUser();
+  const { data, isLoading } = useFavoriteStatus(characterName);
   const toggle = useToggleFavorite(characterName);
 
   const showAlert = useNoticeStore(state => state.showAlert);
@@ -49,6 +50,9 @@ export default function FavoriteButton({
       });
     }
   };
+
+  if (!user) return null;
+  if (loading || isLoading) return <Loading />;
 
   return (
     <>

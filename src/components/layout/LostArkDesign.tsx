@@ -106,14 +106,12 @@ export function LostArkDesign() {
                   onMouseEnter={() => setHoveredCard(idx)}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
-                  {/* Hover Glow Effect */}
                   <div
                     className={`absolute -inset-0.5 bg-gradient-to-r ${
                       gradeColors[char.grade as keyof typeof gradeColors]
                     } rounded-xl opacity-20 blur transition duration-500 group-hover:opacity-100`}
                   ></div>
 
-                  {/* Card Body: 배경을 불투명하게(slate-950) 처리하여 글자 가독성 확보 */}
                   <div className="relative flex h-full flex-col justify-between rounded-xl border border-white/10 bg-slate-950 p-6 transition-all duration-300 group-hover:border-white/30">
                     <div>
                       <div className="mb-2 flex items-center justify-between">

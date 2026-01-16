@@ -7,6 +7,7 @@ import { Palette, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNoticeStore } from "@/hooks/store/useNoticeStore";
 import { EmptyCard } from "@/components/common/NoItems";
+import { getGradeStyle } from "@/utils/lostarkUtils";
 
 export default function DyeInfo({ avatarData }: { avatarData: any[] }) {
   const dyedAvatars = avatarData?.filter(
@@ -38,9 +39,7 @@ export default function DyeInfo({ avatarData }: { avatarData: any[] }) {
 
           if (!tintData) return undefined;
 
-          const gradeStyle =
-            GRADE_STYLES[avatar.Grade as keyof typeof GRADE_STYLES] ||
-            GRADE_STYLES.전설;
+          const gradeStyle = getGradeStyle(avatar.Grade);
 
           return (
             <div

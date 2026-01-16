@@ -36,7 +36,7 @@ export function EventSlider({ events }: { events?: Event[] }) {
   const nextIndex = (currentIndex + 1) % events.length;
 
   return (
-    <div className="group relative aspect-[16/7] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0c]">
+    <div className="group relative aspect-[16/7] max-h-[400px] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0c]">
       <div className="absolute inset-0 z-0">
         <img
           src={events[nextIndex].Thumbnail}
@@ -72,12 +72,12 @@ export function EventSlider({ events }: { events?: Event[] }) {
               alt={events[currentIndex].Title}
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <div className="absolute inset-0 bottom-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
           </a>
         </motion.div>
       </AnimatePresence>
 
-      <div className="pointer-events-none absolute bottom-4 left-2 z-30">
+      <div className="pointer-events-none absolute bottom-4 left-6 z-30">
         <motion.div
           key={`text-${currentIndex}`}
           initial={{ opacity: 0, y: 10 }}
@@ -85,19 +85,21 @@ export function EventSlider({ events }: { events?: Event[] }) {
           exit={{ opacity: 0, y: -10 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <div className="flex items-center gap-2 rounded-full px-3 py-2">
-            <div className="flex items-center gap-1">
-              <Star className={`h-4 w-4 fill-yellow-400 text-yellow-400`} />
-              <h2 className="text-xs text-yellow-400">진행중인 이벤트</h2>
+          <div className="flex flex-col gap-1 rounded-full">
+            <div className="flex items-center gap-2">
+              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400 drop-shadow-[0_0_12px_rgba(250,204,21,0.5)]" />
+              <span className="font-sans text-[10px] tracking-[0.2em] text-white/70 text-yellow-400 uppercase">
+                event
+              </span>
             </div>
-            <h2 className="font-bold tracking-tight text-white drop-shadow-md">
+            <h2 className="max-w-[300px] truncate font-sans text-[22px] font-bold tracking-tight text-white/80 drop-shadow-md">
               {events[currentIndex].Title}
             </h2>
           </div>
         </motion.div>
       </div>
 
-      <div className="absolute right-8 bottom-8 z-30 flex items-center gap-1.5">
+      <div className="absolute right-8 bottom-4 z-30 flex items-center gap-1.5">
         {events.map((_, idx) => (
           <button
             key={idx}

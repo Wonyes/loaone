@@ -1,193 +1,125 @@
 "use client";
 
 import { Card } from "@/components/common/Card";
-import { EmptyCard } from "@/components/common/NoItems";
-import { TodaySchedule } from "@/components/news/TodaySchdule";
+import { Bell, CalendarDays, FileText, TrendingUp } from "lucide-react";
 import { EventSlider } from "@/components/ui/EventSlider";
+import { TodaySchedule } from "@/components/news/TodaySchdule";
 import { useEvents, useNotices } from "@/hooks/query/lostark/news/useNews";
-import { useFavoriteStore } from "@/hooks/store/useFavoriteStore";
-import { Star, ChevronRight, Bell, FileText, CalendarDays } from "lucide-react";
-import Link from "next/link";
+
 import Loading from "./loading";
-import { useUser } from "@/hooks/useUesr";
+import FavoritesPage from "@/components/character/favorite/FavoritesPage";
 
 export default function Home() {
-  const { user } = useUser();
   const { data: eventData, isLoading: eventLoading } = useEvents();
   const { data: noticeData, isLoading: noticeLoading } = useNotices();
-  const favorites = useFavoriteStore(state => state.favorites);
 
-  const isLoading = eventLoading || noticeLoading;
-
-  if (isLoading) return <Loading />;
+  if (eventLoading || noticeLoading) return <Loading />;
 
   return (
-    <div className="mx-auto max-w-[1600px]">
+    <div className="relative mx-auto max-w-[1400px] antialiased">
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute top-[10%] left-[15%] h-[600px] w-[600px] rounded-full bg-indigo-500/[0.08] blur-[120px]" />
+        <div className="absolute right-[10%] bottom-[10%] h-[500px] w-[500px] rounded-full bg-emerald-500/[0.05] blur-[100px]" />
+      </div>
+
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="space-y-3 lg:col-span-9 xl:col-span-9">
-          {eventData === null ? undefined : (
-            <Card className="overflow-hidden">
+        <div className="space-y-4 lg:col-span-9">
+          {eventData && (
+            <div className="max-h-[400px] overflow-hidden rounded-[2.5rem] border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)]">
               <EventSlider events={eventData} />
-            </Card>
-          )}
-
-          <Card
-            title="오늘의 일정"
-            icon={
-              <div className="rounded-lg bg-violet-500/10 p-2">
-                <CalendarDays size={18} className="text-red-400" />
-              </div>
-            }
-            className="overflow-hidden"
-          >
-            <TodaySchedule />
-          </Card>
-
-          {noticeData === null ? undefined : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Card
-                title="공지사항"
-                icon={
-                  <div className="rounded-lg bg-indigo-500/10 p-2">
-                    <Bell className="h-5 w-5 text-indigo-400" />
-                  </div>
-                }
-                className="overflow-hidden"
-              >
-                {noticeData.length > 0 ? (
-                  <div className="space-y-2 p-2">
-                    {noticeData
-                      .filter(
-                        (notice: any) =>
-                          notice.Type === "공지" &&
-                          !notice.Title.includes("업데이트")
-                      )
-                      .slice(0, 4)
-                      .map((notice: any, idx: number) => (
-                        <NoticeItem key={idx} notice={notice} type="공지" />
-                      ))}
-                  </div>
-                ) : (
-                  <EmptyCard message="공지사항이 없습니다." />
-                )}
-              </Card>
-
-              <Card
-                title="패치노트"
-                icon={
-                  <div className="rounded-lg bg-blue-500/10 p-2">
-                    <FileText className="h-5 w-5 text-blue-400" />
-                  </div>
-                }
-                className="overflow-hidden"
-              >
-                {noticeData.length > 0 ? (
-                  <div className="space-y-2 p-2">
-                    {noticeData
-                      .filter((notice: any) =>
-                        notice.Title.includes("업데이트")
-                      )
-                      .slice(0, 4)
-                      .map((notice: any, idx: number) => (
-                        <NoticeItem key={idx} notice={notice} type="업데이트" />
-                      ))}
-                  </div>
-                ) : (
-                  <EmptyCard message="패치노트가 없습니다." />
-                )}
-              </Card>
             </div>
           )}
+
+          <Card
+            title="Live Schedule"
+            icon={<CalendarDays size={18} className="text-indigo-400" />}
+            headerAction={
+              <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-indigo-500 shadow-[0_0_8px_#6366f1]" />
+            }
+          >
+            <div className="p-2">
+              <TodaySchedule />
+            </div>
+          </Card>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <NoticeSection
+              title="Official Notice"
+              data={noticeData
+                ?.filter(
+                  (n: any) => n.Type === "공지" && !n.Title.includes("업데이트")
+                )
+                .slice(0, 4)}
+              icon={<Bell size={18} className="text-indigo-400" />}
+            />
+            <NoticeSection
+              title="Patch Notes"
+              data={noticeData
+                ?.filter((n: any) => n.Title.includes("업데이트"))
+                .slice(0, 4)}
+              icon={<FileText size={18} className="text-blue-400" />}
+            />
+          </div>
         </div>
 
-        <div className="space-y-6 lg:col-span-3 xl:col-span-3">
+        <aside className="sticky top-29 h-fit space-y-8 lg:col-span-3">
+          <FavoritesPage />
+
           <Card
-            icon={<Star className="h-4 w-4 text-yellow-400" />}
-            title="즐겨찾기"
-            className="sticky top-26 overflow-hidden"
+            title="Market"
+            icon={<TrendingUp size={16} className="text-emerald-400" />}
           >
-            {user === null ? (
-              <EmptyCard
-                className="border-none"
-                message="로그인 후 즐겨찾기를 확인하세요!"
-              />
-            ) : favorites.length === 0 ? (
-              <div className="p-8 text-center">
-                <div className="mb-4 flex justify-center">
-                  <div className="bg-slate-800/50 p-6">
-                    <Star className="h-12 w-12 text-slate-700" />
-                  </div>
-                </div>
-                <p className="mb-1 text-sm font-semibold text-white">
-                  즐겨찾기가 비어있어요
-                </p>
-                <p className="text-xs text-slate-500">캐릭터를 추가해보세요</p>
-              </div>
-            ) : (
-              <div className="max-h-[600px] space-y-2 overflow-y-auto p-4">
-                {favorites.map(char => (
-                  <FavoriteCharacter key={char.name} char={char} />
-                ))}
-              </div>
-            )}
+            <div className="space-y-4 p-6">
+              <MarketItem label="화폐거래소" price="2,840" change="+12" />
+              <MarketItem label="명예의 파편" price="74" change="-2" />
+              <MarketItem label="파괴강석" price="12" change="0" />
+            </div>
           </Card>
-        </div>
+        </aside>
       </div>
     </div>
   );
 }
 
-function NoticeItem({ notice, type }: { notice: any; type: string }) {
-  const isNotice = type === "공지";
+function NoticeSection({ title, data, icon }: any) {
   return (
-    <a
-      href={notice.Link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block rounded-xl border border-white/5 bg-gradient-to-r from-white/5 to-transparent px-4 py-2 transition-all hover:border-blue-500/30 hover:from-blue-500/10"
-    >
-      <p
-        className={`inline-block rounded-md ${isNotice ? "bg-indigo-500/20 text-indigo-400" : "bg-blue-500/20 text-blue-400"} px-2.5 py-1 text-xs font-bold`}
-      >
-        {type}
-      </p>
-      <p className="my-1 line-clamp-2 truncate text-sm leading-relaxed font-medium text-white">
-        {notice.Title}
-      </p>
-      <p className="text-xs text-slate-500">
-        {new Date(notice.Date).toLocaleDateString("ko-KR")}
-      </p>
-    </a>
+    <Card title={title} icon={icon}>
+      <div className="space-y-1 p-2">
+        {data?.map((n: any, i: number) => (
+          <a
+            key={i}
+            href={n.Link}
+            target="_blank"
+            className="group block rounded-2xl px-5 py-4 transition-all hover:bg-white/[0.05]"
+          >
+            <div className="mb-1 flex items-center gap-2">
+              <span className="text-[9px] font-bold tracking-tighter text-slate-600 uppercase">
+                {new Date(n.Date).toLocaleDateString()}
+              </span>
+              <div className="h-0.5 w-0 bg-indigo-500 transition-all duration-300 group-hover:w-4" />
+            </div>
+            <p className="line-clamp-1 text-[13px] font-semibold tracking-tight text-slate-400 transition-colors group-hover:text-white">
+              {n.Title}
+            </p>
+          </a>
+        ))}
+      </div>
+    </Card>
   );
 }
 
-function FavoriteCharacter({ char }: { char: any }) {
+function MarketItem({ label, price, change }: any) {
   return (
-    <Link
-      href={`/characters/${char.name}`}
-      className="group flex items-center gap-3 rounded-xl border border-white/5 bg-gradient-to-r from-white/5 to-transparent p-4 transition-all hover:border-yellow-500/30 hover:from-yellow-500/10"
-    >
-      <div className="min-w-0 flex-1">
-        <div className="mb-1 flex items-center gap-1.5">
-          <p className="truncate text-sm font-bold text-white">{char.name}</p>
-          {char.className && (
-            <>
-              <span className="text-slate-600">·</span>
-              <p className="truncate text-xs text-slate-400">
-                {char.className}
-              </p>
-            </>
-          )}
-        </div>
-        <div className="flex items-center gap-1.5 text-xs">
-          <span className="text-slate-500">{char.serverName}</span>
-          <span className="text-slate-700">·</span>
-          <span className="font-semibold text-indigo-400">
-            Lv.{char.itemLevel}
-          </span>
-        </div>
+    <div className="flex items-center justify-between border-b border-white/[0.03] pb-2 last:border-0">
+      <span className="text-[11px] font-medium text-slate-500">{label}</span>
+      <div className="flex items-center gap-3 font-mono text-[12px]">
+        <span className="font-bold text-slate-200">{price}G</span>
+        <span
+          className={`text-[9px] ${change.includes("+") ? "text-rose-400" : "text-blue-400"}`}
+        >
+          {change}
+        </span>
       </div>
-      <ChevronRight className="h-5 w-5 shrink-0 text-slate-700 transition-all group-hover:translate-x-1 group-hover:text-yellow-400" />
-    </Link>
+    </div>
   );
 }

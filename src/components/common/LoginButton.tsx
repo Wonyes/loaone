@@ -1,17 +1,14 @@
 "use client";
 
-import { LogOut, ChevronDown, User } from "lucide-react";
+import { LogOut, ChevronDown } from "lucide-react";
 import { FaDiscord } from "react-icons/fa";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Loading from "@/app/loading";
 import { signInWithDiscord, signOut } from "@/lib/supabase/discode/discode";
 import { useUser } from "@/hooks/useUesr";
 
@@ -36,7 +33,9 @@ export function LoginButton() {
   };
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="h-9 w-24 animate-pulse rounded-full border border-white/5 bg-white/[0.02]" />
+    );
   }
 
   if (user) {
@@ -47,35 +46,48 @@ export function LoginButton() {
     return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <button className="flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/50 py-1 pr-4 pl-1 text-sm font-medium text-white transition-colors outline-none hover:bg-slate-800 focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-900">
-            <Avatar className="h-8 w-8 border border-white/10">
-              <AvatarImage src={avatarUrl} alt={username} />
-            </Avatar>
+          <button className="group relative flex items-center gap-2.5 rounded-full border border-teal-500/20 bg-teal-950/20 py-1 pr-3 pl-1 transition-all outline-none hover:border-teal-500/40 hover:bg-teal-900/30 active:scale-95">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-[#bef264]/20 opacity-0 blur-[8px] transition-opacity group-hover:opacity-100" />
+              <Avatar className="h-7 w-7 border border-white/10 ring-1 ring-teal-500/20">
+                <AvatarImage src={avatarUrl} alt={username} />
+              </Avatar>
+            </div>
 
-            <span className="flex max-w-[100px] items-center truncate pb-px text-[14px] leading-none font-semibold">
-              {username}
-            </span>
+            <div className="flex min-w-[60px] flex-col items-start">
+              <span className="mb-0.5 text-[11px] leading-none font-black tracking-tight text-slate-100">
+                {username}
+              </span>
+              <span className="text-[8px] leading-none font-bold tracking-widest text-teal-500/60 uppercase">
+                Authorized
+              </span>
+            </div>
 
-            <ChevronDown className="h-4 w-4 text-slate-400" />
+            <ChevronDown className="h-3 w-3 text-slate-500 transition-transform group-data-[state=open]:rotate-180" />
+
+            <div className="absolute -bottom-px left-1/2 h-[1px] w-0 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#bef264]/50 to-transparent transition-all group-hover:w-1/2" />
           </button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
           align="end"
-          className="w-48 border-slate-800 bg-slate-900 text-slate-200"
+          className="mt-2 w-48 overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d12]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl"
         >
-          <DropdownMenuLabel>내 계정</DropdownMenuLabel>
-          <DropdownMenuSeparator className="bg-slate-800" />
-          <DropdownMenuItem className="cursor-pointer hover:bg-gray-800 focus:bg-slate-800">
-            <User className="mr-2 h-4 w-4" />
-            <span>프로필 보기</span>
-          </DropdownMenuItem>
+          <div className="mb-1 flex flex-col gap-0.5 px-3 py-2.5">
+            <p className="text-[9px] font-black tracking-[0.2em] text-slate-600 uppercase">
+              Account
+            </p>
+            <p className="truncate text-xs font-bold text-slate-200">
+              {user.email}
+            </p>
+          </div>
+
           <DropdownMenuItem
             onClick={handleLogout}
-            className="cursor-pointer text-red-400 hover:bg-red-950/30 hover:text-red-400 focus:bg-red-950/30 focus:text-red-300"
+            className="flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-[11px] font-bold text-rose-400 transition-all hover:bg-rose-500/10 focus:bg-rose-500/10 focus:text-rose-300"
           >
-            <LogOut className="mr-2 h-4 w-4" />
             <span>로그아웃</span>
+            <LogOut className="h-3.5 w-3.5 opacity-50" />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -85,10 +97,24 @@ export function LoginButton() {
   return (
     <button
       onClick={handleLogin}
-      className="position flex items-center gap-2 rounded-full bg-[#5865F2]/80 px-5 py-2 text-sm font-bold text-white shadow-md shadow-indigo-500/20 transition-all hover:scale-105 hover:bg-[#5865F2]"
+      className="group relative flex items-center gap-3 overflow-hidden rounded-full border border-indigo-500/30 bg-indigo-600/10 px-6 py-2.5 transition-all hover:bg-indigo-600/20 active:scale-95"
     >
-      <FaDiscord className="h-5 w-5" />
-      <span className="whitespace-nowrap">로그인</span>
+      <div className="absolute inset-0 bg-indigo-500/5 opacity-0 transition-opacity group-hover:opacity-100" />
+
+      <FaDiscord className="relative z-10 h-4 w-4 text-[#5865F2] transition-colors group-hover:text-white" />
+
+      <div className="relative z-10 flex flex-col items-start">
+        <span className="mb-0.5 text-[12px] leading-none font-black tracking-tighter text-white uppercase">
+          Login
+        </span>
+        <span className="text-[8px] leading-none font-bold tracking-widest text-indigo-400 opacity-60">
+          Discord Auth
+        </span>
+      </div>
+
+      <ChevronDown className="h-3 w-3 -rotate-90 text-indigo-500/50 transition-transform group-hover:translate-x-1" />
+
+      <div className="absolute inset-x-0 bottom-0 h-[1.5px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
     </button>
   );
 }

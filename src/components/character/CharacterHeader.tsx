@@ -1,4 +1,4 @@
-import { Award, Gem, MapPin, Shield, Sword } from "lucide-react";
+import { Award, Gem, MapPin, Shield, Sword, ChevronRight } from "lucide-react";
 import FavoriteButton from "./favorite/FavoriteButton";
 import { Card } from "../common/Card";
 
@@ -12,140 +12,174 @@ export function CharacterHeader({
   mainPassiveName: string;
 }) {
   return (
-    <Card className="relative overflow-hidden rounded-xl bg-slate-900/50">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1230] via-[#0b0f1a] to-black" />
+    <Card className="relative overflow-hidden rounded-[2rem] border-none bg-[#0c0d12] shadow-2xl">
+      {/* 1. 배경 그래디언트 & 이미지 영역 */}
 
-      {profileData === null
-        ? undefined
-        : profileData?.CharacterImage && (
-            <img
-              src={profileData.CharacterImage}
-              alt={profileData.CharacterName}
-              className="pointer-events-none absolute top-[5px] left-1/2 h-[400px] w-[280px] -translate-x-1/2 scale-[1.2] object-cover object-[50%_15%] mix-blend-lighten drop-shadow-[0_0_80px_rgba(168,85,247,0.55)] sm:h-[480px] sm:w-[320px] xl:h-[520px] xl:w-[360px] xl:scale-[1.3]"
-              style={{
-                maskImage:
-                  "linear-gradient(90deg, transparent, black 30% 80%, transparent), linear-gradient(to top, transparent 5%, black 55%)",
-                WebkitMaskImage:
-                  "linear-gradient(90deg, transparent, black 30% 80%, transparent), linear-gradient(to top, transparent 5%, black 55%)",
-                maskComposite: "intersect",
-                WebkitMaskComposite: "source-in",
-              }}
-            />
-          )}
+      {profileData?.CharacterImage && (
+        <div className="absolute inset-y-0 right-0 z-0 w-full overflow-hidden sm:w-[60%]">
+          <img
+            src={profileData.CharacterImage}
+            alt={profileData.CharacterName}
+            className="h-full w-full object-cover object-[50%_15%] opacity-80 mix-blend-lighten"
+            style={{
+              maskImage:
+                "linear-gradient(to left, black 40%, transparent 95%), linear-gradient(to top, transparent 5%, black 40%)",
+              WebkitMaskImage:
+                "linear-gradient(to left, black 40%, transparent 95%), linear-gradient(to top, transparent 5%, black 40%)",
+              maskComposite: "intersect",
+              WebkitMaskComposite: "source-in",
+            }}
+          />
+          {/* 이미지 주변 은은한 광원 효과 */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(168,85,247,0.15),transparent_60%)]" />
+        </div>
+      )}
 
-      <FavoriteButton characterName={name} profileData={profileData} />
+      {/* 즐겨찾기 버튼 (우측 상단 고정) */}
+      <div className="absolute top-4 right-4 z-30">
+        <FavoriteButton characterName={name} profileData={profileData} />
+      </div>
 
-      <div className="relative z-10 flex min-h-[260px] items-end justify-between gap-4 p-6 sm:p-8 xl:min-h-[280px] xl:flex-row xl:items-end xl:p-10">
-        <div className="flex flex-col gap-4 xl:gap-4">
-          <div className="flex flex-col gap-3 sm:gap-3">
-            <Card className="group relative flex w-fit items-center gap-3 border border-emerald-500/20 bg-emerald-500/10 p-2 pr-4 shadow-lg transition-all hover:border-emerald-500/40 hover:bg-emerald-500/20">
-              <div className="rounded-xl bg-emerald-500/20 p-2 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                <Gem className="h-4 w-4 text-emerald-400 sm:h-5 sm:w-5" />
-              </div>
-              <div>
-                <p className="text-[9px] font-black tracking-[0.1em] text-emerald-500/70 uppercase">
-                  Item Level
-                </p>
-                <p className="text-lg leading-none font-black tracking-tighter text-emerald-400">
-                  {profileData?.ItemAvgLevel}
-                </p>
-              </div>
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            </Card>
-
-            <Card className="group relative flex w-fit items-center gap-3 border border-violet-500/20 bg-violet-500/10 p-2 pr-4 shadow-lg transition-all hover:border-violet-500/40 hover:bg-violet-500/20">
-              <div className="rounded-xl bg-violet-500/20 p-2 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
-                <Sword className="h-4 w-4 text-violet-400 sm:h-5 sm:w-5" />
-              </div>
-              <div>
-                <p className="text-[9px] font-black tracking-[0.1em] text-violet-500/70 uppercase">
-                  Combat Power
-                </p>
-                <p className="text-lg leading-none font-black tracking-tighter text-violet-400">
-                  {profileData?.CombatPower?.toLocaleString()}
-                </p>
-              </div>
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-violet-500/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-            </Card>
+      {/* 2. 메인 컨텐츠 영역 */}
+      <div className="relative z-10 flex min-h-[300px] flex-col justify-end p-8 sm:p-12 xl:min-h-[350px]">
+        <div className="max-w-2xl space-y-8">
+          {/*  서버 / 클래스 / 각인 태그 */}
+          <div className="flex flex-wrap gap-2.5">
+            <Badge className="bg-white/5 text-gray-400">
+              {profileData?.ServerName}
+            </Badge>
+            <Badge className="border-purple-500/30 bg-purple-500/10 text-purple-300 italic">
+              {profileData?.CharacterClassName}
+            </Badge>
+            {mainPassiveName && (
+              <Badge className="border-amber-500/30 bg-amber-500/10 text-amber-300">
+                {mainPassiveName}
+              </Badge>
+            )}
           </div>
 
-          <div>
-            <div className="mb-4 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-bold text-gray-300">
-                {profileData?.ServerName}
-              </span>
-              <span className="rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1 text-[11px] font-bold text-purple-300 italic">
-                {profileData?.CharacterClassName}
-              </span>
-              {mainPassiveName && (
-                <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-bold text-amber-300">
-                  {mainPassiveName}
-                </span>
-              )}
-            </div>
-
-            <h1 className="mb-3 text-4xl font-black tracking-tighter text-white italic drop-shadow-2xl sm:text-4xl xl:text-6xl">
+          {/*  캐릭터 이름 & 전투 레벨 */}
+          <div className="space-y-3">
+            <h1 className="text-4xl font-black tracking-tighter text-white italic sm:text-5xl xl:text-6xl">
               {profileData?.CharacterName}
             </h1>
-
-            <div className="flex items-center gap-6 text-xs font-bold sm:text-sm">
-              <div className="flex items-center gap-2">
-                <span className="tracking-tighter text-gray-500 uppercase">
-                  Combat
-                </span>
-                <span className="text-white">
+            <div className="flex flex-col gap-1 font-mono text-[13px] font-bold tracking-widest text-slate-500 uppercase">
+              <div className="flex items-center gap-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_#6366f1]" />
+                <span className="text-indigo-500">Level</span>
+                <span className="ml-1 text-white">
                   Lv.{profileData?.CharacterLevel}
                 </span>
               </div>
-              <div className="h-3 w-px bg-white/10" />
-              <div className="flex items-center gap-2">
-                <span className="tracking-tighter text-gray-500 uppercase">
-                  Expedition
-                </span>
-                <span className="text-white">
+              <div className="flex items-center gap-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-600" />
+                <span className="text-amber-600">Expedition</span>
+                <span className="ml-1 text-white">
                   Lv.{profileData?.ExpeditionLevel}
                 </span>
               </div>
             </div>
           </div>
 
-          <Card className="flex min-w-[180px] flex-col gap-3 rounded-2xl border border-white/5 p-4">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-gray-500">
-                <Shield size={14} className="text-emerald-500/50" />
-                <span className="text-[11px] font-bold tracking-tighter uppercase">
-                  Guild
-                </span>
-              </div>
-              <span className="text-sm font-black text-emerald-400">
-                {profileData?.GuildName || "-"}
-              </span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-gray-500">
-                <MapPin size={14} className="text-gray-500/50" />
-                <span className="text-[11px] font-bold tracking-tighter uppercase">
-                  Town
-                </span>
-              </div>
-              <span className="text-sm font-bold text-white">
-                {profileData?.TownName || "-"}
-              </span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-gray-500">
-                <Award size={14} className="text-gray-500/50" />
-                <span className="text-[11px] font-bold tracking-tighter uppercase">
-                  Honor
-                </span>
-              </div>
-              <span className="text-sm font-bold text-white">
-                {profileData?.HonorPoint || "-"}
-              </span>
-            </div>
-          </Card>
+          {/*  핵심 스펙 카드 (아이템 레벨 / 전투력) */}
+          <div className="flex flex-wrap gap-4">
+            <StatChip
+              icon={<Gem className="text-emerald-400" />}
+              label="Item Level"
+              value={profileData?.ItemAvgLevel}
+              color="emerald"
+            />
+            <StatChip
+              icon={<Sword className="text-violet-400" />}
+              label="Combat Power"
+              value={profileData?.CombatPower?.toLocaleString()}
+              color="violet"
+            />
+          </div>
+
+          {/*  하단 상세 정보 위젯 */}
+          <div className="grid w-full max-w-2xl grid-cols-1 gap-2 sm:grid-cols-3">
+            <DetailBlock
+              icon={<Shield size={13} />}
+              title="GUILD"
+              value={profileData?.GuildName}
+              accent="text-emerald-500"
+            />
+            <DetailBlock
+              icon={<MapPin size={13} />}
+              title="TOWN"
+              value={
+                profileData?.TownName ? `Lv.${profileData.TownLevel}` : null
+              }
+            />
+            <DetailBlock
+              icon={<Award size={13} />}
+              title="HONOR"
+              value={profileData?.HonorPoint}
+              accent="text-amber-500"
+            />
+          </div>
         </div>
       </div>
     </Card>
+  );
+}
+
+function Badge({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`rounded-lg border border-white/10 px-3 py-1 text-[11px] font-black tracking-tight uppercase ${className}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+function StatChip({ icon, label, value, color }: any) {
+  const colorMap: any = {
+    emerald: "text-emerald-400 bg-emerald-500/5 border-emerald-500/20",
+    violet: "text-violet-400 bg-violet-500/5 border-violet-500/20",
+  };
+
+  return (
+    <div
+      className={`flex items-center gap-2.5 rounded-xl border px-4 py-2 ${colorMap[color]}`}
+    >
+      <div className="opacity-70">{icon}</div>
+      <div className="flex flex-col">
+        <span className="mb-0.5 text-[12px] leading-none font-black tracking-widest opacity-40">
+          {label}
+        </span>
+        <span className="font-mono text-[22px] leading-none font-black tracking-tighter">
+          {value || "0.00"}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function DetailBlock({ icon, title, value, accent }: any) {
+  return (
+    <div className="group flex items-center gap-3 rounded-xl border border-white/[0.03] bg-white/[0.07] px-3 py-2 transition-all hover:bg-white/[0.04]">
+      <div
+        className={`shrink-0 opacity-30 transition-opacity group-hover:opacity-100 ${accent || "text-slate-400"}`}
+      >
+        {icon}
+      </div>
+      <div className="flex min-w-0 flex-col">
+        <span className="mb-1 text-[9px] leading-none font-black tracking-[0.2em] text-slate-300 uppercase">
+          {title}
+        </span>
+        <span className="truncate text-[14px] leading-none font-bold text-slate-300">
+          {value || "—"}
+        </span>
+      </div>
+    </div>
   );
 }

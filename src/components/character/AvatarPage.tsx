@@ -3,10 +3,10 @@
 import { useCAvatars } from "@/hooks/query/lostark/character/useLostarkApi";
 import { Card } from "@/components/common/Card";
 import Loading from "@/app/loading";
-import { GRADE_STYLES } from "@/constants/lostark/styles";
 import { Layers, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DyeInfo from "./avatar/DyeInfo";
+import { getGradeStyle } from "@/utils/lostarkUtils";
 
 export default function AvatarPage({
   name,
@@ -19,7 +19,6 @@ export default function AvatarPage({
 
   if (isLoading) return <Loading />;
   if (avatarData === null) return undefined;
-  console.log(avatarData);
   const groupedAvatars = avatarData.reduce((acc: any, avatar: any) => {
     const type = avatar.Type;
     if (!acc[type]) acc[type] = { inner: null, outer: null };
@@ -56,7 +55,7 @@ export default function AvatarPage({
                 <img
                   src={profileData.CharacterImage}
                   alt="preview"
-                  className="relative z-20 h-auto w-full max-w-[350px] scale-[1.2] object-contain drop-shadow-[0_20px_80px_rgba(0,0,0,1)] transition-transform duration-1000 ease-out hover:scale-[1.25]"
+                  className="relative z-20 h-auto w-full max-w-[400px] scale-[1.2] object-cover drop-shadow-[0_20px_80px_rgba(0,0,0,1)] transition-transform duration-1000 ease-out hover:scale-[1.25]"
                   style={{
                     maskImage:
                       "linear-gradient(to bottom, transparent 0%, black 15%, black 80%, transparent 100%)",
@@ -170,11 +169,8 @@ function AvatarSlot({ type, slot }: { type: string; slot: any }) {
   const hasInner = !!slot.inner;
   const hasOuter = !!slot.outer;
 
-  const gradeKey = slot.outer?.Grade as keyof typeof GRADE_STYLES;
-  const gradeKey2 = slot.inner?.Grade as keyof typeof GRADE_STYLES;
-
-  const gradeSkin = GRADE_STYLES[gradeKey] || GRADE_STYLES["전설"];
-  const gradeStat = GRADE_STYLES[gradeKey2] || GRADE_STYLES["전설"];
+  const getGrade = getGradeStyle(slot.outer?.Grade);
+  const getGrade2 = getGradeStyle(slot.inner?.Grade);
 
   if (!hasInner && !hasOuter) return undefined;
 
@@ -186,7 +182,7 @@ function AvatarSlot({ type, slot }: { type: string; slot: any }) {
             className={cn(
               "relative h-9 w-9 rounded-xl transition-all duration-300 sm:h-12 sm:w-12",
               hasOuter
-                ? `${gradeSkin.bg} shadow-lg group-hover:scale-105`
+                ? `${getGrade.bg} shadow-lg group-hover:scale-105`
                 : "border-dashed border-white/5 bg-white/[0.02] opacity-40"
             )}
           >
@@ -207,7 +203,7 @@ function AvatarSlot({ type, slot }: { type: string; slot: any }) {
             className={cn(
               "relative h-9 w-9 rounded-xl transition-all duration-300 sm:h-12 sm:w-12",
               hasInner
-                ? `${gradeStat.bg} shadow-lg group-hover:scale-105`
+                ? `${getGrade2.bg} shadow-lg group-hover:scale-105`
                 : "border-dashed border-white/5 bg-white/[0.02] opacity-40"
             )}
           >
@@ -240,7 +236,7 @@ function AvatarSlot({ type, slot }: { type: string; slot: any }) {
                 <p
                   className={cn(
                     "text-[13px] leading-tight font-black",
-                    gradeSkin.text
+                    getGrade.text
                   )}
                 >
                   {slot.outer.Name}
@@ -261,7 +257,7 @@ function AvatarSlot({ type, slot }: { type: string; slot: any }) {
                 <p
                   className={cn(
                     "text-[13px] leading-tight font-black",
-                    gradeStat.text
+                    getGrade2.text
                   )}
                 >
                   {slot.inner.Name}

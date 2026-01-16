@@ -3,18 +3,18 @@
 import { useFavoriteStore } from "@/hooks/store/useFavoriteStore";
 import { useFavorites } from "@/hooks/query/lostark/character/useFavorite";
 import Link from "next/link";
-import { Star, Server, Swords } from "lucide-react";
+import { Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUser } from "@/hooks/useUesr";
 import { Card } from "@/components/common/Card";
+import Loading from "@/app/loading";
 
 export default function FavoritesPage() {
   const { user, loading } = useUser();
   const router = useRouter();
   const favorites = useFavoriteStore(state => state.favorites);
 
-  // 서버에서 즐겨찾기 불러오기
   const { isLoading } = useFavorites();
 
   useEffect(() => {
@@ -24,58 +24,56 @@ export default function FavoritesPage() {
   }, [user, loading, router]);
 
   if (loading || isLoading) {
-    return (
-      <div className="flex items-center justify-center">
-        <div className="text-white">로딩 중...</div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
-
-  if (favorites.length === 0) {
-    return (
-      <Card className="flex h-full items-center justify-center p-6">
-        <div className="text-center">
-          <Star className="mx-auto mb-4 h-16 w-16 text-slate-600" />
-          <h2 className="mb-2 text-2xl font-bold text-white">
-            즐겨찾기가 비어있어요
-          </h2>
-          <p className="mb-6 text-slate-400">
-            캐릭터 페이지에서 별을 눌러 즐겨찾기를 추가해보세요!
-          </p>
-        </div>
-      </Card>
-    );
+    return <Loading />;
   }
 
   return (
-    <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-      {favorites.length === 0 ? (
-        <div className="flex items-center justify-center px-6">
-          <div className="text-center">
-            <Star className="mx-auto mb-4 h-16 w-16 text-slate-600" />
-            <h2 className="mb-2 text-2xl font-bold text-white">
-              즐겨찾기가 비어있어요
-            </h2>
-            <p className="mb-6 text-slate-400">
-              캐릭터 페이지에서 별을 눌러 즐겨찾기를 추가해보세요!
-            </p>
-            <Link
-              href="/"
-              className="inline-block rounded-lg bg-violet-600 px-6 py-3 font-semibold text-white transition-all hover:bg-violet-700"
-            >
-              홈으로 가기
-            </Link>
+    <Card
+      title="Favorites"
+      icon={<Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />}
+    >
+      <div className="p-2">
+        {!user ? (
+          <div className="py-10 text-center text-[12px] text-slate-300">
+            로그인 후 이용가능합니다 !
           </div>
-        </div>
-      ) : (
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          {/* 즐겨찾기 목록 */}
-        </div>
-      )}
-    </div>
+        ) : favorites.length === 0 ? (
+          <div className="py-12 text-center text-[12px] font-bold tracking-widest text-slate-300">
+            즐겨찾기한 캐릭터가 없습니다 !
+          </div>
+        ) : (
+          <div className="no-scrollbar max-h-[400px] space-y-1 overflow-y-auto">
+            {favorites.map((char: any) => (
+              <FavoriteCharacter key={char.name} char={char} />
+            ))}
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+}
+
+function FavoriteCharacter({ char }: { char: any }) {
+  return (
+    <Link
+      href={`/characters/${char.name}`}
+      className="group flex items-center justify-between rounded-2xl px-3 py-2.5 transition-all hover:bg-white/[0.05]"
+    >
+      <div className="flex min-w-0 flex-col gap-0.5">
+        <span className="truncate text-[13px] font-bold text-slate-200 transition-colors group-hover:text-indigo-400">
+          {char.name}
+        </span>
+        <span className="truncate text-[10px] text-slate-600">
+          {char.className}
+        </span>
+      </div>
+      <div className="flex flex-col items-end gap-0.5 font-mono">
+        <span className="text-[11px] font-black tracking-tighter text-indigo-400/90">
+          <span className="mr-0.5 text-[9px] italic opacity-30">Lv</span>
+          {char.itemLevel}
+        </span>
+        <div className="h-px w-2 bg-white/10 transition-all group-hover:w-6 group-hover:bg-indigo-500/50" />
+      </div>
+    </Link>
   );
 }

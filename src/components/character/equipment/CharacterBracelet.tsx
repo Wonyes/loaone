@@ -8,7 +8,6 @@ export function CharacterBracelet({ item }: { item: any }) {
 
   return (
     <div className="space-y-2">
-      {/* 스탯 */}
       {stats.length > 0 && (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           {stats.map((stat, idx) => (
@@ -22,7 +21,6 @@ export function CharacterBracelet({ item }: { item: any }) {
         </div>
       )}
 
-      {/* 효과 뱃지 */}
       {effects.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {effects.map((effect, idx) => (

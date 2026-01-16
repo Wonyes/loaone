@@ -6,6 +6,7 @@ import { Card } from "../../common/Card";
 import { EmptyCard } from "../../common/NoItems";
 import { Library, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getGradeStyle } from "@/utils/lostarkUtils";
 
 export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
   if (!engravingsCard?.Cards || engravingsCard.Cards.length === 0) {
@@ -77,16 +78,13 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
             const gradePos = GRADE_POSITIONS[card.Grade] || "0%";
             const textColor = GRADE_TEXT_COLORS[card.Grade] || "text-gray-400";
             const awakening = card.AwakeCount || 0;
-            const gradeStyle =
-              GRADE_STYLES[card.Grade as keyof typeof GRADE_STYLES] ||
-              GRADE_STYLES.전설;
+            const gradeStyle = getGradeStyle(card.Grade);
 
             return (
               <div
                 key={cardIdx}
                 className="group relative flex flex-col items-center"
               >
-                {/* 카드 본체 */}
                 <div className="relative aspect-[248/362] w-full">
                   <div
                     className={cn(
@@ -95,7 +93,6 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
                     )}
                   />
 
-                  {/* 실제 카드 이미지 레이어 */}
                   <div className="absolute inset-0 z-10 pt-[5.2%] pr-[4.2%] pl-[1.8%]">
                     {card.Icon ? (
                       <img
@@ -110,7 +107,6 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
                     )}
                   </div>
 
-                  {/* 카드 테두리 (Stove CDN) */}
                   <div
                     className="absolute inset-0 z-20 aspect-[248/362] bg-cover"
                     style={{
@@ -119,8 +115,7 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
                     }}
                   />
 
-                  {/* 각성 표시 (Stove CDN) */}
-                  <div className="absolute right-[7.5%] bottom-[6.5%] left-[5%] z-30 overflow-hidden">
+                  <div className="absolute right-[7.5%] bottom-[6.5%] left-[5%] z-10 overflow-hidden">
                     <div className="relative aspect-[10/3] bg-cover drop-shadow-[0_0_5px_rgba(0,0,0,0.8)]">
                       <div
                         className="absolute top-0 bottom-0 w-full bg-cover"
@@ -134,7 +129,6 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
                   </div>
                 </div>
 
-                {/* 카드 이름 (텍스트 가독성 강화) */}
                 <p
                   className={cn(
                     "mt-3 line-clamp-1 text-center text-[10px] leading-tight font-bold tracking-tighter transition-colors group-hover:text-white",

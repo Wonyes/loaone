@@ -59,7 +59,6 @@ export function CharacterGems({ gemsData }: { gemsData: any }) {
             );
           })}
 
-          {/* 딜증 보석 */}
           {damageGems.map(({ skill, gem }: any, idx: number) => {
             const gradeStyle = getGradeStyle(gem);
             return (

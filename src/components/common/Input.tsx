@@ -29,12 +29,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type="button"
             className="cursor-pointer rounded-lg"
           >
-            <Search className="h-5 w-5" />
+            <Search className="h-5 w-5 text-white/50" />
           </button>
         )}
         <input
           ref={ref}
-          className={`w-full text-white transition-colors focus:border-emerald-500/50 focus:outline-none ${className}`}
+          className={`w-full text-[12px] text-white transition-colors focus:border-emerald-500/50 focus:outline-none ${className}`}
           {...props}
           onKeyDown={handleKeyDown}
         />

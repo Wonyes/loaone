@@ -21,7 +21,7 @@ export function CharacterSearch() {
         value={name}
         onChange={e => setName(e.target.value)}
         onKeyDown={e => e.key === "Enter" && handleSearch()}
-        placeholder="캐릭터 이름을 입력하세요"
+        placeholder="캐릭터 이름을 입력하세요."
         showSearchButton
         onSearch={handleSearch}
       />
