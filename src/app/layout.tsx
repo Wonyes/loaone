@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 import { Header } from "@/components/common/Header";
-import { Toaster } from "sonner";
 import { GlobalNotice } from "@/components/common/GlobalNotice";
 
 export const metadata: Metadata = {
-  title: "LoaOne",
+  title: "LOAONE",
   description: "LostArk Utility",
+  icons: {
+    icon: "/assets/logo.png",
+    apple: "/assets/logo.png",
+  },
 };
 
 export default function RootLayout({
