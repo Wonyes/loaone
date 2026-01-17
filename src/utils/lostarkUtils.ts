@@ -130,3 +130,54 @@ export const getArkPassiveStyle = (type: string): ArkPassiveStyle => {
     }
   );
 };
+
+const CLASS_NAME_MAP: Record<string, string> = {
+  // 전사
+  버서커: "berserker",
+  디스트로이어: "destroyer",
+  워로드: "warlord",
+  홀리나이트: "holyknight",
+  슬레이어: "berserker_female",
+  // 무도가
+  배틀마스터: "battle_master",
+  인파이터: "infighter",
+  기공사: "force_master",
+  창술사: "lance_master",
+  스트라이커: "battle_master_male",
+  브레이커: "infighter_male",
+  // 헌터
+  데빌헌터: "devil_hunter",
+  블래스터: "blaster",
+  호크아이: "hawk_eye",
+  스카우터: "scouter",
+  건슬링어: "devil_hunter_female",
+  // 마법사
+  바드: "bard",
+  서머너: "summoner",
+  아르카나: "arcana",
+  소서리스: "elemental_master",
+  // 암살자
+  블레이드: "blade",
+  데모닉: "demonic",
+  리퍼: "reaper",
+  소울이터: "soul_eater",
+  // 스페셜리스트
+  환수사: "alchemist",
+  도화가: "yinyangshi",
+  기상술사: "weather_artist",
+  // 발키리
+  발키리: "valkyrie",
+  // 가나
+  가디언나이트: "dragon_knight",
+};
+
+export const getClassIcon = (className: string) => {
+  const englishName = CLASS_NAME_MAP[className];
+
+  if (!englishName) {
+    return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/default.png";
+  }
+  const suffix = englishName === "infighter_male" ? "" : "_m";
+
+  return `https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/${englishName}${suffix}.png`;
+};

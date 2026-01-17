@@ -6,8 +6,8 @@ import { useSearchParams } from "next/navigation";
 
 import { TABS } from "@/constants/lostark/option";
 import {
-  useCArkpassive,
-  useCProfile,
+  useArkpassive,
+  useProfile,
 } from "@/hooks/query/lostark/character/useLostarkApi";
 
 import Loading from "@/app/loading";
@@ -17,14 +17,17 @@ import AvatarPage from "./AvatarPage";
 import { CharacterSkillPage } from "./SkillPage";
 import { cn } from "@/lib/utils";
 import { Leaf } from "lucide-react";
+import { CharacterListLayout } from "./CharacterList";
+import { CharacterHistory } from "./CharacterHistory";
+import { CharacterCollectible } from "./CharacterCollectible";
 
 function CharacterContent({ name }: { name: string }) {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "equipment";
 
-  const { data: profileData, isLoading: isProfileLoading } = useCProfile(name);
+  const { data: profileData, isLoading: isProfileLoading } = useProfile(name);
   const { data: arkpassiveData, isLoading: isAkrpassiveLoading } =
-    useCArkpassive(name);
+    useArkpassive(name);
 
   const mainPassiveName = useMemo(() => {
     if (!profileData || !arkpassiveData) return "정보 없음";
@@ -48,7 +51,7 @@ function CharacterContent({ name }: { name: string }) {
   if (isProfileLoading || isAkrpassiveLoading) return <Loading />;
 
   return (
-    <div className="mx-auto w-full max-w-[1400px] space-y-4 px-4 pb-4 sm:px-6">
+    <div className="mx-auto w-full max-w-[1400px] space-y-4 pb-4">
       <CharacterHeader
         name={name}
         profileData={profileData}
@@ -59,7 +62,7 @@ function CharacterContent({ name }: { name: string }) {
         <TabNavigation activeTab={activeTab} characterName={name} />
       </div>
 
-      <main className="animate-in fade-in slide-in-from-bottom-2 mt-2 min-h-[600px] duration-500">
+      <main className="animate-in fade-in slide-in-from-bottom-2 mt-2 duration-500">
         {activeTab === "equipment" && (
           <Equipment
             name={name}
@@ -80,6 +83,9 @@ function CharacterContent({ name }: { name: string }) {
             totalSkillPoint={profileData.TotalSkillPoint}
           />
         )}
+        {activeTab === "history" && <CharacterHistory name={name} />}
+        {activeTab === "collectible" && <CharacterCollectible name={name} />}
+        {activeTab === "characters" && <CharacterListLayout name={name} />}
       </main>
     </div>
   );
@@ -102,7 +108,7 @@ export function TabNavigation({
       <nav
         className={cn(
           "flex items-center gap-1 overflow-x-auto px-2 pt-1.5 pb-1.5",
-          "rounded-3xl border border-[#bef264]/10 bg-[#061a1a]/95 shadow-2xl backdrop-blur-md",
+          "rounded-3xl border border-[#bef264]/10 bg-[#061a1a]/95 shadow-2xl",
           "scrollbar-thin [&::-webkit-scrollbar]:h-[3px]",
           "[&::-webkit-scrollbar-track]:bg-transparent",
           "[&::-webkit-scrollbar-thumb]:rounded-full",
@@ -123,11 +129,12 @@ export function TabNavigation({
                   : "text-teal-100/20 hover:bg-white/[0.02] hover:text-teal-100/70"
               )}
             >
-              <span className="relative z-10">{tab.label}</span>
+              <span className="relative z-10 text-[13px] font-black font-bold tracking-[0.05em] uppercase italic">
+                {tab.label}
+              </span>
 
               {isActive && (
                 <>
-                  {/* 🌿 초소형 리프 포인트 */}
                   <div className="animate-in zoom-in fade-in absolute -top-0.5 -right-0.5 z-20 duration-500">
                     <Leaf
                       size={14}
@@ -135,8 +142,7 @@ export function TabNavigation({
                     />
                   </div>
 
-                  {/* 활성화 하단 초슬림 바 */}
-                  <div className="animate-in slide-in-from-left-1 absolute bottom-0.5 h-[1.5px] w-3 rounded-full bg-[#bef264] shadow-[0_0_8px_#bef264]" />
+                  <div className="animate-in zoom-in fade-in absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#bef264] shadow-[0_0_10px_#bef264] duration-500" />
                 </>
               )}
             </Link>

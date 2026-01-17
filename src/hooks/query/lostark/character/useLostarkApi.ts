@@ -8,7 +8,7 @@ const fetchCharacterData = async (name: string, type: string) => {
   return response.json();
 };
 
-export function useCProfile(name: string) {
+export function useProfile(name: string) {
   return useQuery({
     queryKey: ["lostark", "profile", name],
     queryFn: () => fetchCharacterData(name, "profile"),
@@ -17,7 +17,7 @@ export function useCProfile(name: string) {
   });
 }
 
-export function useCEquipment(name: string) {
+export function useEquipment(name: string) {
   return useQuery({
     queryKey: ["lostark", "equipment", name],
     queryFn: () => fetchCharacterData(name, "equipment"),
@@ -26,7 +26,7 @@ export function useCEquipment(name: string) {
   });
 }
 
-export function useCAvatars(name: string) {
+export function useAvatars(name: string) {
   return useQuery({
     queryKey: ["lostark", "avatars", name],
     queryFn: () => fetchCharacterData(name, "avatars"),
@@ -35,7 +35,7 @@ export function useCAvatars(name: string) {
   });
 }
 
-export function useCSkills(name: string) {
+export function useSkills(name: string) {
   return useQuery({
     queryKey: ["lostark", "skills", name],
     queryFn: () => fetchCharacterData(name, "skills"),
@@ -44,7 +44,7 @@ export function useCSkills(name: string) {
   });
 }
 
-export function useCEngravings(name: string) {
+export function useEngravings(name: string) {
   return useQuery({
     queryKey: ["lostark", "engravings", name],
     queryFn: () => fetchCharacterData(name, "engravings"),
@@ -53,7 +53,7 @@ export function useCEngravings(name: string) {
   });
 }
 
-export function useCGems(name: string) {
+export function useGems(name: string) {
   return useQuery({
     queryKey: ["lostark", "gems", name],
     queryFn: () => fetchCharacterData(name, "gems"),
@@ -62,7 +62,7 @@ export function useCGems(name: string) {
   });
 }
 
-export function useCCards(name: string) {
+export function useCards(name: string) {
   return useQuery({
     queryKey: ["lostark", "cards", name],
     queryFn: () => fetchCharacterData(name, "cards"),
@@ -71,7 +71,7 @@ export function useCCards(name: string) {
   });
 }
 
-export function useCCollectibles(name: string) {
+export function useCollectibles(name: string) {
   return useQuery({
     queryKey: ["lostark", "collectibles", name],
     queryFn: () => fetchCharacterData(name, "collectibles"),
@@ -80,7 +80,7 @@ export function useCCollectibles(name: string) {
   });
 }
 
-export function useCSiblings(name: string) {
+export function useSiblings(name: string) {
   return useQuery({
     queryKey: ["lostark", "siblings", name],
     queryFn: () => fetchCharacterData(name, "siblings"),
@@ -89,7 +89,7 @@ export function useCSiblings(name: string) {
   });
 }
 
-export function useCArkgirds(name: string) {
+export function useArkgirds(name: string) {
   return useQuery({
     queryKey: ["lostark", "arkgrid", name],
     queryFn: () => fetchCharacterData(name, "arkgrid"),
@@ -98,10 +98,19 @@ export function useCArkgirds(name: string) {
   });
 }
 
-export function useCArkpassive(name: string) {
+export function useArkpassive(name: string) {
   return useQuery({
     queryKey: ["lostark", "arkpassive", name],
     queryFn: () => fetchCharacterData(name, "arkpassive"),
+    enabled: !!name,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export function useCharacters(name: string) {
+  return useQuery({
+    queryKey: ["lostark", "characters", name],
+    queryFn: () => fetchCharacterData(name, "characters"),
     enabled: !!name,
     staleTime: 5 * 60 * 1000,
   });

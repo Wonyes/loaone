@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Card } from "@/components/common/Card";
-import { GRADE_STYLES } from "@/constants/lostark/styles";
 import { Palette, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNoticeStore } from "@/hooks/store/useNoticeStore";

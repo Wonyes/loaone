@@ -21,15 +21,24 @@ export const GRADE_STYLES = {
   },
   전설: {
     bg: "bg-gradient-to-br from-[#362003] to-[#9e5f04]",
-    text: "text-[#9e5f04]",
-    border: "border-[#9e5f04]/40",
+    text: "text-[#ffbb00]",
+    border: "border-[#ffbb00]/40",
+  },
+  희귀: {
+    bg: "bg-gradient-to-br from-[#0a1e3d] to-[#1e4a8a]",
+    text: "text-[#66a3ff]",
+    border: "border-[#66a3ff]/40",
+  },
+  고급: {
+    bg: "bg-gradient-to-br from-[#1a2e1a] to-[#2d5016]",
+    text: "text-[#81f370]",
+    border: "border-[#81f370]/40",
+  },
+  일반: {
+    bg: "bg-gradient-to-br from-[#1a1a1a] to-[#333333]",
+    text: "text-[#cccccc]",
+    border: "border-[#cccccc]/40",
   },
 } as const;
 
-export const GRADE_TEXT_COLORS: Record<string, string> = {
-  전설: "text-[#ffbb00]",
-  영웅: "text-[#ce9eff]",
-  희귀: "text-[#66a3ff]",
-  고급: "text-[#81f370]",
-  일반: "text-[#cccccc]",
-};
+export type GradeType = keyof typeof GRADE_STYLES;

@@ -42,8 +42,8 @@ function deepParse(obj: any): any {
     ) {
       try {
         const parsed = JSON.parse(value);
-        result.tooltip = deepParse(parsed); 
-        result.tooltipRaw = value; 
+        result.tooltip = deepParse(parsed);
+        result.tooltipRaw = value;
       } catch (e) {
         result.tooltip = value;
       }
@@ -70,6 +70,7 @@ export async function GET(
   const type = searchParams.get("type");
 
   const endpoints: { [key: string]: string } = {
+    characters: `/armories/characters/${name}`,
     siblings: `/characters/${name}/siblings`,
     profile: `/armories/characters/${name}/profiles`,
     equipment: `/armories/characters/${name}/equipment`,

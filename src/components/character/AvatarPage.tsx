@@ -1,6 +1,6 @@
 "use client";
 
-import { useCAvatars } from "@/hooks/query/lostark/character/useLostarkApi";
+import { useAvatars } from "@/hooks/query/lostark/character/useLostarkApi";
 import { Card } from "@/components/common/Card";
 import Loading from "@/app/loading";
 import { Layers, Heart } from "lucide-react";
@@ -15,7 +15,7 @@ export default function AvatarPage({
   name: string;
   profileData: any;
 }) {
-  const { data: avatarData, isLoading } = useCAvatars(name);
+  const { data: avatarData, isLoading } = useAvatars(name);
 
   if (isLoading) return <Loading />;
   if (avatarData === null) return undefined;

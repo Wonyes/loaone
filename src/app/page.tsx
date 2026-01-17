@@ -2,12 +2,12 @@
 
 import { Card } from "@/components/common/Card";
 import { Bell, CalendarDays, FileText, TrendingUp } from "lucide-react";
-import { EventSlider } from "@/components/ui/EventSlider";
 import { TodaySchedule } from "@/components/news/TodaySchdule";
 import { useEvents, useNotices } from "@/hooks/query/lostark/news/useNews";
 
 import Loading from "./loading";
 import FavoritesPage from "@/components/character/favorite/FavoritesPage";
+import { EventSlider } from "@/components/ui/EventSlider";
 
 export default function Home() {
   const { data: eventData, isLoading: eventLoading } = useEvents();

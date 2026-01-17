@@ -1,11 +1,10 @@
 export const TABS = [
-  { id: "equipment", label: "장비" },
-  { id: "avatar", label: "아바타" },
-  { id: "skill", label: "스킬" },
-  { id: "history", label: "히스토리" },
-  { id: "collectible", label: "수집형 포인트" },
-  { id: "characters", label: "보유 캐릭터" },
-  { id: "guild", label: "길드" },
+  { id: "equipment", label: "equipment" },
+  { id: "avatar", label: "avatar" },
+  { id: "skill", label: "skill" },
+  { id: "history", label: "history" },
+  { id: "collectible", label: "collectible" },
+  { id: "characters", label: "characters" },
 ] as const;
 
 export const GRADE_POSITIONS: Record<string, string> = {

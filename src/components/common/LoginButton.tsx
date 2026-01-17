@@ -71,7 +71,7 @@ export function LoginButton() {
 
         <DropdownMenuContent
           align="end"
-          className="mt-2 w-48 overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d12]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl"
+          className="mt-2 w-48 overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d12]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         >
           <div className="mb-1 flex flex-col gap-0.5 px-3 py-2.5">
             <p className="text-[9px] font-black tracking-[0.2em] text-slate-600 uppercase">

@@ -1,14 +1,15 @@
 "use client";
 
 import { Card } from "../common/Card";
-import { Zap, Activity, Swords, Target, BarChart3 } from "lucide-react";
+import { Zap, Swords, Target, BarChart3 } from "lucide-react";
 import { SkillItem } from "./skill/SkillItem";
 import {
-  useCGems,
-  useCSkills,
+  useGems,
+  useSkills,
 } from "@/hooks/query/lostark/character/useLostarkApi";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { CharacterGemsSidebar } from "./skill/CharacterGemsSlidebar";
 
 interface CharacterSkillPageProps {
   name: string;
@@ -25,30 +26,34 @@ export function CharacterSkillPage({
   totalSkillPoint,
   mainPassiveName,
 }: CharacterSkillPageProps) {
-  const { data: gemsData } = useCGems(name);
-  const { data: skillData } = useCSkills(name);
+  const { data: gemsData } = useGems(name);
+  const { data: skillData } = useSkills(name);
 
   const { top1, top2 } = useTopStats(stats);
   const activeSkills = useActiveSkills(skillData, gemsData);
-
+  console.log(skillData, gemsData);
   return (
-    <article className="w-full max-w-[1400px] antialiased">
-      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5">
-        <aside className="col-span-1 grid grid-cols-2 gap-3 sm:gap-6 lg:sticky lg:top-24 lg:col-span-1 lg:h-fit lg:grid-cols-1">
-          <CombatStatsCard
-            top1={top1}
-            top2={top2}
-            mainPassiveName={mainPassiveName}
-          />
-          <SkillPointsCard
-            usingSkillPoint={usingSkillPoint}
-            totalSkillPoint={totalSkillPoint}
-          />
+    <article className="mx-auto w-full max-w-[1400px] antialiased">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <aside className="flex flex-col gap-6 lg:col-span-3 xl:col-span-3">
+          <div className="flex flex-col gap-6 sm:flex-row lg:top-24 lg:flex-col">
+            <CombatStatsCard
+              top1={top1}
+              top2={top2}
+              mainPassiveName={mainPassiveName}
+            />
+            <SkillPointsCard
+              usingSkillPoint={usingSkillPoint}
+              totalSkillPoint={totalSkillPoint}
+            />
+          </div>
         </aside>
 
-        <main className="col-span-1 lg:col-span-3 xl:col-span-4">
+        <div className="flex flex-col gap-6 lg:col-span-9 xl:col-span-9">
+          <CharacterGemsSidebar gemsData={gemsData} />
+
           <SkillListCard activeSkills={activeSkills} gemsData={gemsData} />
-        </main>
+        </div>
       </div>
     </article>
   );
@@ -100,183 +105,142 @@ function useTopStats(stats: any[]) {
   }, [stats]);
 }
 
-function CombatStatsCard({
-  top1,
-  top2,
-  mainPassiveName,
-}: {
-  top1: any;
-  top2: any;
-  mainPassiveName: string;
-}) {
+function CombatStatsCard({ top1, top2, mainPassiveName }: any) {
   return (
     <Card
       title="Combat Stats"
       icon={<BarChart3 size={16} className="text-indigo-400" />}
-      headerAction={<Activity size={14} className="text-indigo-500/50" />}
-      className="overflow-hidden bg-white/[0.01]"
+      className="w-full overflow-hidden"
     >
-      <section className="flex gap-4 p-4 sm:gap-6 sm:p-6">
+      <div className="flex items-center justify-around p-6">
         <StatDisplay
           label={top1.Type}
           value={top1.Value}
           accent="bg-indigo-500"
           isMain
         />
+        <div className="h-10 w-px bg-white/5" />
         <StatDisplay
           label={top2.Type}
           value={top2.Value}
           accent="bg-slate-500"
         />
-      </section>
-      <footer className="border-t border-indigo-500/10 bg-indigo-500/5 p-3">
-        <h3 className="mb-1 text-center text-[10px] font-black tracking-widest text-indigo-400 uppercase sm:text-[11px]">
-          Main Engraving
-        </h3>
-        <p className="text-center text-xs font-bold text-slate-100 sm:text-sm">
-          {mainPassiveName || "Standard"}
-        </p>
-      </footer>
+      </div>
+      <div className="flex items-center justify-between border-t border-white/5 bg-white/[0.02] px-5 py-3">
+        <span className="text-[9px] font-black tracking-widest text-slate-500 uppercase">
+          Main Build
+        </span>
+        <span className="text-xs font-bold tracking-tight text-slate-200">
+          {mainPassiveName}
+        </span>
+      </div>
     </Card>
   );
 }
 
-function SkillPointsCard({
-  usingSkillPoint,
-  totalSkillPoint,
-}: {
-  usingSkillPoint: string;
-  totalSkillPoint: string;
-}) {
+function SkillPointsCard({ usingSkillPoint, totalSkillPoint }: any) {
   const percentage = (Number(usingSkillPoint) / Number(totalSkillPoint)) * 100;
-
   return (
     <Card
       title="Skill Points"
+      className="w-full"
       icon={<Zap size={16} className="text-amber-400" />}
     >
-      <section className="p-4 sm:p-6">
-        <header className="mb-3 flex items-baseline justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase sm:text-[11px]">
-            Available
+      <div className="flex flex-col justify-center p-6">
+        <div className="mb-3 flex items-baseline justify-between">
+          <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+            Capacity
           </span>
           <div className="flex items-baseline gap-1">
-            <span className="font-mono text-xl font-black text-white sm:text-2xl">
+            <span className="font-mono text-2xl font-black text-white">
               {usingSkillPoint}
             </span>
-            <span className="text-[11px] font-bold text-slate-500 sm:text-xs">
+            <span className="text-[11px] font-bold text-slate-600">
               / {totalSkillPoint}
             </span>
           </div>
-        </header>
-        <div
-          className="h-1.5 w-full overflow-hidden rounded-full bg-white/5 sm:h-2"
-          role="progressbar"
-          aria-valuenow={Number(usingSkillPoint)}
-          aria-valuemin={0}
-          aria-valuemax={Number(totalSkillPoint)}
-        >
+        </div>
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
           <div
-            className="h-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-all duration-1000"
+            className="h-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.4)] transition-all duration-1000"
             style={{ width: `${percentage}%` }}
           />
         </div>
-      </section>
+      </div>
     </Card>
   );
 }
 
-function SkillListCard({
-  activeSkills,
-  gemsData,
-}: {
-  activeSkills: any[];
-  gemsData: any;
-}) {
+function SkillListCard({ activeSkills, gemsData }: any) {
   const getSkillGems = (skillName: string) => {
     if (!gemsData?.Effects?.Skills) return [];
-
-    const skillGemSlots = gemsData.Effects.Skills.filter(
-      (skill: any) => skill.Name === skillName
-    ).map((skill: any) => skill.GemSlot);
-
-    return (
-      gemsData.Gems?.filter((gem: any) => skillGemSlots.includes(gem.Slot)) ||
-      []
-    );
+    const slots = gemsData.Effects.Skills.filter(
+      (s: any) => s.Name === skillName
+    ).map((s: any) => s.GemSlot);
+    return gemsData.Gems?.filter((g: any) => slots.includes(g.Slot)) || [];
   };
 
   return (
     <Card
-      title="Combat Skill Settings"
+      title="Combat Skill Configuration"
       icon={<Swords size={18} className="text-slate-400" />}
       headerAction={
-        <div className="flex items-center gap-2 rounded-lg border border-white/5 bg-white/5 px-2 py-1 sm:gap-3 sm:px-3 sm:py-1.5">
-          <span className="text-[9px] font-black tracking-widest text-slate-200 uppercase sm:text-[10px]">
-            {activeSkills.length} Slots Active
+        <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1">
+          <span className="font-mono text-[10px] font-bold text-slate-400">
+            {activeSkills.length} ACTIVE
           </span>
         </div>
       }
     >
-      <header className="hidden grid-cols-12 border-b border-white/5 bg-white/[0.01] px-6 py-3 md:grid">
-        <div className="col-span-3 text-[10px] font-black tracking-widest text-slate-300 uppercase">
+      {/* 고해상도 리스트 헤더 */}
+      <div className="hidden grid-cols-12 border-b border-white/5 bg-white/[0.01] px-6 py-3 md:grid">
+        <div className="col-span-3 text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
           Skill Identity
         </div>
-        <div className="col-span-6 border-x border-white/5 text-center text-[10px] font-black tracking-widest text-slate-300 uppercase">
-          Selected Tripods
+        <div className="col-span-6 border-x border-white/5 text-center text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+          Tripod Matrix
         </div>
-        <div className="col-span-3 text-right text-[10px] font-black tracking-widest text-slate-300 uppercase">
+        <div className="col-span-3 text-right text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
           Runes & Gems
         </div>
-      </header>
+      </div>
 
-      <section className="flex flex-col divide-y divide-white/[0.03] p-0.5 sm:p-1">
+      <div className="divide-y divide-white/[0.03]">
         {activeSkills.length > 0 ? (
-          <ul>
-            {activeSkills.map((skill: any, idx: number) => (
-              <li key={`${skill.Name}-${idx}`}>
-                <SkillItem skill={skill} gems={getSkillGems(skill.Name)} />
-              </li>
-            ))}
-          </ul>
+          activeSkills.map((skill: any, idx: number) => (
+            <SkillItem
+              key={`${skill.Name}-${idx}`}
+              skill={skill}
+              gems={getSkillGems(skill.Name)}
+            />
+          ))
         ) : (
           <EmptyState />
         )}
-      </section>
+      </div>
     </Card>
   );
 }
 
-function StatDisplay({
-  label,
-  value,
-  accent,
-  isMain,
-}: {
-  label: string;
-  value: string;
-  accent: string;
-  isMain?: boolean;
-}) {
+function StatDisplay({ label, value, accent, isMain }: any) {
   return (
-    <div className="group flex flex-col gap-1.5">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col items-center gap-1">
+      <div className="flex items-center gap-1.5">
         <div
           className={cn(
             "h-1 w-1 rounded-full",
             accent,
             isMain && "shadow-[0_0_8px_#6366f1]"
           )}
-          aria-hidden="true"
         />
-        <span className="text-[10px] font-black tracking-[0.15em] text-slate-400 uppercase sm:text-[11px]">
+        <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
           {label}
         </span>
       </div>
       <span
         className={cn(
-          "font-mono text-2xl font-black tracking-tighter sm:text-3xl",
-          isMain ? "text-white" : "text-slate-300"
+          "font-mono text-2xl font-black tracking-tighter",
+          isMain ? "text-white" : "text-slate-400"
         )}
       >
         {value}

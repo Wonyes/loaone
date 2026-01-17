@@ -44,7 +44,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-6">
-          <div className="hidden w-72 xl:block">
+          <div className="hidden w-72 lg:block">
             <CharacterSearch />
           </div>
 

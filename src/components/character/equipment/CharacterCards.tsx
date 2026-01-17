@@ -1,6 +1,5 @@
 "use client";
 
-import { GRADE_TEXT_COLORS, GRADE_STYLES } from "@/constants/lostark/styles";
 import { GRADE_POSITIONS } from "@/constants/lostark/option";
 import { Card } from "../../common/Card";
 import { EmptyCard } from "../../common/NoItems";
@@ -76,7 +75,6 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
           {engravingsCard.Cards.map((card: any, cardIdx: number) => {
             const gradePos = GRADE_POSITIONS[card.Grade] || "0%";
-            const textColor = GRADE_TEXT_COLORS[card.Grade] || "text-gray-400";
             const awakening = card.AwakeCount || 0;
             const gradeStyle = getGradeStyle(card.Grade);
 
@@ -132,7 +130,7 @@ export function CharacterCards({ engravingsCard }: { engravingsCard: any }) {
                 <p
                   className={cn(
                     "mt-3 line-clamp-1 text-center text-[10px] leading-tight font-bold tracking-tighter transition-colors group-hover:text-white",
-                    textColor
+                    gradeStyle.text
                   )}
                 >
                   {card.Name}

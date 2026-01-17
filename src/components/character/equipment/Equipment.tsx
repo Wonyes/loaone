@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  useCArkgirds,
-  useCCards,
-  useCCollectibles,
-  useCEngravings,
-  useCEquipment,
-  useCGems,
+  useArkgirds,
+  useCards,
+  useCollectibles,
+  useEngravings,
+  useEquipment,
+  useGems,
 } from "@/hooks/query/lostark/character/useLostarkApi";
 import {
   Crown,
@@ -57,14 +57,14 @@ export default function Equipment({
   arkpassiveData: any;
 }) {
   const { data: equipmentData, isLoading: isEquipmentLoading } =
-    useCEquipment(name);
-  const { data: gemsData, isLoading: isGemsLoading } = useCGems(name);
+    useEquipment(name);
+  const { data: gemsData, isLoading: isGemsLoading } = useGems(name);
   const { data: engravingsData, isLoading: isEngravingsLoading } =
-    useCEngravings(name);
-  const { data: engravingsCard, isLoading: isCardsLoading } = useCCards(name);
+    useEngravings(name);
+  const { data: engravingsCard, isLoading: isCardsLoading } = useCards(name);
   const { data: collectiblesData, isLoading: isCollectiblesLoading } =
-    useCCollectibles(name);
-  const { data: arkgridData, isLoading: isAkrgridLoading } = useCArkgirds(name);
+    useCollectibles(name);
+  const { data: arkgridData, isLoading: isAkrgridLoading } = useArkgirds(name);
 
   const isLoading =
     isEquipmentLoading ||
