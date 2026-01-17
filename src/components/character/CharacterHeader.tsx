@@ -1,4 +1,4 @@
-import { Award, Gem, MapPin, Shield, Sword, ChevronRight } from "lucide-react";
+import { Award, Gem, MapPin, Shield, Sword } from "lucide-react";
 import FavoriteButton from "./favorite/FavoriteButton";
 import { Card } from "../common/Card";
 

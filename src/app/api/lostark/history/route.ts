@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchLostArkCharacter, parseItemLevel } from "@/lib/lostark/api";
+import { fetchLostArkCharacter } from "@/lib/lostark/api";
 import { createSupabaseServer } from "@/lib/supabase/server/server";
 
 export async function GET(request: NextRequest) {

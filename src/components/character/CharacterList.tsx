@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { useSiblings } from "@/hooks/query/lostark/character/useLostarkApi";
 import { getClassIcon } from "@/utils/lostarkUtils";
-import { Card } from "../common/Card";
 import { cn } from "@/lib/utils";
 import { WeeklyGoldDashboard } from "./list/WeeklyGoldDashboard";
 import Link from "next/link";

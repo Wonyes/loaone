@@ -86,7 +86,7 @@ export function useToggleFavorite(name: string) {
       return { variables };
     },
 
-    onError: (error, variables, context) => {
+    onError: (_error, _variables, context) => {
       // 롤백
       if (context?.variables) {
         if (isFavorite) {

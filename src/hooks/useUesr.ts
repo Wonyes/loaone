@@ -12,7 +12,7 @@ export function useUser() {
     const supabase = createClient();
 
     // 현재 사용자 가져오기
-    supabase.auth.getUser().then(({ data: { user }, error }) => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
       setLoading(false);
     });
