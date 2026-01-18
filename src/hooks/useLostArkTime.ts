@@ -47,13 +47,28 @@ export function useScheduleData(
   nextResetTime: Date,
   lostArkDayStr: string
 ) {
-  const getNextEvent = (categoryNames: string[]): TimeRemaining | null => {
-    if (!calendar) return null;
+  const parsedEvents = useMemo(() => {
+    if (!calendar) return [];
 
-    const nextTime = calendar
+    return calendar.map((event: any) => ({
+      ...event,
+      parsedTimes:
+        event.StartTimes?.map((t: string) => {
+          const eventTime = new Date(t);
+          if (event.CategoryName === "카오스게이트") {
+            eventTime.setMinutes(eventTime.getMinutes() + 10);
+          }
+          return eventTime;
+        }) || [],
+    }));
+  }, [calendar]);
+
+  const getNextEvent = (categoryNames: string[]): TimeRemaining | null => {
+    if (!parsedEvents.length) return null;
+
+    const nextTime = parsedEvents
       .filter((e: any) => categoryNames.includes(e.CategoryName))
-      .flatMap((e: any) => e.StartTimes)
-      .map((t: string) => new Date(t))
+      .flatMap((e: any) => e.parsedTimes)
       .filter((t: Date) => t > currentTime && t < nextResetTime)
       .sort((a: Date, b: Date) => a.getTime() - b.getTime())[0];
 
@@ -68,13 +83,13 @@ export function useScheduleData(
   };
 
   const todayIslands = useMemo(() => {
-    if (!calendar) return [];
-    return calendar.filter(
+    if (!parsedEvents.length) return [];
+    return parsedEvents.filter(
       (e: any) =>
         e.CategoryName === "모험 섬" &&
         e.StartTimes?.some((t: string) => t.startsWith(lostArkDayStr))
     );
-  }, [calendar, lostArkDayStr]);
+  }, [parsedEvents, lostArkDayStr]);
 
   const eventTimers: EventTimer[] = useMemo(
     () => [
@@ -87,17 +102,17 @@ export function useScheduleData(
       {
         label: "Boss",
         icon: "⚔️",
-        time: getNextEvent(["필드보스", "필드 보스"]),
+        time: getNextEvent(["필드보스"]),
         color: "text-rose-400",
       },
       {
         label: "Gate",
         icon: "🌀",
-        time: getNextEvent(["카오스게이트", "카오스 게이트"]),
+        time: getNextEvent(["카오스게이트"]),
         color: "text-blue-400",
       },
     ],
-    [calendar, currentTime, nextResetTime]
+    [parsedEvents, currentTime, nextResetTime]
   );
 
   return { todayIslands, eventTimers };

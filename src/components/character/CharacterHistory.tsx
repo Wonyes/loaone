@@ -13,6 +13,7 @@ import {
 import { Card } from "../common/Card";
 import { Activity, History } from "lucide-react";
 import { useCharacterHistory } from "@/hooks/query/lostark/character/useCharacterHistory";
+import { CharacterHistorySkeleton } from "../common/CardSkeleton";
 
 export function CharacterHistory({ name }: { name: string }) {
   const { data, isLoading } = useCharacterHistory(name, {
@@ -49,10 +50,7 @@ export function CharacterHistory({ name }: { name: string }) {
       });
   }, [data]);
 
-  if (!mounted || isLoading)
-    return (
-      <div className="h-[400px] w-full animate-pulse rounded-[2rem] border border-white/5 bg-white/[0.01]" />
-    );
+  if (!mounted || isLoading) return <CharacterHistorySkeleton />;
 
   return (
     <div className="mx-auto w-full max-w-[1440px] space-y-4 px-0 pb-20 antialiased sm:space-y-8 sm:px-1">

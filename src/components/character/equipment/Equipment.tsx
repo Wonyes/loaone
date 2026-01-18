@@ -19,7 +19,6 @@ import {
   Trophy,
 } from "lucide-react";
 import { parseAccessoryOptions } from "@/utils/accessoryParser";
-import Loading from "@/app/loading";
 import {
   ARK_PAS,
   EQUIPMENT_AEC,
@@ -44,17 +43,26 @@ import { cn } from "@/lib/utils";
 import { ItemCard } from "./ItemCard";
 import { HoverTooltip } from "@/components/common/HoverTooltip";
 import { ArkPassiveIcon } from "./ArkPassiveIcon";
+import {
+  ArkGridSkeleton,
+  ArkPassiveSkeleton,
+  CollectibleSkeleton,
+  EngravingsSkeleton,
+  EquipmentTabSkeleton,
+} from "@/components/common/CardSkeleton";
 
 export default function Equipment({
   name,
   topValues,
   profileData,
   arkpassiveData,
+  isAkrpassiveLoading,
 }: {
   name: string;
   topValues: any;
   profileData: any;
   arkpassiveData: any;
+  isAkrpassiveLoading: boolean;
 }) {
   const { data: equipmentData, isLoading: isEquipmentLoading } =
     useEquipment(name);
@@ -66,31 +74,33 @@ export default function Equipment({
     useCollectibles(name);
   const { data: arkgridData, isLoading: isAkrgridLoading } = useArkgirds(name);
 
-  const isLoading =
-    isEquipmentLoading ||
-    isGemsLoading ||
-    isEngravingsLoading ||
-    isCardsLoading ||
-    isAkrgridLoading ||
-    isCollectiblesLoading;
-
-  if (isLoading) return <Loading />;
-
   return (
     <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
       {/* 1열: 장비 및 보석 */}
       <div className="space-y-4 xl:col-span-5">
-        <EquipmentTab
-          gemsData={gemsData}
-          equipmentData={equipmentData}
-          engravingsCard={engravingsCard}
-        />
+        {isEquipmentLoading || isGemsLoading || isCardsLoading ? (
+          <EquipmentTabSkeleton />
+        ) : (
+          <EquipmentTab
+            gemsData={gemsData}
+            equipmentData={equipmentData}
+            engravingsCard={engravingsCard}
+          />
+        )}
       </div>
 
       {/* 2열: 아크 시스템 */}
       <div className="space-y-4 xl:col-span-4">
-        <ArkGridPanel arkgridData={arkgridData} />
-        <ArkPassivePanel arkpassiveData={arkpassiveData} />
+        {isAkrgridLoading ? (
+          <ArkGridSkeleton />
+        ) : (
+          <ArkGridPanel arkgridData={arkgridData} />
+        )}
+        {isAkrpassiveLoading ? (
+          <ArkPassiveSkeleton />
+        ) : (
+          <ArkPassivePanel arkpassiveData={arkpassiveData} />
+        )}
       </div>
 
       {/* 3열: 전투 스탯 및 수집형 */}
@@ -101,11 +111,19 @@ export default function Equipment({
           </div>
 
           <div className="min-w-0">
-            <EngravingsPanel engravingsData={engravingsData} />
+            {isEngravingsLoading ? (
+              <EngravingsSkeleton />
+            ) : (
+              <EngravingsPanel engravingsData={engravingsData} />
+            )}
           </div>
 
           <div className="min-w-0">
-            <CollectibleSummary collectiblesData={collectiblesData} />
+            {isCollectiblesLoading ? (
+              <CollectibleSkeleton />
+            ) : (
+              <CollectibleSummary collectiblesData={collectiblesData} />
+            )}
           </div>
         </div>
       </div>

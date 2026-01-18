@@ -5,14 +5,70 @@ import { Header } from "@/components/common/Header";
 import { GlobalNotice } from "@/components/common/GlobalNotice";
 
 export const metadata: Metadata = {
-  title: "로아원",
-  description: "LostArk Utility",
+  title: {
+    default: "로아원 · 로스트아크 정보",
+    template: "로아원 · %s",
+  },
+  description:
+    "로스트아크 캘린더, 거래소, 길드, 랭킹 정보를 한눈에! 실시간 이벤트 스케줄과 모험 섬 정보를 확인하세요.",
+  keywords: [
+    "로아원",
+    "로스트아크",
+    "LOA",
+    "LOSTARK",
+    "거래소",
+    "길드",
+    "랭킹",
+    "캘린더",
+    "모험 섬",
+    "카오스게이트",
+  ],
+  authors: [{ name: "로아원" }],
+  creator: "로아원",
+  publisher: "로아원",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "ko_KR",
+    url: "https://loaone.vercel.app",
+    title: "로아원 - 로스트아크 종합 정보",
+    description: "로스트아크 캘린더, 거래소, 길드, 랭킹 정보를 한눈에!",
+    siteName: "로아원",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "로아원 로고",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "로아원 - 로스트아크 종합 정보",
+    description: "로스트아크 캘린더, 거래소, 길드, 랭킹 정보를 한눈에!",
+    images: ["/og-image.png"],
+  },
   icons: {
-    icon: "/assets/logo.png",
-    apple: "/assets/logo.png",
+    icon: "/og-image.png",
+    apple: "/og-image.png",
+  },
+  viewport:
+    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  verification: {
+    google: "구글서치콘솔넣을자리",
+  },
+  alternates: {
+    canonical: "https://loaone.vercel.app",
   },
 };
-
 export default function RootLayout({
   children,
 }: {

@@ -2,11 +2,11 @@
 
 import { useAvatars } from "@/hooks/query/lostark/character/useLostarkApi";
 import { Card } from "@/components/common/Card";
-import Loading from "@/app/loading";
 import { Layers, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DyeInfo from "./avatar/DyeInfo";
 import { getGradeStyle } from "@/utils/lostarkUtils";
+import { AvatarPageSkeleton } from "../common/CardSkeleton";
 
 export default function AvatarPage({
   name,
@@ -17,7 +17,7 @@ export default function AvatarPage({
 }) {
   const { data: avatarData, isLoading } = useAvatars(name);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <AvatarPageSkeleton />;
   if (avatarData === null) return undefined;
   const groupedAvatars = avatarData.reduce((acc: any, avatar: any) => {
     const type = avatar.Type;

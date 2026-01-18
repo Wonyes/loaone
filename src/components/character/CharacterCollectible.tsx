@@ -7,7 +7,7 @@ import { Card } from "../common/Card";
 import { cn } from "@/lib/utils";
 import { useCollectibles } from "@/hooks/query/lostark/character/useLostarkApi";
 import { SPRITEPOSITIONS } from "@/constants/lostark/option";
-import Loading from "@/app/loading";
+import { CharacterCollectibleSkeleton } from "../common/CardSkeleton";
 
 interface CollectiblePoint {
   PointName: string;
@@ -27,7 +27,7 @@ export function CharacterCollectible({ name }: { name: string }) {
   const { data: colData, isLoading } = useCollectibles(name);
   const [openType, setOpenType] = useState<string | null>(null);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <CharacterCollectibleSkeleton />;
   if (!colData) return null;
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-4 p-4 sm:p-6">

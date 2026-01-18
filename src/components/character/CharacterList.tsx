@@ -6,6 +6,7 @@ import { getClassIcon } from "@/utils/lostarkUtils";
 import { cn } from "@/lib/utils";
 import { WeeklyGoldDashboard } from "./list/WeeklyGoldDashboard";
 import Link from "next/link";
+import { CharacterListSkeleton } from "../common/CardSkeleton";
 
 export function CharacterListLayout({ name }: { name: string }) {
   const { data: listData, isLoading } = useSiblings(name);
@@ -25,12 +26,8 @@ export function CharacterListLayout({ name }: { name: string }) {
     }, {});
   }, [listData]);
 
-  if (isLoading)
-    return (
-      <div className="animate-pulse p-20 text-center text-xs font-black tracking-[0.5em] text-teal-900">
-        LOADING UNITS...
-      </div>
-    );
+  if (isLoading) return <CharacterListSkeleton />;
+  if (!listData) return null;
 
   return (
     <div className="mx-auto w-full max-w-[1600px] space-y-12 px-4 pb-20 sm:px-6">

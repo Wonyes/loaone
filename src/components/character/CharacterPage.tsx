@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Suspense, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { notFound, useSearchParams } from "next/navigation";
 
 import { TABS } from "@/constants/lostark/option";
 import {
@@ -20,6 +20,7 @@ import { Leaf } from "lucide-react";
 import { CharacterListLayout } from "./CharacterList";
 import { CharacterHistory } from "./CharacterHistory";
 import { CharacterCollectible } from "./CharacterCollectible";
+import { CharacterHeaderSkeleton } from "../common/CardSkeleton";
 
 function CharacterContent({ name }: { name: string }) {
   const searchParams = useSearchParams();
@@ -48,15 +49,22 @@ function CharacterContent({ name }: { name: string }) {
       .slice(0, 4);
   }, [profileData]);
 
-  if (isProfileLoading || isAkrpassiveLoading) return <Loading />;
+  const isLoading = isProfileLoading || isAkrpassiveLoading;
+  if (!isLoading && (!profileData || !arkpassiveData)) {
+    notFound();
+  }
 
   return (
     <div className="mx-auto w-full max-w-[1400px] space-y-4 pb-4">
-      <CharacterHeader
-        name={name}
-        profileData={profileData}
-        mainPassiveName={mainPassiveName}
-      />
+      {isLoading ? (
+        <CharacterHeaderSkeleton />
+      ) : (
+        <CharacterHeader
+          name={name}
+          profileData={profileData}
+          mainPassiveName={mainPassiveName}
+        />
+      )}
 
       <div className="sticky top-20 z-30 -mx-2 px-4 sm:mx-0 sm:px-0">
         <TabNavigation activeTab={activeTab} characterName={name} />
@@ -69,6 +77,7 @@ function CharacterContent({ name }: { name: string }) {
             topValues={topValues}
             profileData={profileData}
             arkpassiveData={arkpassiveData}
+            isAkrpassiveLoading={isAkrpassiveLoading}
           />
         )}
         {activeTab === "avatar" && (
@@ -77,10 +86,10 @@ function CharacterContent({ name }: { name: string }) {
         {activeTab === "skill" && (
           <CharacterSkillPage
             name={name}
-            stats={profileData.Stats}
+            stats={profileData?.Stats || []}
             mainPassiveName={mainPassiveName}
-            usingSkillPoint={profileData.UsingSkillPoint}
-            totalSkillPoint={profileData.TotalSkillPoint}
+            usingSkillPoint={profileData?.UsingSkillPoint || "0"}
+            totalSkillPoint={profileData?.TotalSkillPoint || "0"}
           />
         )}
         {activeTab === "history" && <CharacterHistory name={name} />}

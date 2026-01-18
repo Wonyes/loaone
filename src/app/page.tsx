@@ -5,15 +5,16 @@ import { Bell, CalendarDays, FileText, TrendingUp } from "lucide-react";
 import { TodaySchedule } from "@/components/news/TodaySchdule";
 import { useEvents, useNotices } from "@/hooks/query/lostark/news/useNews";
 
-import Loading from "./loading";
 import FavoritesPage from "@/components/character/favorite/FavoritesPage";
 import { EventSlider } from "@/components/ui/EventSlider";
+import {
+  EventSliderSkeleton,
+  NoticeSectionSkeleton,
+} from "@/components/common/CardSkeleton";
 
 export default function Home() {
   const { data: eventData, isLoading: eventLoading } = useEvents();
   const { data: noticeData, isLoading: noticeLoading } = useNotices();
-
-  if (eventLoading || noticeLoading) return <Loading />;
 
   return (
     <div className="relative mx-auto max-w-[1400px] antialiased">
@@ -24,10 +25,10 @@ export default function Home() {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="space-y-4 lg:col-span-9">
-          {eventData && (
-            <div className="max-h-[400px] overflow-hidden rounded-[2.5rem] border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)]">
-              <EventSlider events={eventData} />
-            </div>
+          {eventLoading ? (
+            <EventSliderSkeleton />
+          ) : (
+            eventData && <EventSlider events={eventData} />
           )}
 
           <Card
@@ -43,22 +44,32 @@ export default function Home() {
           </Card>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <NoticeSection
-              title="Official Notice"
-              data={noticeData
-                ?.filter(
-                  (n: any) => n.Type === "공지" && !n.Title.includes("업데이트")
-                )
-                .slice(0, 4)}
-              icon={<Bell size={18} className="text-indigo-400" />}
-            />
-            <NoticeSection
-              title="Patch Notes"
-              data={noticeData
-                ?.filter((n: any) => n.Title.includes("업데이트"))
-                .slice(0, 4)}
-              icon={<FileText size={18} className="text-blue-400" />}
-            />
+            {noticeLoading ? (
+              <>
+                <NoticeSectionSkeleton title="Official Notice" />
+                <NoticeSectionSkeleton title="Patch Notes" />
+              </>
+            ) : (
+              <>
+                <NoticeSection
+                  title="Official Notice"
+                  data={noticeData
+                    ?.filter(
+                      (n: any) =>
+                        n.Type === "공지" && !n.Title.includes("업데이트")
+                    )
+                    .slice(0, 4)}
+                  icon={<Bell size={18} className="text-indigo-400" />}
+                />
+                <NoticeSection
+                  title="Patch Notes"
+                  data={noticeData
+                    ?.filter((n: any) => n.Title.includes("업데이트"))
+                    .slice(0, 4)}
+                  icon={<FileText size={18} className="text-blue-400" />}
+                />
+              </>
+            )}
           </div>
         </div>
 

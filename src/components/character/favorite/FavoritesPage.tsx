@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUser } from "@/hooks/useUesr";
 import { Card } from "@/components/common/Card";
-import Loading from "@/app/loading";
+import { FavoritesSkeleton } from "@/components/common/CardSkeleton";
 
 export default function FavoritesPage() {
   const { user, loading } = useUser();
@@ -24,7 +24,7 @@ export default function FavoritesPage() {
   }, [user, loading, router]);
 
   if (loading || isLoading) {
-    return <Loading />;
+    return <FavoritesSkeleton />;
   }
 
   return (

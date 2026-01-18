@@ -10,6 +10,7 @@ import {
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { CharacterGemsSidebar } from "./skill/CharacterGemsSlidebar";
+import { SkillPageSkeleton } from "../common/CardSkeleton";
 
 interface CharacterSkillPageProps {
   name: string;
@@ -26,12 +27,16 @@ export function CharacterSkillPage({
   totalSkillPoint,
   mainPassiveName,
 }: CharacterSkillPageProps) {
-  const { data: gemsData } = useGems(name);
-  const { data: skillData } = useSkills(name);
+  const { data: gemsData, isLoading: isGemsLoading } = useGems(name);
+  const { data: skillData, isLoading: isSkillLoading } = useSkills(name);
 
   const { top1, top2 } = useTopStats(stats);
   const activeSkills = useActiveSkills(skillData, gemsData);
-  console.log(skillData, gemsData);
+
+  if (isGemsLoading || isSkillLoading) {
+    return <SkillPageSkeleton />;
+  }
+
   return (
     <article className="mx-auto w-full max-w-[1400px] antialiased">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">

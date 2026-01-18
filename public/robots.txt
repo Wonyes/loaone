@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://loaone.vercel.app/sitemap.xml

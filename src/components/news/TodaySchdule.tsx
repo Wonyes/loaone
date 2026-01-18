@@ -13,6 +13,7 @@ import {
   useScheduleData,
 } from "@/hooks/useLostArkTime";
 import { cn } from "@/lib/utils";
+import { EventTimerSkeleton, IslandCardSkeleton } from "../common/CardSkeleton";
 
 export function TodaySchedule() {
   const { data: calendar, isLoading } = useCalendar();
@@ -43,8 +44,36 @@ export function TodaySchedule() {
     lostArkDayStr
   );
 
-  if (!calendar) return undefined;
-  if (isLoading) return <Loading />;
+  if (isLoading || !calendar) {
+    return (
+      <div className="relative mx-auto max-w-3xl space-y-4 bg-transparent p-4">
+        <div className="border-b border-white/5 pb-5">
+          <div className="flex justify-center gap-5">
+            {[...Array(7)].map((_, i) => (
+              <div key={i} className="flex flex-col items-center gap-1.5">
+                <div className="h-3 w-8 animate-pulse rounded bg-white/10" />
+                <div className="h-5 w-6 animate-pulse rounded bg-white/10" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Event Timers Skeleton */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <EventTimerSkeleton />
+          <EventTimerSkeleton />
+          <EventTimerSkeleton />
+        </div>
+
+        {/* Islands Skeleton */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <IslandCardSkeleton />
+          <IslandCardSkeleton />
+          <IslandCardSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative mx-auto max-w-3xl space-y-4 bg-transparent p-4 text-slate-200 antialiased">

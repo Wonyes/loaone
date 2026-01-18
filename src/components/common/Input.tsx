@@ -34,7 +34,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         <input
           ref={ref}
-          className={`w-full text-[12px] text-white transition-colors focus:border-emerald-500/50 focus:outline-none ${className}`}
+          className={`w-full origin-left scale-90 text-base text-white transition-colors focus:border-emerald-500/50 focus:outline-none ${className}`}
+          style={{ width: "133.33%" }}
           {...props}
           onKeyDown={handleKeyDown}
         />
