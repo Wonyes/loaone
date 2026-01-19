@@ -35,7 +35,7 @@ export function useFavoriteStatus(characterName: string) {
   return useQuery({
     queryKey: ["favorite", characterName, user?.id],
     queryFn: async () => {
-      const res = await fetch(`/api/favorites?name=${characterName}`); // 그대로
+      const res = await fetch(`/api/favorites?name=${characterName}`);
       if (!res.ok) throw new Error("Failed to fetch");
       return res.json();
     },
@@ -63,7 +63,6 @@ export function useToggleFavorite(characterName: string) {
       className: string;
     }) => {
       const res = await fetch("/api/favorites", {
-        // 그대로
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

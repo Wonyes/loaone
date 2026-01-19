@@ -1,10 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Providers from "./providers";
 import { Header } from "@/components/common/Header";
 import { GlobalNotice } from "@/components/common/GlobalNotice";
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://loaone.vercel.app"),
+
   title: {
     default: "로아원 · 로스트아크 정보",
     template: "로아원 · %s",
@@ -60,8 +68,6 @@ export const metadata: Metadata = {
     icon: "/og-image.png",
     apple: "/og-image.png",
   },
-  viewport:
-    "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   verification: {
     google: "구글서치콘솔넣을자리",
   },
@@ -69,6 +75,7 @@ export const metadata: Metadata = {
     canonical: "https://loaone.vercel.app",
   },
 };
+
 export default function RootLayout({
   children,
 }: {

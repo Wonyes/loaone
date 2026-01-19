@@ -17,10 +17,7 @@ export function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  const navLinks = [
-    { name: "MARKET", href: "/market" },
-    { name: "PAPER", href: "/cunning-paper" },
-  ];
+  const navLinks = [{ name: "PAPER", href: "/cunning-paper" }];
 
   return (
     <header className="sticky top-4 z-50 mb-4 w-full rounded-full border-b border-[#bef264]/10 bg-gradient-to-r from-[#041d1d] via-[#062c2c] to-[#041d1d] shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
@@ -105,6 +102,7 @@ function NavLink({
   return (
     <Link
       href={href}
+      prefetch={false}
       className={cn(
         "px-4 py-1 text-[11px] font-bold tracking-[0.2em] transition-all duration-300",
         isActive

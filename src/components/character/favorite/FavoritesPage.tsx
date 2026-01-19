@@ -13,7 +13,6 @@ export default function FavoritesPage() {
   const { user, loading } = useUser();
   const router = useRouter();
   const { data: favorites = [], isLoading } = useFavorites();
-
   useEffect(() => {
     if (!loading && !user) {
       router.push("/");

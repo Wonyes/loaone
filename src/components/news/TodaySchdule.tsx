@@ -1,44 +1,32 @@
 "use client";
 
 import { useCalendar } from "@/hooks/query/lostark/news/useNews";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Card } from "../common/Card";
 import { getGradeStyle } from "@/utils/lostarkUtils";
 import { IslandRewardModal } from "./IslandRewardModal";
-import {
-  EventTimer,
-  TimeRemaining,
-  useLostArkTime,
-  useScheduleData,
-} from "@/hooks/useLostArkTime";
+import { useLostArkTime, useScheduleData } from "@/hooks/useLostArkTime";
 import { cn } from "@/lib/utils";
 import { EventTimerSkeleton, IslandCardSkeleton } from "../common/CardSkeleton";
 
 export function TodaySchedule() {
   const { data: calendar, isLoading } = useCalendar();
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [selectedIsland, setSelectedIsland] = useState<any>(null);
 
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
+  const currentDate = useMemo(() => {
+    const now = new Date();
+    return new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      now.getMinutes()
+    );
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (selectedIsland && window.innerWidth >= 640) {
-        setSelectedIsland(null);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [selectedIsland]);
-
-  const { lostArkDayStr, nextResetTime } = useLostArkTime(currentTime);
+  const { lostArkDayStr, nextResetTime } = useLostArkTime(currentDate);
   const { todayIslands, eventTimers } = useScheduleData(
     calendar,
-    currentTime,
     nextResetTime,
     lostArkDayStr
   );
@@ -57,14 +45,12 @@ export function TodaySchedule() {
           </div>
         </div>
 
-        {/* Event Timers Skeleton */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <EventTimerSkeleton />
           <EventTimerSkeleton />
           <EventTimerSkeleton />
         </div>
 
-        {/* Islands Skeleton */}
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <IslandCardSkeleton />
           <IslandCardSkeleton />
@@ -76,9 +62,9 @@ export function TodaySchedule() {
 
   return (
     <div className="relative mx-auto max-w-3xl space-y-4 bg-transparent p-4 text-slate-200 antialiased">
-      <WeekHeader currentTime={currentTime} lostArkDayStr={lostArkDayStr} />
-      <EventTimerGrid timers={eventTimers} />
-      <IslandGrid
+      <MemoizedWeekHeader lostArkDayStr={lostArkDayStr} />
+      <EventTimerSection eventTimers={eventTimers} />
+      <MemoizedIslandGrid
         islands={todayIslands.slice(0, 3)}
         onSelectIsland={setSelectedIsland}
       />
@@ -87,103 +73,6 @@ export function TodaySchedule() {
         onClose={() => setSelectedIsland(null)}
       />
     </div>
-  );
-}
-
-function WeekHeader({
-  currentTime,
-  lostArkDayStr,
-}: {
-  currentTime: Date;
-  lostArkDayStr: string;
-}) {
-  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-
-  return (
-    <nav className="flex items-end justify-center border-b border-white/5 px-1 pb-5">
-      <div className="flex gap-5 sm:gap-7">
-        {Array.from({ length: 7 }, (_, i) => {
-          const date = new Date(currentTime);
-          if (currentTime.getHours() < 6) date.setDate(date.getDate() - 1);
-          date.setDate(date.getDate() - date.getDay() + i);
-
-          const isToday =
-            date.toLocaleDateString("sv-SE", {
-              timeZone: "Asia/Seoul",
-            }) === lostArkDayStr;
-
-          return (
-            <div key={i} className="group flex flex-col items-center gap-1.5">
-              <span
-                className={cn(
-                  "text-[9px] font-bold tracking-widest",
-                  isToday ? "text-indigo-400" : "text-slate-600"
-                )}
-              >
-                {dayNames[i]}
-              </span>
-              <span
-                className={cn(
-                  "text-lg",
-                  isToday
-                    ? "scale-110 font-bold text-white"
-                    : "font-light text-slate-500"
-                )}
-              >
-                {date.getDate()}
-              </span>
-              {isToday && (
-                <div className="h-1 w-1 rounded-full bg-indigo-500 shadow-[0_0_8px_#6366f1]" />
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </nav>
-  );
-}
-
-function EventTimerGrid({ timers }: { timers: EventTimer[] }) {
-  return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-      {timers.map((timer, idx) => (
-        <EventTimerCard key={idx} {...timer} />
-      ))}
-    </div>
-  );
-}
-
-function EventTimerCard({ label, icon, time, color }: EventTimer) {
-  const formatTime = (t: TimeRemaining) =>
-    `${String(t.h).padStart(2, "0")}:${String(t.m).padStart(2, "0")}:${String(t.s).padStart(2, "0")}`;
-
-  return (
-    <Card className="border-white/[0.05] bg-white/[0.01] p-4">
-      <div className="flex w-full items-center justify-between">
-        <div className="flex flex-col gap-0.5">
-          <span
-            className={`text-[10px] font-black tracking-widest uppercase ${color}`}
-          >
-            {label}
-          </span>
-          {time ? (
-            <span
-              className={cn(
-                "font-mono text-xl font-bold tracking-tighter tabular-nums",
-                color
-              )}
-            >
-              {formatTime(time)}
-            </span>
-          ) : (
-            <span className={`text-xl font-bold uppercase italic ${color}`}>
-              Passed
-            </span>
-          )}
-        </div>
-        <span className="text-xl">{icon}</span>
-      </div>
-    </Card>
   );
 }
 
@@ -313,5 +202,129 @@ function IslandRewardPreview({ items }: { items?: any[] }) {
         );
       })}
     </div>
+  );
+}
+
+const MemoizedWeekHeader = memo(function WeekHeader({
+  lostArkDayStr,
+}: {
+  lostArkDayStr: string;
+}) {
+  const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const baseDate = useMemo(() => new Date(lostArkDayStr), [lostArkDayStr]);
+
+  return (
+    <nav className="flex items-end justify-center border-b border-white/5 px-1 pb-5">
+      <div className="flex gap-5 sm:gap-7">
+        {Array.from({ length: 7 }, (_, i) => {
+          const date = new Date(baseDate);
+          date.setDate(date.getDate() - date.getDay() + i);
+
+          const dateStr = date.toISOString().split("T")[0];
+          const isToday = dateStr === lostArkDayStr;
+
+          return (
+            <div key={i} className="group flex flex-col items-center gap-1.5">
+              <span
+                className={cn(
+                  "text-[9px] font-bold tracking-widest",
+                  isToday ? "text-indigo-400" : "text-slate-600"
+                )}
+              >
+                {dayNames[i]}
+              </span>
+              <span
+                className={cn(
+                  "text-lg",
+                  isToday
+                    ? "scale-110 font-bold text-white"
+                    : "font-light text-slate-500"
+                )}
+              >
+                {date.getDate()}
+              </span>
+              {isToday && (
+                <div className="h-1 w-1 rounded-full bg-indigo-500 shadow-[0_0_8px_#6366f1]" />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </nav>
+  );
+});
+
+const MemoizedIslandGrid = memo(IslandGrid);
+
+function EventTimerSection({
+  eventTimers,
+}: {
+  eventTimers: { label: string; icon: string; targetTime: Date | null; color: string }[];
+}) {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      {eventTimers.map((timer, idx) => (
+        <EventTimerCard key={idx} {...timer} now={now} />
+      ))}
+    </div>
+  );
+}
+
+function EventTimerCard({
+  label,
+  icon,
+  targetTime,
+  color,
+  now,
+}: {
+  label: string;
+  icon: string;
+  targetTime: Date | null;
+  color: string;
+  now: Date;
+}) {
+  const timeStr = useMemo(() => {
+    if (!targetTime) return null;
+    const diff = targetTime.getTime() - now.getTime();
+    if (diff <= 0) return null;
+
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }, [targetTime, now]);
+
+  return (
+    <Card className="border-white/[0.05] bg-white/[0.01] p-4">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex flex-col gap-0.5">
+          <span
+            className={cn(
+              "text-[10px] font-black tracking-widest uppercase",
+              color
+            )}
+          >
+            {label}
+          </span>
+          <span
+            className={cn(
+              "font-mono text-xl font-bold tracking-tighter tabular-nums",
+              color
+            )}
+          >
+            {timeStr || "Passed"}
+          </span>
+        </div>
+        <span className="text-xl">{icon}</span>
+      </div>
+    </Card>
   );
 }

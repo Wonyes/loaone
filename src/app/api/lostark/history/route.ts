@@ -13,8 +13,6 @@ export async function GET(request: NextRequest) {
 
     const apiData = await fetchLostArkCharacter(characterName);
 
-    // 💡 1. 숫자를 '정수'로 변환하여 오차를 원천 차단 (소수점 2자리까지 정수화)
-    // 예: 1720.33 -> 172033
     const currentLevelInt = Math.round(
       parseFloat(apiData.ItemAvgLevel.replace(/,/g, "")) * 100
     );
@@ -22,17 +20,15 @@ export async function GET(request: NextRequest) {
       parseFloat(apiData.CombatPower.replace(/,/g, "")) * 100
     );
 
-    // 2. 마지막 기록 조회 (날짜가 null인 쓰레기 데이터는 무시하고 진짜 마지막 하나만)
     const { data: lastRecord } = await supabase
       .from("level_history")
       .select("item_level, combat_power")
       .eq("character_name", characterName)
-      .not("recorded_at", "is", null) // 💡 날짜 없는 데이터 제외
+      .not("recorded_at", "is", null)
       .order("recorded_at", { ascending: false })
       .limit(1)
       .maybeSingle();
 
-    // 💡 3. 정수 비교 (가장 확실함)
     const lastLevelInt = lastRecord
       ? Math.round(Number(lastRecord.item_level) * 100)
       : null;
@@ -40,14 +36,12 @@ export async function GET(request: NextRequest) {
       ? Math.round(Number(lastRecord.combat_power) * 100)
       : null;
 
-    // 저장 조건: 기록이 없거나, 레벨 정수값이 다르거나, 전투력 정수값이 올랐을 때
     const isNew = !lastRecord;
     const isLevelChanged =
       lastLevelInt !== null && lastLevelInt !== currentLevelInt;
     const isCpIncreased = lastCPInt !== null && currentCPInt > lastCPInt;
 
     if (isNew || isLevelChanged || isCpIncreased) {
-      // 저장할 때는 다시 소수점 형태로 변환
       const levelChange =
         lastLevelInt !== null ? (currentLevelInt - lastLevelInt) / 100 : 0;
 
@@ -63,7 +57,6 @@ export async function GET(request: NextRequest) {
 
       if (insertError) throw insertError;
     }
-    // 4. 조회 (차트용: 과거 -> 현재)
     const { data: history } = await supabase
       .from("level_history")
       .select("*")

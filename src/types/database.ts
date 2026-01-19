@@ -1,5 +1,3 @@
-// src/types/database.ts
-
 export interface Character {
   id: string;
   user_id_uuid: string;

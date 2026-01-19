@@ -5,22 +5,19 @@ import { useNoticeStore } from "@/hooks/store/useNoticeStore";
 import { LogIn, CheckCircle } from "lucide-react";
 
 export function GlobalNotice() {
-  const {
-    toastOpen,
-    toastMessage,
-    alertOpen,
-    alertTitle,
-    alertMessage,
-    confirmLabel,
-    onConfirm,
-    hideAlert,
-  } = useNoticeStore();
+  const toastOpen = useNoticeStore(state => state.toastOpen);
+  const toastMessage = useNoticeStore(state => state.toastMessage);
+  const alertOpen = useNoticeStore(state => state.alertOpen);
+  const alertTitle = useNoticeStore(state => state.alertTitle);
+  const alertMessage = useNoticeStore(state => state.alertMessage);
+  const confirmLabel = useNoticeStore(state => state.confirmLabel);
+  const onConfirm = useNoticeStore(state => state.onConfirm);
+  const hideAlert = useNoticeStore(state => state.hideAlert);
 
   return (
     <AnimatePresence>
       {toastOpen && (
         <div className="pointer-events-none fixed inset-0 z-[9999] flex items-center justify-center px-4">
-          {/* 배경 딤드 */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -28,7 +25,6 @@ export function GlobalNotice() {
             className="pointer-events-auto fixed inset-0 bg-black/40"
           />
 
-          {/* 토스트 본체 */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -58,7 +54,6 @@ export function GlobalNotice() {
 
       {alertOpen && (
         <div className="pointer-events-none fixed inset-0 z-[9999] flex items-center justify-center px-4">
-          {/* 배경 딤드 */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -67,7 +62,6 @@ export function GlobalNotice() {
             onClick={hideAlert}
           />
 
-          {/* 얼럿 본체 */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}

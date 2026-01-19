@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { EmptyCard } from "../common/NoItems";
 import { Star } from "lucide-react";
@@ -13,7 +13,11 @@ interface Event {
   StartDate: string;
 }
 
-export function EventSlider({ events }: { events?: Event[] }) {
+export const EventSlider = memo(function EventSlider({
+  events,
+}: {
+  events?: Event[];
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -123,4 +127,4 @@ export function EventSlider({ events }: { events?: Event[] }) {
       </div>
     </div>
   );
-}
+});

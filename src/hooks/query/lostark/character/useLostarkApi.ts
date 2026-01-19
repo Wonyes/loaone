@@ -8,110 +8,26 @@ const fetchCharacterData = async (name: string, type: string) => {
   return response.json();
 };
 
-export function useProfile(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "profile", name],
-    queryFn: () => fetchCharacterData(name, "profile"),
+const STALE_TIME = 5 * 60 * 1000;
+
+function useLostarkData<T = unknown>(name: string, type: string) {
+  return useQuery<T>({
+    queryKey: ["lostark", type, name],
+    queryFn: () => fetchCharacterData(name, type),
     enabled: !!name,
-    staleTime: 5 * 60 * 1000,
+    staleTime: STALE_TIME,
   });
 }
 
-export function useEquipment(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "equipment", name],
-    queryFn: () => fetchCharacterData(name, "equipment"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useAvatars(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "avatars", name],
-    queryFn: () => fetchCharacterData(name, "avatars"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useSkills(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "skills", name],
-    queryFn: () => fetchCharacterData(name, "skills"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useEngravings(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "engravings", name],
-    queryFn: () => fetchCharacterData(name, "engravings"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useGems(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "gems", name],
-    queryFn: () => fetchCharacterData(name, "gems"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useCards(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "cards", name],
-    queryFn: () => fetchCharacterData(name, "cards"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useCollectibles(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "collectibles", name],
-    queryFn: () => fetchCharacterData(name, "collectibles"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useSiblings(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "siblings", name],
-    queryFn: () => fetchCharacterData(name, "siblings"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useArkgirds(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "arkgrid", name],
-    queryFn: () => fetchCharacterData(name, "arkgrid"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useArkpassive(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "arkpassive", name],
-    queryFn: () => fetchCharacterData(name, "arkpassive"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
-
-export function useCharacters(name: string) {
-  return useQuery({
-    queryKey: ["lostark", "characters", name],
-    queryFn: () => fetchCharacterData(name, "characters"),
-    enabled: !!name,
-    staleTime: 5 * 60 * 1000,
-  });
-}
+export const useProfile = (name: string) => useLostarkData(name, "profile");
+export const useEquipment = (name: string) => useLostarkData(name, "equipment");
+export const useAvatars = (name: string) => useLostarkData(name, "avatars");
+export const useSkills = (name: string) => useLostarkData(name, "skills");
+export const useEngravings = (name: string) => useLostarkData(name, "engravings");
+export const useGems = (name: string) => useLostarkData(name, "gems");
+export const useCards = (name: string) => useLostarkData(name, "cards");
+export const useCollectibles = (name: string) => useLostarkData(name, "collectibles");
+export const useSiblings = (name: string) => useLostarkData(name, "siblings");
+export const useArkgirds = (name: string) => useLostarkData(name, "arkgrid");
+export const useArkpassive = (name: string) => useLostarkData(name, "arkpassive");
+export const useCharacters = (name: string) => useLostarkData(name, "characters");

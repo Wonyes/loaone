@@ -11,6 +11,9 @@ export function useNotices() {
     queryKey: ["lostark", "notices"],
     queryFn: () => fetchNewsData("notices"),
     staleTime: 5 * 60 * 1000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -19,6 +22,9 @@ export function useEvents() {
     queryKey: ["lostark", "events"],
     queryFn: () => fetchNewsData("events"),
     staleTime: 5 * 60 * 1000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -27,6 +33,9 @@ export function useAlarms() {
     queryKey: ["lostark", "alarms"],
     queryFn: () => fetchNewsData("alarms"),
     staleTime: 5 * 60 * 1000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }
 
@@ -35,5 +44,8 @@ export function useCalendar() {
     queryKey: ["lostark", "calendar"],
     queryFn: () => fetchNewsData("calendar"),
     staleTime: 5 * 60 * 1000,
+    refetchInterval: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }

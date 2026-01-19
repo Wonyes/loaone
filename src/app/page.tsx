@@ -1,7 +1,7 @@
 "use client";
 
 import { Card } from "@/components/common/Card";
-import { Bell, CalendarDays, FileText, TrendingUp } from "lucide-react";
+import { Bell, CalendarDays, FileText } from "lucide-react";
 import { TodaySchedule } from "@/components/news/TodaySchdule";
 import { useEvents, useNotices } from "@/hooks/query/lostark/news/useNews";
 
@@ -23,7 +23,7 @@ export default function Home() {
         <div className="absolute right-[10%] bottom-[10%] h-[500px] w-[500px] rounded-full bg-emerald-500/[0.05] blur-[100px]" />
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         <div className="space-y-4 lg:col-span-9">
           {eventLoading ? (
             <EventSliderSkeleton />
@@ -73,19 +73,8 @@ export default function Home() {
           </div>
         </div>
 
-        <aside className="sticky top-29 h-fit space-y-8 lg:col-span-3">
+        <aside className="sticky top-29 h-fit space-y-4 lg:col-span-3">
           <FavoritesPage />
-
-          <Card
-            title="Market"
-            icon={<TrendingUp size={16} className="text-emerald-400" />}
-          >
-            <div className="space-y-4 p-6">
-              <MarketItem label="화폐거래소" price="2,840" change="+12" />
-              <MarketItem label="명예의 파편" price="74" change="-2" />
-              <MarketItem label="파괴강석" price="12" change="0" />
-            </div>
-          </Card>
         </aside>
       </div>
     </div>
