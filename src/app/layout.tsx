@@ -69,7 +69,8 @@ export const metadata: Metadata = {
     apple: "/og-image.png",
   },
   verification: {
-    google: "구글서치콘솔넣을자리",
+    google:
+      '<meta name="google-site-verification" content="e_p3eiiAVyD4jMfP98iSE0XIs9Y_nVnNbDQ-6Lsxi0c" />',
   },
   alternates: {
     canonical: "https://loaone.vercel.app",
