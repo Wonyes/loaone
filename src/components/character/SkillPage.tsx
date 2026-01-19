@@ -15,8 +15,8 @@ import { SkillPageSkeleton } from "../common/CardSkeleton";
 interface CharacterSkillPageProps {
   name: string;
   stats: any[];
-  usingSkillPoint: string;
-  totalSkillPoint: string;
+  usingSkillPoint: number;
+  totalSkillPoint: number;
   mainPassiveName: string;
 }
 
@@ -64,7 +64,7 @@ export function CharacterSkillPage({
   );
 }
 
-function useActiveSkills(skillData: any[], gemsData: any) {
+function useActiveSkills(skillData: any[] | undefined, gemsData: any) {
   return useMemo(() => {
     if (!skillData) return [];
 
@@ -197,7 +197,6 @@ function SkillListCard({ activeSkills, gemsData }: any) {
         </div>
       }
     >
-      {/* 고해상도 리스트 헤더 */}
       <div className="hidden grid-cols-12 border-b border-white/5 bg-white/[0.01] px-6 py-3 md:grid">
         <div className="col-span-3 text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
           Skill Identity

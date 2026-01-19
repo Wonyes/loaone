@@ -7,7 +7,6 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    console.log("서버에 도달한 ID:", id);
 
     const supabase = await createSupabaseServer();
 

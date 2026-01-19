@@ -1,4 +1,6 @@
-export const GRADE_STYLES = {
+import type { GradeStyle } from "@/types/lostark";
+
+export const GRADE_STYLES: Record<string, GradeStyle> = {
   에스더: {
     bg: "bg-gradient-to-br from-[#0c2e2c] to-[#2faba8]",
     text: "text-[#1ab9b6]",
@@ -39,6 +41,6 @@ export const GRADE_STYLES = {
     text: "text-[#cccccc]",
     border: "border-[#cccccc]/40",
   },
-} as const;
+};
 
 export type GradeType = keyof typeof GRADE_STYLES;

@@ -2,16 +2,25 @@
 
 import { InputHTMLAttributes, KeyboardEvent, forwardRef } from "react";
 import { Search } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onSearch?: () => void;
   showSearchButton?: boolean;
   onEnter?: () => void;
+  containerClassName?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { onEnter, onSearch, showSearchButton = false, className = "", ...props },
+    {
+      onEnter,
+      onSearch,
+      showSearchButton = false,
+      className,
+      containerClassName,
+      ...props
+    },
     ref
   ) => {
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -21,8 +30,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }
       props.onKeyDown?.(e);
     };
+
     return (
-      <div className="relative flex w-full items-center gap-4 rounded-xl border border-emerald-500/20 bg-slate-900/60 px-4 py-2">
+      <div
+        className={cn(
+          "relative flex w-full items-center gap-4 rounded-xl border border-emerald-500/20 bg-slate-900/60 px-4 py-2",
+          containerClassName
+        )}
+      >
         {showSearchButton && onSearch && (
           <button
             onClick={onSearch}
@@ -34,7 +49,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
         <input
           ref={ref}
-          className={`w-full origin-left scale-90 text-base text-white transition-colors focus:border-emerald-500/50 focus:outline-none ${className}`}
+          className={cn(
+            "w-full origin-left scale-90 text-base text-white transition-colors focus:border-emerald-500/50 focus:outline-none",
+            className
+          )}
           style={{ width: "133.33%" }}
           {...props}
           onKeyDown={handleKeyDown}

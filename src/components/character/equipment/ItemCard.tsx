@@ -1,9 +1,20 @@
 import { cn } from "@/lib/utils";
 import { getGradeStyle, getTierNumber } from "@/utils/lostarkUtils";
+import type { ReactNode } from "react";
 
-interface ItemCardProps {
-  item: any;
-  children: React.ReactNode;
+export interface ItemCardProps {
+  item: {
+    Grade: string;
+    Icon: string;
+    tooltip?: {
+      Element_001?: {
+        value?: {
+          leftStr2?: string;
+        };
+      };
+    };
+  };
+  children: ReactNode;
   showTierBadge?: boolean;
   className?: string;
 }
@@ -15,7 +26,7 @@ export function ItemCard({
   className,
 }: ItemCardProps) {
   const grade = getGradeStyle(item.Grade);
-  const tier = getTierNumber(item.tooltip?.Element_001?.value?.leftStr2);
+  const tier = getTierNumber(item.tooltip?.Element_001?.value?.leftStr2 ?? "");
 
   return (
     <div
@@ -32,7 +43,7 @@ export function ItemCard({
         )}
       >
         <img src={item.Icon} className="h-full w-full rounded-lg" alt="" />
-        {showTierBadge && tier && (
+        {showTierBadge && tier > 0 && (
           <div className="absolute -top-1.5 -right-1 rounded bg-amber-600 px-1 text-[9px] font-black text-white shadow-lg">
             T{tier}
           </div>

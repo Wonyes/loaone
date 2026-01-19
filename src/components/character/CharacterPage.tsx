@@ -88,8 +88,8 @@ function CharacterContent({ name }: { name: string }) {
             name={name}
             stats={profileData?.Stats || []}
             mainPassiveName={mainPassiveName}
-            usingSkillPoint={profileData?.UsingSkillPoint || "0"}
-            totalSkillPoint={profileData?.TotalSkillPoint || "0"}
+            usingSkillPoint={profileData?.UsingSkillPoint || 0}
+            totalSkillPoint={profileData?.TotalSkillPoint || 0}
           />
         )}
         {activeTab === "history" && <CharacterHistory name={name} />}

@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-interface CardProps {
+export interface CardProps {
   icon?: ReactNode;
   title?: string | ReactNode;
   children?: ReactNode;
-  chillClass?: string;
+  contentClassName?: string;
   className?: string;
   headerAction?: ReactNode;
   onClick?: () => void;
@@ -16,8 +16,8 @@ export function Card({
   title,
   onClick,
   children,
-  chillClass = "",
-  className = "",
+  contentClassName,
+  className,
   headerAction,
 }: CardProps) {
   return (
@@ -40,7 +40,7 @@ export function Card({
           {headerAction}
         </div>
       )}
-      <div className={(cn("relative"), chillClass)}>{children}</div>
+      <div className={cn("relative", contentClassName)}>{children}</div>
     </div>
   );
 }

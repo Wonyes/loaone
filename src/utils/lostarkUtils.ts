@@ -1,4 +1,13 @@
 import { GRADE_STYLES } from "@/constants/lostark/styles";
+import type {
+  StoneInscription,
+  CoreTooltip,
+  ArkPassiveStyle,
+  GradeStyle,
+} from "@/types/lostark";
+
+// 타입 재내보내기
+export type { StoneInscription, CoreTooltip, ArkPassiveStyle };
 
 export function getLevelNumber(leftStr2: string): number | null {
   if (!leftStr2) return null;
@@ -6,7 +15,7 @@ export function getLevelNumber(leftStr2: string): number | null {
   return match ? parseInt(match[1]) : null;
 }
 
-export function getQualityStyles(qualityValue: number) {
+export function getQualityStyles(qualityValue: number): string {
   if (qualityValue === 100)
     return "bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold shadow-sm";
   if (qualityValue >= 90)
@@ -21,19 +30,11 @@ export const getTierNumber = (str: string): number => {
   return match ? parseInt(match[1]) : 0;
 };
 
-// 재련 단계 파싱
 export const getRefinementLevel = (tooltip: any): number => {
   const rawRefine = JSON.stringify(tooltip);
   const match = rawRefine.match(/\[상급 재련\]\s*(\d+)단계/);
   return match ? parseInt(match[1]) : 0;
 };
-
-// 스톤 각인 파싱
-interface StoneInscription {
-  name: string;
-  level: string;
-  isDebuff: boolean;
-}
 
 export const parseStoneInscriptions = (tooltip: any): StoneInscription[] => {
   const effectsObj = tooltip?.Element_007?.value?.Element_000?.contentStr || {};
@@ -52,17 +53,9 @@ export const parseStoneInscriptions = (tooltip: any): StoneInscription[] => {
   });
 };
 
-export const getGradeStyle = (grade: string) => {
+export const getGradeStyle = (grade: string): GradeStyle => {
   return GRADE_STYLES[grade as keyof typeof GRADE_STYLES] || GRADE_STYLES.전설;
 };
-
-// 코어 툴팁 파싱
-interface CoreTooltip {
-  coreType: string;
-  corePoint: string;
-  coreOptions: string;
-  coreCondition: string;
-}
 
 export const parseCoreTooltip = (slot: any): CoreTooltip => {
   const result: CoreTooltip = {
@@ -92,13 +85,6 @@ export const parseCoreTooltip = (slot: any): CoreTooltip => {
   return result;
 };
 
-export interface ArkPassiveStyle {
-  text: string;
-  bg: string;
-  border: string;
-  iconType: "sparkles" | "zap" | "flame" | null;
-}
-
 const ARK_PASSIVE_STYLES: Record<string, ArkPassiveStyle> = {
   진화: {
     text: "text-amber-400",
@@ -126,7 +112,7 @@ export const getArkPassiveStyle = (type: string): ArkPassiveStyle => {
       text: "text-gray-400",
       bg: "bg-gray-500/10",
       border: "border-gray-500/20",
-      icon: null,
+      iconType: null,
     }
   );
 };

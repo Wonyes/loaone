@@ -22,13 +22,39 @@ import {
   Zap,
 } from "lucide-react";
 
-export function CardSkeleton({ className = "" }: { className?: string }) {
+// 공통 스켈레톤 유틸리티 컴포넌트
+interface SkeletonBoxProps {
+  className?: string;
+  width?: string;
+  height?: string;
+}
+
+export function SkeletonBox({ className, width, height }: SkeletonBoxProps) {
+  return (
+    <div
+      className={cn("animate-pulse rounded bg-white/10", className)}
+      style={{ width, height }}
+    />
+  );
+}
+
+export function SkeletonCircle({ className }: { className?: string }) {
+  return (
+    <div className={cn("animate-pulse rounded-full bg-white/10", className)} />
+  );
+}
+
+export interface CardSkeletonProps {
+  className?: string;
+}
+
+export function CardSkeleton({ className }: CardSkeletonProps) {
   return (
     <Card className={cn("animate-pulse", className)}>
       <div className="space-y-3 p-6">
-        <div className="h-4 w-3/4 rounded bg-white/10" />
-        <div className="h-4 w-1/2 rounded bg-white/10" />
-        <div className="h-4 w-2/3 rounded bg-white/10" />
+        <SkeletonBox className="h-4 w-3/4" />
+        <SkeletonBox className="h-4 w-1/2" />
+        <SkeletonBox className="h-4 w-2/3" />
       </div>
     </Card>
   );
@@ -402,23 +428,19 @@ export function AvatarPageSkeleton() {
   return (
     <div className="flex flex-col gap-3 p-1">
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
-        {/* 왼쪽: 캐릭터 프로필 */}
         <div className="lg:col-span-4">
           <Card className="relative h-full max-h-[550px] overflow-hidden border-none bg-[#15181D]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#1e1b4b_0%,transparent_70%)] opacity-40" />
 
-            {/* 캐릭터 이미지 영역 */}
             <div className="relative flex h-full items-end justify-center pb-24">
               <div className="h-[400px] w-[300px] animate-pulse rounded-lg bg-white/5" />
             </div>
 
-            {/* 상단 라벨 */}
             <div className="absolute top-8 left-8 z-30 flex items-center gap-3">
               <div className="h-px w-8 bg-white" />
               <div className="h-3 w-32 animate-pulse rounded bg-white/10" />
             </div>
 
-            {/* 하단 이름/서버 */}
             <div className="absolute right-0 bottom-10 left-0 z-30 flex flex-col items-center">
               <div className="mb-4 h-4 w-24 animate-pulse rounded bg-white/10" />
               <div className="h-8 w-40 animate-pulse rounded bg-white/10" />
@@ -427,10 +449,8 @@ export function AvatarPageSkeleton() {
           </Card>
         </div>
 
-        {/* 오른쪽 */}
         <div className="flex flex-col gap-3 lg:col-span-8">
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-4">
-            {/* 착용 아바타 */}
             <Card
               title="착용 아바타"
               icon={<Layers size={16} className="text-indigo-400" />}
@@ -451,7 +471,6 @@ export function AvatarPageSkeleton() {
               </div>
             </Card>
 
-            {/* 성향 */}
             <Card
               title="성향"
               icon={<Heart size={16} className="text-rose-400" />}
@@ -471,7 +490,6 @@ export function AvatarPageSkeleton() {
             </Card>
           </div>
 
-          {/* 염색 및 패턴 */}
           <Card
             title="염색 및 패턴"
             icon={<Layers size={16} className="text-indigo-400" />}
@@ -513,10 +531,8 @@ export function SkillPageSkeleton() {
   return (
     <article className="mx-auto w-full max-w-[1400px] antialiased">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* 왼쪽 사이드바 */}
         <aside className="flex flex-col gap-6 lg:col-span-3 xl:col-span-3">
           <div className="flex flex-col gap-6 sm:flex-row lg:flex-col">
-            {/* Combat Stats */}
             <Card
               title="Combat Stats"
               icon={<BarChart3 size={16} className="text-indigo-400" />}
@@ -539,7 +555,6 @@ export function SkillPageSkeleton() {
               </div>
             </Card>
 
-            {/* Skill Points */}
             <Card
               title="Skill Points"
               className="w-full"
@@ -556,9 +571,7 @@ export function SkillPageSkeleton() {
           </div>
         </aside>
 
-        {/* 오른쪽 메인 콘텐츠 */}
         <div className="flex flex-col gap-6 lg:col-span-9 xl:col-span-9">
-          {/* 보석 사이드바 스켈레톤 */}
           <Card
             title="GEM CONFIGURATION"
             icon={<Gem size={14} className="text-[#bef264]" />}
@@ -573,7 +586,6 @@ export function SkillPageSkeleton() {
             </div>
           </Card>
 
-          {/* 스킬 리스트 스켈레톤 */}
           <Card
             title="Combat Skill Configuration"
             icon={<Swords size={14} className="text-slate-400" />}
@@ -603,7 +615,6 @@ export function SkillPageSkeleton() {
                   key={i}
                   className="grid grid-cols-1 gap-4 p-6 md:grid-cols-12"
                 >
-                  {/* 스킬 정보 */}
                   <div className="flex items-center gap-4 md:col-span-3">
                     <div className="h-12 w-12 shrink-0 animate-pulse rounded-xl bg-white/10" />
                     <div className="flex-1 space-y-2">
@@ -612,7 +623,6 @@ export function SkillPageSkeleton() {
                     </div>
                   </div>
 
-                  {/* 트라이포드 */}
                   <div className="flex gap-2 md:col-span-6 md:border-x md:border-white/5 md:px-4">
                     {[...Array(3)].map((_, j) => (
                       <div key={j} className="flex-1 space-y-2">
@@ -621,7 +631,6 @@ export function SkillPageSkeleton() {
                     ))}
                   </div>
 
-                  {/* 룬 & 보석 */}
                   <div className="flex items-center justify-end gap-2 md:col-span-3">
                     <div className="h-8 w-8 animate-pulse rounded-lg bg-white/10" />
                     <div className="h-8 w-8 animate-pulse rounded-lg bg-white/10" />
@@ -664,7 +673,6 @@ export function CharacterHistorySkeleton() {
         }
       >
         <div className="h-[300px] w-full p-2 pt-16 sm:h-[450px] sm:p-10 sm:pt-20">
-          {/* 차트 영역 스켈레톤 */}
           <div className="relative h-full w-full"></div>
         </div>
       </Card>
@@ -694,7 +702,6 @@ export function CharacterCollectibleSkeleton() {
             </div>
           }
         >
-          {/* 프로그레스 바 */}
           <div className="absolute top-2 left-[1.5rem] h-1.5 w-[calc(100%-3.6rem)] rounded-full bg-white/5">
             <div
               className="h-full animate-pulse rounded-full bg-gradient-to-r from-emerald-500/30 to-cyan-400/30"
@@ -746,16 +753,13 @@ export function CharacterListSkeleton() {
                 className="flex h-[66px] w-full items-center rounded-full border border-white/5 bg-white/[0.02] px-5"
               >
                 <div className="grid w-full grid-cols-[44px_1fr_90px] items-center gap-4">
-                  {/* 프로필 이미지 */}
                   <div className="h-11 w-11 shrink-0 animate-pulse rounded-full bg-white/10" />
 
-                  {/* 이름/클래스 */}
                   <div className="ml-1 flex min-w-0 flex-col gap-1.5">
                     <div className="h-4 w-24 animate-pulse rounded bg-white/10" />
                     <div className="h-3 w-16 animate-pulse rounded bg-white/5" />
                   </div>
 
-                  {/* 레벨 */}
                   <div className="flex flex-col items-end gap-1 border-l border-white/5 py-1 pl-4">
                     <div className="h-2 w-12 animate-pulse rounded bg-white/5" />
                     <div className="h-5 w-16 animate-pulse rounded bg-white/10" />
