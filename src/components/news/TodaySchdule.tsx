@@ -3,7 +3,6 @@
 import { useCalendar } from "@/hooks/query/lostark/news/useNews";
 import { useEffect, useState } from "react";
 import { Card } from "../common/Card";
-import Loading from "@/app/loading";
 import { getGradeStyle } from "@/utils/lostarkUtils";
 import { IslandRewardModal } from "./IslandRewardModal";
 import {

@@ -21,7 +21,6 @@ import {
   Trophy,
   Zap,
 } from "lucide-react";
-import { Activity } from "react";
 
 export function CardSkeleton({ className = "" }: { className?: string }) {
   return (
