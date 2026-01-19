@@ -82,7 +82,7 @@ export default function HomeClient({
           </div>
         </div>
 
-        <aside className="sticky top-29 h-fit space-y-4 lg:col-span-3">
+        <aside className="sticky top-22 h-fit space-y-4 lg:col-span-3">
           <FavoritesPage />
         </aside>
       </div>

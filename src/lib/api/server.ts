@@ -8,7 +8,7 @@ import type {
   ArkPassiveData,
 } from "@/types/lostark";
 
-const REVALIDATE_TIME = 300; // 5분
+const REVALIDATE_TIME = 300;
 
 async function fetchLostarkAPI<T>(endpoint: string): Promise<T | null> {
   const response = await fetch(`${LOSTARK_API_BASE}${endpoint}`, {

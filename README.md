@@ -49,6 +49,7 @@
 - 동일 계정 내 **모든 캐릭터 자동 연동**
 
 **기술적 구현**
+
 - 로스트아크 API 응답의 HTML 태그 & 중첩 JSON을 **재귀적으로 정제**
 - React Query의 `staleTime` 설정으로 **불필요한 API 호출 최소화**
 - 탭 기반 UI로 대량의 정보를 **점진적 로딩**
@@ -59,11 +60,11 @@
 ```typescript
 // 데이터 정제 로직 예시
 const cleanLostArkData = (data: unknown) => {
-  if (typeof data === 'string') {
+  if (typeof data === "string") {
     // HTML 태그 제거
-    let cleaned = data.replace(/<[^>]*>/g, '');
+    let cleaned = data.replace(/<[^>]*>/g, "");
     // 중첩 JSON 파싱
-    if (cleaned.startsWith('{')) {
+    if (cleaned.startsWith("{")) {
       return JSON.parse(cleaned);
     }
     return cleaned;
@@ -89,6 +90,7 @@ const cleanLostArkData = (data: unknown) => {
 - 성장 추이를 한눈에 파악
 
 **기술적 구현**
+
 - Supabase에 레벨 이력 **자동 저장**
 - 기간별 데이터 **집계 쿼리 최적화**
 - 반응형 차트로 모바일 환경 지원
@@ -100,10 +102,10 @@ const cleanLostArkData = (data: unknown) => {
 // React Query 캐싱 전략
 const useCharacterHistory = (name: string) => {
   return useQuery({
-    queryKey: ['history', name],
+    queryKey: ["history", name],
     queryFn: () => fetchHistory(name),
     staleTime: 5 * 60 * 1000, // 5분 캐싱
-    gcTime: 30 * 60 * 1000,   // 30분 유지
+    gcTime: 30 * 60 * 1000, // 30분 유지
   });
 };
 ```
@@ -125,6 +127,7 @@ const useCharacterHistory = (name: string) => {
 - 어떤 기기에서든 **데이터 동기화**
 
 **기술적 구현**
+
 - Supabase Auth + RLS(Row Level Security)로 **데이터 보안**
 - SSR 환경에서의 **세션 관리** (`@supabase/ssr`)
 - Zustand로 클라이언트 **인증 상태 관리**
@@ -155,25 +158,31 @@ WITH CHECK (auth.uid() = user_id);
 **자동 업데이트되는 게임 정보**
 
 - 카오스게이트, 모험섬 등 **일일 스케줄**
-- 공식 공지사항 & 이벤트 **실시간 크롤링**
-- ISR(Incremental Static Regeneration)로 **최신 정보 유지**
+- 공식 공지사항 & 이벤트 정보
+- **로스트아크 공식 API** 활용
 
 **기술적 구현**
-- Cheerio를 활용한 **서버사이드 HTML 파싱**
-- Next.js ISR로 **5분마다 자동 재생성**
+
+- 로스트아크 Open API로 **실시간 데이터 조회**
+- Next.js `revalidate` 설정으로 **5분마다 자동 갱신**
 - 로딩 상태의 **Skeleton UI** 제공
 
 </td>
 <td width="40%">
 
 ```typescript
-// ISR 설정
-export const revalidate = 300; // 5분
-
-// 서버 컴포넌트에서 데이터 페칭
-async function NewsSection() {
-  const news = await fetchNews();
-  return <NewsList data={news} />;
+// 서버에서 공식 API 호출
+async function fetchLostarkAPI(endpoint: string) {
+  const response = await fetch(
+    `${LOSTARK_API_BASE}${endpoint}`,
+    {
+      headers: {
+        authorization: `bearer ${API_KEY}`,
+      },
+      next: { revalidate: 300 }, // 5분 캐시
+    }
+  );
+  return response.json();
 }
 ```
 
@@ -199,7 +208,7 @@ async function NewsSection() {
 │                              API Layer (Next.js)                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │
 │  │ /api/lostark/*  │  │ /api/favorites  │  │     /api/lostark/news      │  │
-│  │ 캐릭터 정보 조회  │  │  즐겨찾기 CRUD   │  │    뉴스/스케줄 크롤링       │  │
+│  │ 캐릭터 정보 조회  │  │  즐겨찾기 CRUD   │  │     뉴스/스케줄 API        │  │
 │  └────────┬────────┘  └────────┬────────┘  └─────────────┬───────────────┘  │
 └───────────┼─────────────────────┼─────────────────────────┼─────────────────┘
             │                     │                         │
@@ -222,34 +231,34 @@ async function NewsSection() {
 
 ### Frontend
 
-| 기술 | 버전 | 선택 이유 |
-|:---|:---:|:---|
-| **Next.js** | 16.1 | App Router의 서버 컴포넌트로 **초기 로딩 속도 개선**, ISR로 정적/동적 렌더링 유연하게 활용 |
-| **React** | 19.2 | React Compiler로 **자동 메모이제이션**, 수동 최적화 코드 감소 |
-| **TypeScript** | 5 | API 응답 타입 정의로 **런타임 에러 사전 방지**, 복잡한 데이터 구조 안전하게 처리 |
-| **Tailwind CSS** | 4 | 유틸리티 기반으로 **일관된 디자인 시스템** 구축, 번들 사이즈 최소화 |
+| 기술             | 버전 | 선택 이유                                                                                  |
+| :--------------- | :--: | :----------------------------------------------------------------------------------------- |
+| **Next.js**      | 16.1 | App Router의 서버 컴포넌트로 **초기 로딩 속도 개선**, ISR로 정적/동적 렌더링 유연하게 활용 |
+| **React**        | 19.2 | React Compiler로 **자동 메모이제이션**, 수동 최적화 코드 감소                              |
+| **TypeScript**   |  5   | API 응답 타입 정의로 **런타임 에러 사전 방지**, 복잡한 데이터 구조 안전하게 처리           |
+| **Tailwind CSS** |  4   | 유틸리티 기반으로 **일관된 디자인 시스템** 구축, 번들 사이즈 최소화                        |
 
 ### 상태 관리
 
-| 기술 | 선택 이유 |
-|:---|:---|
+| 기술            | 선택 이유                                                                                   |
+| :-------------- | :------------------------------------------------------------------------------------------ |
 | **React Query** | 서버 상태와 클라이언트 상태 분리, **자동 캐싱 & 백그라운드 리페치**로 항상 최신 데이터 유지 |
-| **Zustand** | Redux 대비 **보일러플레이트 90% 감소**, 번들 사이즈 2KB로 경량화 |
+| **Zustand**     | Redux 대비 **보일러플레이트 90% 감소**, 번들 사이즈 2KB로 경량화                            |
 
 ### Backend & Database
 
-| 기술 | 선택 이유 |
-|:---|:---|
-| **Supabase** | PostgreSQL 기반으로 **복잡한 쿼리 지원**, RLS로 별도 백엔드 없이 보안 처리 |
-| **Supabase Auth** | OAuth 2.0 소셜 로그인 **10분 만에 구현**, 세션 관리 자동화 |
+| 기술              | 선택 이유                                                                  |
+| :---------------- | :------------------------------------------------------------------------- |
+| **Supabase**      | PostgreSQL 기반으로 **복잡한 쿼리 지원**, RLS로 별도 백엔드 없이 보안 처리 |
+| **Supabase Auth** | OAuth 2.0 소셜 로그인 **10분 만에 구현**, 세션 관리 자동화                 |
 
 ### UI & UX
 
-| 기술 | 선택 이유 |
-|:---|:---|
-| **Radix UI** | **접근성(A11y) 기본 지원**, 헤드리스 컴포넌트로 커스텀 자유도 확보 |
+| 기술              | 선택 이유                                                              |
+| :---------------- | :--------------------------------------------------------------------- |
+| **Radix UI**      | **접근성(A11y) 기본 지원**, 헤드리스 컴포넌트로 커스텀 자유도 확보     |
 | **Framer Motion** | 선언적 API로 **복잡한 애니메이션 간단 구현**, 레이아웃 애니메이션 지원 |
-| **Recharts** | React 친화적 API, **반응형 차트** 쉽게 구현 |
+| **Recharts**      | React 친화적 API, **반응형 차트** 쉽게 구현                            |
 
 ---
 
@@ -271,12 +280,12 @@ async function NewsSection() {
 ```typescript
 // src/lib/lostark-utils.ts
 export const cleanLostArkData = <T>(data: T): T => {
-  if (typeof data === 'string') {
+  if (typeof data === "string") {
     // 1. HTML 태그 제거
-    let cleaned = data.replace(/<[^>]*>/g, '');
+    let cleaned = data.replace(/<[^>]*>/g, "");
 
     // 2. JSON 문자열이면 파싱
-    if (cleaned.startsWith('{') || cleaned.startsWith('[')) {
+    if (cleaned.startsWith("{") || cleaned.startsWith("[")) {
       try {
         return cleanLostArkData(JSON.parse(cleaned));
       } catch {
@@ -290,7 +299,7 @@ export const cleanLostArkData = <T>(data: T): T => {
     return data.map(cleanLostArkData) as T;
   }
 
-  if (typeof data === 'object' && data !== null) {
+  if (typeof data === "object" && data !== null) {
     return Object.fromEntries(
       Object.entries(data).map(([k, v]) => [k, cleanLostArkData(v)])
     ) as T;
@@ -341,6 +350,7 @@ export const useEvents = (initialData?: EventItem[]) =>
 ```
 
 **결과**:
+
 - 검색엔진이 완성된 HTML 크롤링 (SEO ✓)
 - 첫 진입 시 즉시 콘텐츠 표시 (FCP 개선 ✓)
 - 이후 인터랙션은 CSR로 빠른 반응 (UX ✓)
@@ -353,8 +363,8 @@ export const useEvents = (initialData?: EventItem[]) =>
 
 ```typescript
 // src/lib/supabase/server/server.ts
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
 export const createSupabaseServer = async () => {
   const cookieStore = await cookies();
@@ -364,9 +374,11 @@ export const createSupabaseServer = async () => {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: (name, value, options) => cookieStore.set({ name, value, ...options }),
-        remove: (name, options) => cookieStore.set({ name, value: '', ...options }),
+        get: name => cookieStore.get(name)?.value,
+        set: (name, value, options) =>
+          cookieStore.set({ name, value, ...options }),
+        remove: (name, options) =>
+          cookieStore.set({ name, value: "", ...options }),
       },
     }
   );
@@ -414,7 +426,7 @@ src/
 │   ├── auth/callback/            # OAuth 콜백 처리
 │   └── api/
 │       ├── lostark/[name]/       # 캐릭터 API (프록시)
-│       ├── lostark/news/         # 뉴스 크롤링 API
+│       ├── lostark/news/         # 뉴스/이벤트 API
 │       └── favorites/            # 즐겨찾기 CRUD API
 │
 ├── components/
@@ -513,13 +525,13 @@ npm run dev
 
 ## 📜 스크립트
 
-| 명령어 | 설명 |
-|:---|:---|
-| `npm run dev` | 개발 서버 (Turbopack) |
-| `npm run build` | 프로덕션 빌드 |
-| `npm run start` | 프로덕션 서버 |
-| `npm run lint` | ESLint 검사 |
-| `npm run test` | Jest 테스트 |
+| 명령어          | 설명                              |
+| :-------------- | :-------------------------------- |
+| `npm run dev`   | 개발 서버 (Turbopack으로 빠른 HMR) |
+| `npm run build` | 프로덕션 빌드 (타입 체크 포함)     |
+| `npm run start` | 프로덕션 서버 실행                 |
+| `npm run lint`  | ESLint 코드 검사                  |
+| `npm run test`  | Jest 테스트 실행                  |
 
 ---
 
