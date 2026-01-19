@@ -35,7 +35,9 @@ export function useLostArkTime(currentTime: Date): LostArkTime {
     nextReset.setHours(6, 0, 0, 0);
 
     return {
-      lostArkDayStr: resetDate.toLocaleDateString("en-CA"),
+      lostArkDayStr: resetDate.toLocaleDateString("sv-SE", {
+        timeZone: "Asia/Seoul",
+      }),
       nextResetTime: nextReset,
     };
   }, [currentTime]);

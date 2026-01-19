@@ -107,7 +107,10 @@ function WeekHeader({
           if (currentTime.getHours() < 6) date.setDate(date.getDate() - 1);
           date.setDate(date.getDate() - date.getDay() + i);
 
-          const isToday = date.toLocaleDateString("en-CA") === lostArkDayStr;
+          const isToday =
+            date.toLocaleDateString("sv-SE", {
+              timeZone: "Asia/Seoul",
+            }) === lostArkDayStr;
 
           return (
             <div key={i} className="group flex flex-col items-center gap-1.5">
