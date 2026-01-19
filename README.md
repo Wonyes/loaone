@@ -31,6 +31,7 @@
 - Supabase를 활용한 **서버리스 백엔드 아키텍처** 구축
 - React 19 + Next.js 16의 **최신 기능 적극 활용** (React Compiler, Turbopack)
 - **성능 최적화**를 통한 빠른 로딩 속도와 부드러운 사용자 경험
+- Next.js, Tailwind.css 적응
 
 ---
 
@@ -533,14 +534,6 @@ npm run dev
 | `npm run lint`  | ESLint 코드 검사                  |
 | `npm run test`  | Jest 테스트 실행                  |
 
----
-
-## 📈 향후 계획
-
-- [ ] 레이드 파티 매칭 기능
-- [ ] 캐릭터 비교 기능
-- [ ] PWA 지원으로 모바일 앱 경험
-- [ ] 다크/라이트 테마 전환
 
 ---
 
