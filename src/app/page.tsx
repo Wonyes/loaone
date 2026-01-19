@@ -107,19 +107,3 @@ function NoticeSection({ title, data, icon }: any) {
     </Card>
   );
 }
-
-function MarketItem({ label, price, change }: any) {
-  return (
-    <div className="flex items-center justify-between border-b border-white/[0.03] pb-2 last:border-0">
-      <span className="text-[11px] font-medium text-slate-500">{label}</span>
-      <div className="flex items-center gap-3 font-mono text-[12px]">
-        <span className="font-bold text-slate-200">{price}G</span>
-        <span
-          className={`text-[9px] ${change.includes("+") ? "text-rose-400" : "text-blue-400"}`}
-        >
-          {change}
-        </span>
-      </div>
-    </div>
-  );
-}

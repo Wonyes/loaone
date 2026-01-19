@@ -18,7 +18,8 @@ export default function AvatarPage({
   const { data: avatarData, isLoading } = useAvatars(name);
 
   if (isLoading) return <AvatarPageSkeleton />;
-  if (avatarData === null) return undefined;
+  if (!avatarData) return null;
+
   const groupedAvatars = avatarData.reduce((acc: any, avatar: any) => {
     const type = avatar.Type;
     if (!acc[type]) acc[type] = { inner: null, outer: null };

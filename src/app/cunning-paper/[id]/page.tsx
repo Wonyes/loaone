@@ -1,14 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  ChevronLeft,
-  Sword,
-  Shield,
-  Zap,
-  Target,
-  AlertCircle,
-} from "lucide-react";
+import { ChevronLeft, Sword, Shield, Target, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/common/Card";
 import { useParams, useRouter } from "next/navigation";
