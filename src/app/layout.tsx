@@ -69,8 +69,7 @@ export const metadata: Metadata = {
     apple: "/og-image.png",
   },
   verification: {
-    google:
-      '<meta name="google-site-verification" content="e_p3eiiAVyD4jMfP98iSE0XIs9Y_nVnNbDQ-6Lsxi0c" />',
+    google: "e_p3eiiAVyD4jMfP98iSE0XIs9Y_nVnNbDQ-6Lsxi0c",
   },
   alternates: {
     canonical: "https://loaone.vercel.app",
