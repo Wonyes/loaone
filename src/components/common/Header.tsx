@@ -19,9 +19,7 @@ export function Header() {
 
   const navLinks = [
     { name: "MARKET", href: "/market" },
-    { name: "GUILD", href: "/guild" },
     { name: "PAPER", href: "/cunning-paper" },
-    { name: "RANKING", href: "/ranking" },
   ];
 
   return (
