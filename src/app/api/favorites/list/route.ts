@@ -1,46 +1,30 @@
-import { createClient } from "@/lib/supabase/discode/discode";
+import { createSupabaseServer } from "@/lib/supabase/server/server";
 import { NextRequest, NextResponse } from "next/server";
 
-// GET: 즐겨찾기 상태 확인
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const name = searchParams.get("name");
+// GET: 즐겨찾기 상태 확인 or 전체 목록
 
-  const supabase = createClient();
+export async function GET() {
+  const supabase = await createSupabaseServer();
+
   const {
     data: { user },
-    error: userError,
   } = await supabase.auth.getUser();
 
-  if (userError || !user) {
-    return NextResponse.json({ favorited: false, favorites: [] });
+  if (!user) {
+    return NextResponse.json({ favorites: [] });
   }
 
-  // name 있으면 → 개별 확인
-  if (name) {
-    const { data } = await supabase
-      .from("favorites")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("character_name", name)
-      .single();
-
-    return NextResponse.json({ favorited: !!data });
-  }
-
-  // name 없으면 → 전체 목록
   const { data, error } = await supabase
     .from("favorites")
-    .select("character_name, server_name, item_level, class, img")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    .select("*")
+    .eq("user_id", user.id);
 
   if (error) {
     return NextResponse.json({ favorites: [] });
   }
 
   return NextResponse.json({
-    favorites: data.map(f => ({
+    favorites: (data || []).map(f => ({
       name: f.character_name,
       serverName: f.server_name,
       itemLevel: f.item_level,
@@ -63,7 +47,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createClient();
+    const supabase = await createSupabaseServer();
     const {
       data: { user },
       error: userError,
@@ -73,23 +57,38 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: existing } = await supabase
+    const { data: existing, error: checkError } = await supabase
       .from("favorites")
       .select("id")
       .eq("user_id", user.id)
       .eq("character_name", characterName)
-      .single();
+      .maybeSingle();
+
+    if (checkError) {
+      console.error("Check existing error:", checkError);
+      return NextResponse.json(
+        { error: "Failed to check status" },
+        { status: 500 }
+      );
+    }
 
     if (existing) {
-      const { error } = await supabase
+      const { error: deleteError } = await supabase
         .from("favorites")
         .delete()
         .eq("id", existing.id);
 
-      if (error) throw error;
+      if (deleteError) {
+        console.error("Delete error:", deleteError);
+        return NextResponse.json(
+          { error: "Failed to remove favorite" },
+          { status: 500 }
+        );
+      }
+
       return NextResponse.json({ favorited: false });
     } else {
-      const { error } = await supabase.from("favorites").insert({
+      const { error: insertError } = await supabase.from("favorites").insert({
         user_id: user.id,
         character_name: characterName,
         server_name: serverName,
@@ -98,11 +97,21 @@ export async function POST(request: NextRequest) {
         created_at: new Date().toISOString(),
       });
 
-      if (error) throw error;
+      if (insertError) {
+        console.error("Insert error:", insertError);
+        return NextResponse.json(
+          { error: "Failed to add favorite" },
+          { status: 500 }
+        );
+      }
+
       return NextResponse.json({ favorited: true });
     }
   } catch (error) {
     console.error("Favorites POST error:", error);
-    return NextResponse.json({ error: "Failed to toggle" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

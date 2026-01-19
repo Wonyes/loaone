@@ -1,18 +1,19 @@
-import { createClient } from "@/lib/supabase/discode/discode";
+import { createSupabaseServer } from "@/lib/supabase/server/server";
 import { NextRequest, NextResponse } from "next/server";
 
-// GET: 즐겨찾기 상태 확인
+// GET: 개별 상태 확인
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const name = searchParams.get("name");
 
   if (!name) {
-    return NextResponse.json({ error: "Name required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Character name required" },
+      { status: 400 }
+    );
   }
 
-  const supabase = createClient();
-
-  // 현재 사용자 확인
+  const supabase = await createSupabaseServer();
   const {
     data: { user },
     error: userError,
@@ -22,17 +23,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ favorited: false });
   }
 
-  // 즐겨찾기 확인
   const { data, error } = await supabase
     .from("favorites")
     .select("id")
     .eq("user_id", user.id)
     .eq("character_name", name)
-    .single();
+    .maybeSingle();
 
-  if (error && error.code !== "PGRST116") {
-    console.error("Favorites GET error:", error);
-    return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
+  if (error) {
+    console.error("Favorite check error:", error);
+    return NextResponse.json({ favorited: false });
   }
 
   return NextResponse.json({ favorited: !!data });
@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { characterName } = body;
+    const { characterName, serverName, itemLevel, className } = body;
 
     if (!characterName) {
       return NextResponse.json(
@@ -51,9 +51,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = createClient();
-
-    // 현재 사용자 확인
+    const supabase = await createSupabaseServer();
     const {
       data: { user },
       error: userError,
@@ -63,37 +61,61 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // 기존 즐겨찾기 확인
-    const { data: existing } = await supabase
+    const { data: existing, error: checkError } = await supabase
       .from("favorites")
       .select("id")
       .eq("user_id", user.id)
       .eq("character_name", characterName)
-      .single();
+      .maybeSingle();
+
+    if (checkError) {
+      console.error("Check error:", checkError);
+      return NextResponse.json(
+        { error: "Failed to check status" },
+        { status: 500 }
+      );
+    }
 
     if (existing) {
-      // 이미 즐겨찾기 → 삭제
-      const { error } = await supabase
+      const { error: deleteError } = await supabase
         .from("favorites")
         .delete()
         .eq("id", existing.id);
 
-      if (error) throw error;
+      if (deleteError) {
+        console.error("Delete error:", deleteError);
+        return NextResponse.json(
+          { error: "Failed to remove favorite" },
+          { status: 500 }
+        );
+      }
 
       return NextResponse.json({ favorited: false });
     } else {
-      // 즐겨찾기 추가
-      const { error } = await supabase.from("favorites").insert({
+      const { error: insertError } = await supabase.from("favorites").insert({
         user_id: user.id,
         character_name: characterName,
+        server_name: serverName,
+        item_level: itemLevel,
+        class: className,
+        created_at: new Date().toISOString(),
       });
 
-      if (error) throw error;
+      if (insertError) {
+        console.error("Insert error:", insertError);
+        return NextResponse.json(
+          { error: "Failed to add favorite" },
+          { status: 500 }
+        );
+      }
 
       return NextResponse.json({ favorited: true });
     }
   } catch (error) {
-    console.error("Favorites POST error:", error);
-    return NextResponse.json({ error: "Failed to toggle" }, { status: 500 });
+    console.error("Toggle error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

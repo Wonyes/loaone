@@ -41,14 +41,31 @@ export default function FavoriteButton({
         handleLogin
       );
       return;
-    } else {
-      toggle.mutate({
+    }
+
+    toggle.mutate(
+      {
         characterName,
         serverName: profileData?.ServerName,
         itemLevel: profileData?.ItemAvgLevel,
         className: profileData?.CharacterClassName,
-      });
-    }
+      },
+      {
+        onSuccess: data => {
+          if (data.favorited) {
+          } else {
+          }
+        },
+        onError: error => {
+          showAlert(
+            "오류 발생",
+            "즐겨찾기 처리 중 오류가 발생했습니다.",
+            "확인"
+          );
+          console.error("Toggle error:", error);
+        },
+      }
+    );
   };
 
   if (!user) return null;

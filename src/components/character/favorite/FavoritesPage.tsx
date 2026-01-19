@@ -1,6 +1,5 @@
 "use client";
 
-import { useFavoriteStore } from "@/hooks/store/useFavoriteStore";
 import { useFavorites } from "@/hooks/query/lostark/character/useFavorite";
 import Link from "next/link";
 import { Star } from "lucide-react";
@@ -13,9 +12,7 @@ import { FavoritesSkeleton } from "@/components/common/CardSkeleton";
 export default function FavoritesPage() {
   const { user, loading } = useUser();
   const router = useRouter();
-  const favorites = useFavoriteStore(state => state.favorites);
-
-  const { isLoading } = useFavorites();
+  const { data: favorites = [], isLoading } = useFavorites();
 
   useEffect(() => {
     if (!loading && !user) {

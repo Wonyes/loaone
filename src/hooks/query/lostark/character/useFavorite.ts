@@ -1,119 +1,144 @@
-import { useFavoriteStore } from "@/hooks/store/useFavoriteStore";
+import { useUser } from "@/hooks/useUesr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useFavoriteStore } from "@/hooks/store/useFavoriteStore";
 
-interface ToggleFavoriteParams {
-  characterName: string;
-  serverName?: string;
-  itemLevel?: string;
-  className?: string;
-}
-
-const fetchFavorites = async () => {
-  const res = await fetch("/api/favorites/list");
-  if (!res.ok) throw new Error("Failed");
-  return res.json() as Promise<{
-    favorites: Array<{
-      name: string;
-      serverName?: string;
-      itemLevel?: string;
-      className?: string;
-    }>;
-  }>;
-};
-
+// 전체 즐겨찾기 목록 조회
 export function useFavorites() {
+  const { user } = useUser();
   const setFavorites = useFavoriteStore(state => state.setFavorites);
 
-  const query = useQuery({
-    queryKey: ["favorites", "list"],
-    queryFn: fetchFavorites,
+  return useQuery({
+    queryKey: ["favorites", user?.id],
+    queryFn: async () => {
+      const res = await fetch("/api/favorites/list");
+
+      if (!res.ok) throw new Error("Failed to fetch");
+
+      const data = await res.json();
+
+      const favorites = data.favorites || [];
+
+      setFavorites(favorites);
+
+      return favorites;
+    },
+    enabled: !!user,
+    staleTime: 1000 * 60 * 5,
   });
-
-  useEffect(() => {
-    if (query.data) {
-      setFavorites(query.data.favorites);
-    }
-  }, [query.data, setFavorites]);
-
-  return query;
 }
 
-export function useFavoriteStatus(name: string) {
-  const isFavorite = useFavoriteStore(state => state.isFavorite(name));
+// 개별 즐겨찾기 상태 조회
+export function useFavoriteStatus(characterName: string) {
+  const { user } = useUser();
+  const isFavorite = useFavoriteStore(state => state.isFavorite);
 
-  return {
-    data: { favorited: isFavorite },
-    isLoading: false,
-  };
+  return useQuery({
+    queryKey: ["favorite", characterName, user?.id],
+    queryFn: async () => {
+      const res = await fetch(`/api/favorites?name=${characterName}`); // 그대로
+      if (!res.ok) throw new Error("Failed to fetch");
+      return res.json();
+    },
+    enabled: !!user && !!characterName,
+    staleTime: 1000 * 60,
+    select: data => ({
+      ...data,
+      cachedFavorite: isFavorite(characterName),
+    }),
+  });
 }
 
 // 즐겨찾기 토글
-const toggleFavorite = async (params: ToggleFavoriteParams) => {
-  const res = await fetch("/api/favorites", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-  });
-
-  if (!res.ok) throw new Error("Failed");
-  return res.json() as Promise<{ favorited: boolean }>;
-};
-
-export function useToggleFavorite(name: string) {
+export function useToggleFavorite(characterName: string) {
   const queryClient = useQueryClient();
+  const { user } = useUser();
   const addFavorite = useFavoriteStore(state => state.addFavorite);
   const removeFavorite = useFavoriteStore(state => state.removeFavorite);
-  const isFavorite = useFavoriteStore(state => state.isFavorite(name));
 
   return useMutation({
-    mutationFn: (params: ToggleFavoriteParams) => toggleFavorite(params),
+    mutationFn: async (data: {
+      characterName: string;
+      serverName: string;
+      itemLevel: string;
+      className: string;
+    }) => {
+      const res = await fetch("/api/favorites", {
+        // 그대로
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    onMutate: async variables => {
-      // Optimistic update
+      if (!res.ok) throw new Error("Failed to toggle");
+      return res.json();
+    },
+    onMutate: async data => {
+      const isFavorite = useFavoriteStore.getState().isFavorite(characterName);
+
       if (isFavorite) {
-        removeFavorite(variables.characterName);
+        removeFavorite(characterName);
       } else {
         addFavorite({
-          name: variables.characterName,
-          serverName: variables.serverName,
-          itemLevel: variables.itemLevel,
-          className: variables.className,
+          name: data.characterName,
+          serverName: data.serverName,
+          itemLevel: data.itemLevel,
+          className: data.className,
         });
       }
 
-      // context로 이전 상태 반환 (롤백용)
-      return { variables };
-    },
+      await queryClient.cancelQueries({
+        queryKey: ["favorite", characterName, user?.id],
+      });
+      await queryClient.cancelQueries({
+        queryKey: ["favorites", user?.id],
+      });
 
-    onError: (_error, _variables, context) => {
-      // 롤백
-      if (context?.variables) {
-        if (isFavorite) {
-          addFavorite({
-            name: context.variables.characterName,
-            serverName: context.variables.serverName,
-            itemLevel: context.variables.itemLevel,
-            className: context.variables.className,
-          });
-        } else {
-          removeFavorite(context.variables.characterName);
-        }
-      }
-    },
+      const previousStatus = queryClient.getQueryData([
+        "favorite",
+        characterName,
+        user?.id,
+      ]);
+      const previousList = queryClient.getQueryData(["favorites", user?.id]);
 
-    onSuccess: (data, variables) => {
-      if (data.favorited) {
+      queryClient.setQueryData(
+        ["favorite", characterName, user?.id],
+        (old: any) => ({
+          ...old,
+          favorited: !old?.favorited,
+        })
+      );
+
+      return { previousStatus, previousList, wasFavorite: isFavorite };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.wasFavorite) {
         addFavorite({
-          name: variables.characterName,
-          serverName: variables.serverName,
-          itemLevel: variables.itemLevel,
-          className: variables.className,
+          name: characterName,
+          serverName: _variables.serverName,
+          itemLevel: _variables.itemLevel,
+          className: _variables.className,
         });
       } else {
-        removeFavorite(variables.characterName);
+        removeFavorite(characterName);
       }
-      queryClient.invalidateQueries({ queryKey: ["favorites", "list"] });
+
+      if (context?.previousStatus) {
+        queryClient.setQueryData(
+          ["favorite", characterName, user?.id],
+          context.previousStatus
+        );
+      }
+      if (context?.previousList) {
+        queryClient.setQueryData(["favorites", user?.id], context.previousList);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["favorite", characterName, user?.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["favorites", user?.id],
+      });
     },
   });
 }

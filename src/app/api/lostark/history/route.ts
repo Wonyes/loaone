@@ -62,19 +62,13 @@ export async function GET(request: NextRequest) {
         });
 
       if (insertError) throw insertError;
-      console.log(
-        `✅ [${characterName}] 새 기록 저장: ${currentLevelInt / 100}`
-      );
-    } else {
-      console.log(`🚫 [${characterName}] 중복: 저장 패스`);
     }
-
     // 4. 조회 (차트용: 과거 -> 현재)
     const { data: history } = await supabase
       .from("level_history")
       .select("*")
       .eq("character_name", characterName)
-      .not("recorded_at", "is", null) // 쓰레기 데이터 제외
+      .not("recorded_at", "is", null)
       .order("recorded_at", { ascending: true });
 
     return NextResponse.json({
