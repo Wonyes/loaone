@@ -2,147 +2,180 @@
 
 # 🎮 로아원 (LoaOne)
 
-### 로스트아크 종합 정보 플랫폼
+### 로스트아크 유저를 위한 종합 정보 플랫폼
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.1-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)](https://supabase.com/)
 [![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000?logo=vercel)](https://loaone.vercel.app)
 
 <br />
 
-[**🌐 사이트 바로가기**](https://loaone.vercel.app)
-
-<br />
-
-<img src="https://img.shields.io/badge/로스트아크-FF6A00?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyTDIgN2wxMCA1IDEwLTV6TTIgMTdsOSA1IDEwLTV2LTVsLTEwIDUtMTAtNXoiLz48L3N2Zz4=&logoColor=white" alt="Lost Ark" />
+[**🌐 라이브 데모**](https://loaone.vercel.app) · [**📝 기술 블로그**](#) · [**🐛 이슈 리포트**](https://github.com/your-username/loaone/issues)
 
 </div>
 
 ---
 
-## 📋 목차
+## 📌 프로젝트 소개
 
-- [소개](#-소개)
-- [주요 기능](#-주요-기능)
-- [기술 스택](#️-기술-스택)
-- [프로젝트 구조](#-프로젝트-구조)
-- [시작하기](#-시작하기)
-- [환경 변수](#-환경-변수)
-- [스크립트](#-스크립트)
+**로아원**은 로스트아크 공식 API와 Supabase를 활용한 **풀스택 웹 애플리케이션**입니다.
 
----
+단순한 정보 조회를 넘어, **실시간 데이터 동기화**, **사용자 인증**, **개인화된 즐겨찾기 시스템**까지 구현하여 실제 서비스 수준의 사용자 경험을 제공합니다.
 
-## 🎯 소개
+### 🎯 프로젝트 목표
 
-**로아원(LoaOne)**은 로스트아크 유저들을 위한 종합 정보 플랫폼입니다.
-
-캐릭터 정보 조회, 실시간 스케줄, 이벤트 정보, 공지사항 등 게임에 필요한 모든 정보를 한 곳에서 확인할 수 있습니다.
+- 로스트아크 공식 API의 복잡한 데이터 구조를 **직관적인 UI로 시각화**
+- Supabase를 활용한 **서버리스 백엔드 아키텍처** 구축
+- React 19 + Next.js 16의 **최신 기능 적극 활용** (React Compiler, Turbopack)
+- **성능 최적화**를 통한 빠른 로딩 속도와 부드러운 사용자 경험
 
 ---
 
 ## ✨ 주요 기능
 
-### 🔍 캐릭터 검색 & 조회
-
-| 기능 | 설명 |
-|:---:|:---|
-| **장비 정보** | 착용 장비, 악세서리, 팔찌, 보석, 카드, 아크패시브 |
-| **아바타** | 캐릭터 아바타 및 염색 정보 |
-| **스킬** | 스킬 트라이포드, 룬 정보 |
-| **레벨 이력** | 아이템 레벨 변화 그래프 |
-| **수집품** | 모코코 씨앗, 섬의 마음 등 수집 진행도 |
-| **캐릭터 목록** | 동일 계정 내 다른 캐릭터 조회 |
-
-### 📅 실시간 스케줄
-
-- 카오스게이트, 모험섬 등 일일 스케줄
-- 이벤트 정보 슬라이더
-- 공식 공지사항 & 패치노트
-
-### ⭐ 즐겨찾기
-
-- 캐릭터 즐겨찾기 등록/해제
-- 계정 연동으로 어디서든 확인
-- 홈에서 즐겨찾는 캐릭터 빠른 조회
-
-### 📖 컨닝페이퍼
-
-- 카제로스, 군단장, 어비스, 가디언 레이드 정보
-- 검색 및 카테고리 필터링
-
----
-
-## 🛠️ 기술 스택
+### 1️⃣ 캐릭터 통합 검색 시스템
 
 <table>
 <tr>
-<td align="center" width="140">
+<td width="60%">
 
-**Frontend**
+**실시간 캐릭터 정보 조회**
 
-</td>
-<td>
+- 장비, 악세서리, 보석, 카드 등 **8가지 카테고리** 정보 통합 제공
+- 복잡한 툴팁 데이터를 **파싱하여 시각화**
+- 동일 계정 내 **모든 캐릭터 자동 연동**
 
-![Next.js](https://img.shields.io/badge/Next.js-000?logo=next.js&logoColor=white)
-![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?logo=tailwindcss&logoColor=white)
-
-</td>
-</tr>
-<tr>
-<td align="center">
-
-**상태 관리**
+**기술적 구현**
+- 로스트아크 API 응답의 HTML 태그 & 중첩 JSON을 **재귀적으로 정제**
+- React Query의 `staleTime` 설정으로 **불필요한 API 호출 최소화**
+- 탭 기반 UI로 대량의 정보를 **점진적 로딩**
 
 </td>
-<td>
+<td width="40%">
 
-![Zustand](https://img.shields.io/badge/Zustand-433D3E?logo=react&logoColor=white)
-![React Query](https://img.shields.io/badge/React%20Query-FF4154?logo=reactquery&logoColor=white)
-
-</td>
-</tr>
-<tr>
-<td align="center">
-
-**Backend**
-
-</td>
-<td>
-
-![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)
-![Lost Ark API](https://img.shields.io/badge/Lost%20Ark%20API-FF6A00?logoColor=white)
+```typescript
+// 데이터 정제 로직 예시
+const cleanLostArkData = (data: unknown) => {
+  if (typeof data === 'string') {
+    // HTML 태그 제거
+    let cleaned = data.replace(/<[^>]*>/g, '');
+    // 중첩 JSON 파싱
+    if (cleaned.startsWith('{')) {
+      return JSON.parse(cleaned);
+    }
+    return cleaned;
+  }
+  // 재귀적 처리...
+};
+```
 
 </td>
 </tr>
-<tr>
-<td align="center">
+</table>
 
-**UI 라이브러리**
+### 2️⃣ 아이템 레벨 히스토리 추적
+
+<table>
+<tr>
+<td width="60%">
+
+**캐릭터 성장 기록 시각화**
+
+- 7일 / 30일 / 90일 / 전체 기간별 **레벨 변화 그래프**
+- Recharts를 활용한 **인터랙티브 차트**
+- 성장 추이를 한눈에 파악
+
+**기술적 구현**
+- Supabase에 레벨 이력 **자동 저장**
+- 기간별 데이터 **집계 쿼리 최적화**
+- 반응형 차트로 모바일 환경 지원
 
 </td>
-<td>
+<td width="40%">
 
-![Radix UI](https://img.shields.io/badge/Radix%20UI-161618?logo=radixui&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer%20Motion-0055FF?logo=framer&logoColor=white)
-![Recharts](https://img.shields.io/badge/Recharts-22B5BF?logoColor=white)
+```typescript
+// React Query 캐싱 전략
+const useCharacterHistory = (name: string) => {
+  return useQuery({
+    queryKey: ['history', name],
+    queryFn: () => fetchHistory(name),
+    staleTime: 5 * 60 * 1000, // 5분 캐싱
+    gcTime: 30 * 60 * 1000,   // 30분 유지
+  });
+};
+```
 
 </td>
 </tr>
-<tr>
-<td align="center">
+</table>
 
-**개발 도구**
+### 3️⃣ 즐겨찾기 & 사용자 인증
+
+<table>
+<tr>
+<td width="60%">
+
+**Supabase 기반 사용자 시스템**
+
+- Discord OAuth 2.0 소셜 로그인
+- 사용자별 **즐겨찾기 캐릭터 관리**
+- 어떤 기기에서든 **데이터 동기화**
+
+**기술적 구현**
+- Supabase Auth + RLS(Row Level Security)로 **데이터 보안**
+- SSR 환경에서의 **세션 관리** (`@supabase/ssr`)
+- Zustand로 클라이언트 **인증 상태 관리**
 
 </td>
-<td>
+<td width="40%">
 
-![ESLint](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white)
-![Prettier](https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=black)
-![Jest](https://img.shields.io/badge/Jest-C21325?logo=jest&logoColor=white)
+```typescript
+// Supabase RLS 정책
+-- 사용자는 자신의 즐겨찾기만 조회/수정 가능
+CREATE POLICY "Users can manage own favorites"
+ON favorites
+FOR ALL
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+```
+
+</td>
+</tr>
+</table>
+
+### 4️⃣ 실시간 게임 스케줄 & 뉴스
+
+<table>
+<tr>
+<td width="60%">
+
+**자동 업데이트되는 게임 정보**
+
+- 카오스게이트, 모험섬 등 **일일 스케줄**
+- 공식 공지사항 & 이벤트 **실시간 크롤링**
+- ISR(Incremental Static Regeneration)로 **최신 정보 유지**
+
+**기술적 구현**
+- Cheerio를 활용한 **서버사이드 HTML 파싱**
+- Next.js ISR로 **5분마다 자동 재생성**
+- 로딩 상태의 **Skeleton UI** 제공
+
+</td>
+<td width="40%">
+
+```typescript
+// ISR 설정
+export const revalidate = 300; // 5분
+
+// 서버 컴포넌트에서 데이터 페칭
+async function NewsSection() {
+  const news = await fetchNews();
+  return <NewsList data={news} />;
+}
+```
 
 </td>
 </tr>
@@ -150,88 +183,282 @@
 
 ---
 
-## 📁 프로젝트 구조
+## 🏗️ 시스템 아키텍처
 
 ```
-loaone/
-├── 📂 src/
-│   ├── 📂 app/                    # Next.js App Router
-│   │   ├── page.tsx               # 홈 페이지
-│   │   ├── layout.tsx             # 루트 레이아웃
-│   │   ├── 📂 characters/[name]/  # 캐릭터 상세 페이지
-│   │   ├── 📂 cunning-paper/      # 컨닝페이퍼 페이지
-│   │   ├── 📂 auth/callback/      # 인증 콜백
-│   │   └── 📂 api/                # API 라우트
-│   │
-│   ├── 📂 components/             # React 컴포넌트
-│   │   ├── 📂 character/          # 캐릭터 관련
-│   │   ├── 📂 home/               # 홈페이지
-│   │   ├── 📂 news/               # 뉴스/스케줄
-│   │   ├── 📂 common/             # 공용 컴포넌트
-│   │   └── 📂 ui/                 # UI 컴포넌트
-│   │
-│   ├── 📂 hooks/                  # 커스텀 훅
-│   │   ├── 📂 query/              # React Query 훅
-│   │   └── 📂 store/              # Zustand 스토어
-│   │
-│   ├── 📂 lib/                    # 유틸리티 & API
-│   ├── 📂 types/                  # TypeScript 타입
-│   ├── 📂 constants/              # 상수
-│   └── 📂 styles/                 # 스타일
-│
-├── 📂 public/                     # 정적 파일
-├── package.json
-├── tsconfig.json
-├── next.config.ts
-└── tailwind.config.ts
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                  Client                                      │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │   Next.js   │  │   React     │  │  Zustand    │  │    React Query      │ │
+│  │  App Router │  │ Components  │  │   Store     │  │  (Server State)     │ │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘ │
+└─────────┼────────────────┼────────────────┼─────────────────────┼───────────┘
+          │                │                │                     │
+          ▼                ▼                ▼                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              API Layer (Next.js)                             │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │
+│  │ /api/lostark/*  │  │ /api/favorites  │  │     /api/lostark/news      │  │
+│  │ 캐릭터 정보 조회  │  │  즐겨찾기 CRUD   │  │    뉴스/스케줄 크롤링       │  │
+│  └────────┬────────┘  └────────┬────────┘  └─────────────┬───────────────┘  │
+└───────────┼─────────────────────┼─────────────────────────┼─────────────────┘
+            │                     │                         │
+            ▼                     ▼                         ▼
+┌───────────────────┐  ┌───────────────────┐  ┌───────────────────────────────┐
+│   Lost Ark API    │  │     Supabase      │  │      로스트아크 공식 사이트     │
+│  (공식 Open API)   │  │  ┌─────────────┐  │  │       (HTML Scraping)        │
+│                   │  │  │ PostgreSQL  │  │  │                              │
+│ • 캐릭터 프로필    │  │  │   Database  │  │  │  • 공지사항                   │
+│ • 장비/스킬 정보   │  │  ├─────────────┤  │  │  • 이벤트 정보                │
+│ • 수집품 현황      │  │  │    Auth     │  │  │  • 일일 스케줄                │
+│                   │  │  │  (OAuth)    │  │  │                              │
+└───────────────────┘  │  └─────────────┘  │  └───────────────────────────────┘
+                       └───────────────────┘
 ```
 
 ---
 
-## 🚀 시작하기
+## 🛠️ 기술 스택 & 선택 이유
 
-### 요구 사항
+### Frontend
 
-- Node.js 18.17 이상
-- npm, yarn, pnpm, 또는 bun
+| 기술 | 버전 | 선택 이유 |
+|:---|:---:|:---|
+| **Next.js** | 16.1 | App Router의 서버 컴포넌트로 **초기 로딩 속도 개선**, ISR로 정적/동적 렌더링 유연하게 활용 |
+| **React** | 19.2 | React Compiler로 **자동 메모이제이션**, 수동 최적화 코드 감소 |
+| **TypeScript** | 5 | API 응답 타입 정의로 **런타임 에러 사전 방지**, 복잡한 데이터 구조 안전하게 처리 |
+| **Tailwind CSS** | 4 | 유틸리티 기반으로 **일관된 디자인 시스템** 구축, 번들 사이즈 최소화 |
 
-### 설치
+### 상태 관리
+
+| 기술 | 선택 이유 |
+|:---|:---|
+| **React Query** | 서버 상태와 클라이언트 상태 분리, **자동 캐싱 & 백그라운드 리페치**로 항상 최신 데이터 유지 |
+| **Zustand** | Redux 대비 **보일러플레이트 90% 감소**, 번들 사이즈 2KB로 경량화 |
+
+### Backend & Database
+
+| 기술 | 선택 이유 |
+|:---|:---|
+| **Supabase** | PostgreSQL 기반으로 **복잡한 쿼리 지원**, RLS로 별도 백엔드 없이 보안 처리 |
+| **Supabase Auth** | OAuth 2.0 소셜 로그인 **10분 만에 구현**, 세션 관리 자동화 |
+
+### UI & UX
+
+| 기술 | 선택 이유 |
+|:---|:---|
+| **Radix UI** | **접근성(A11y) 기본 지원**, 헤드리스 컴포넌트로 커스텀 자유도 확보 |
+| **Framer Motion** | 선언적 API로 **복잡한 애니메이션 간단 구현**, 레이아웃 애니메이션 지원 |
+| **Recharts** | React 친화적 API, **반응형 차트** 쉽게 구현 |
+
+---
+
+## 🔧 기술적 도전과 해결
+
+### 1. 로스트아크 API 데이터 정제
+
+**문제**: API 응답에 HTML 태그가 포함되고, 툴팁 데이터가 문자열로 감싸진 JSON 형태
+
+```json
+// 실제 API 응답 예시
+{
+  "Tooltip": "{\"Element_000\":{\"type\":\"NameTagBox\",\"value\":\"<FONT COLOR='#FF0000'>무기</FONT>\"}}"
+}
+```
+
+**해결**: 재귀적 데이터 정제 유틸리티 구현
+
+```typescript
+// src/lib/lostark-utils.ts
+export const cleanLostArkData = <T>(data: T): T => {
+  if (typeof data === 'string') {
+    // 1. HTML 태그 제거
+    let cleaned = data.replace(/<[^>]*>/g, '');
+
+    // 2. JSON 문자열이면 파싱
+    if (cleaned.startsWith('{') || cleaned.startsWith('[')) {
+      try {
+        return cleanLostArkData(JSON.parse(cleaned));
+      } catch {
+        return cleaned as T;
+      }
+    }
+    return cleaned as T;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(cleanLostArkData) as T;
+  }
+
+  if (typeof data === 'object' && data !== null) {
+    return Object.fromEntries(
+      Object.entries(data).map(([k, v]) => [k, cleanLostArkData(v)])
+    ) as T;
+  }
+
+  return data;
+};
+```
+
+### 2. SSR 환경에서의 Supabase 인증
+
+**문제**: 서버 컴포넌트에서 사용자 세션 접근 시 쿠키 처리 이슈
+
+**해결**: `@supabase/ssr` 패키지로 서버/클라이언트 통합 세션 관리
+
+```typescript
+// src/lib/supabase/server.ts
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+
+export const createClient = () => {
+  const cookieStore = cookies();
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get: (name) => cookieStore.get(name)?.value,
+        set: (name, value, options) => cookieStore.set({ name, value, ...options }),
+        remove: (name, options) => cookieStore.set({ name, value: '', ...options }),
+      },
+    }
+  );
+};
+```
+
+### 3. 대량 데이터의 효율적 렌더링
+
+**문제**: 캐릭터 정보 페이지에서 장비, 스킬, 보석 등 대량 데이터 동시 로딩 시 성능 저하
+
+**해결**: 탭 기반 지연 로딩 + React Query 프리페칭
+
+```typescript
+// 활성 탭 데이터만 로딩, 다음 탭 프리페칭
+const CharacterPage = ({ name }: Props) => {
+  const [activeTab, setActiveTab] = useState('equipment');
+  const queryClient = useQueryClient();
+
+  // 현재 탭 데이터
+  const { data } = useCharacterData(name, activeTab);
+
+  // 다음 탭 프리페칭
+  useEffect(() => {
+    const nextTab = getNextTab(activeTab);
+    queryClient.prefetchQuery({
+      queryKey: ['character', name, nextTab],
+      queryFn: () => fetchCharacterData(name, nextTab),
+    });
+  }, [activeTab]);
+
+  return <TabContent data={data} />;
+};
+```
+
+---
+
+## 📁 프로젝트 구조
+
+```
+src/
+├── app/                          # Next.js App Router
+│   ├── page.tsx                  # 홈 (이벤트, 스케줄, 즐겨찾기)
+│   ├── characters/[name]/        # 캐릭터 상세 (동적 라우트)
+│   ├── cunning-paper/            # 레이드 정보 페이지
+│   ├── auth/callback/            # OAuth 콜백 처리
+│   └── api/
+│       ├── lostark/[name]/       # 캐릭터 API (프록시)
+│       ├── lostark/news/         # 뉴스 크롤링 API
+│       └── favorites/            # 즐겨찾기 CRUD API
+│
+├── components/
+│   ├── character/                # 캐릭터 관련 컴포넌트
+│   │   ├── equipment/            # 장비 표시 컴포넌트
+│   │   ├── skill/                # 스킬 표시 컴포넌트
+│   │   └── avatar/               # 아바타 표시 컴포넌트
+│   ├── home/                     # 홈페이지 섹션 컴포넌트
+│   ├── news/                     # 뉴스/스케줄 컴포넌트
+│   └── ui/                       # 공용 UI 컴포넌트 (Radix 래퍼)
+│
+├── hooks/
+│   ├── query/                    # React Query 커스텀 훅
+│   │   └── lostark/              # 로스트아크 데이터 훅
+│   └── store/                    # Zustand 스토어
+│       ├── useFavoriteStore.ts   # 즐겨찾기 상태
+│       └── useCharacterStore.ts  # 캐릭터 검색 상태
+│
+├── lib/
+│   ├── lostark/
+│   │   ├── api.ts                # 로스트아크 API 호출
+│   │   └── types.ts              # API 응답 타입 정의
+│   ├── supabase/
+│   │   ├── client.ts             # 클라이언트 Supabase
+│   │   └── server.ts             # 서버 Supabase
+│   └── lostark-utils.ts          # 데이터 정제 유틸리티
+│
+└── types/                        # 전역 타입 정의
+    ├── character.ts              # 캐릭터 관련 타입
+    ├── lostark.ts                # API 응답 타입
+    └── database.ts               # Supabase 테이블 타입
+```
+
+---
+
+## 🚀 로컬 실행 방법
+
+### 1. 저장소 클론 & 의존성 설치
 
 ```bash
-# 저장소 클론
 git clone https://github.com/your-username/loaone.git
-
-# 디렉토리 이동
 cd loaone
-
-# 의존성 설치
 npm install
 ```
 
-### 개발 서버 실행
+### 2. 환경 변수 설정
+
+```bash
+# .env.local 파일 생성
+cp .env.example .env.local
+```
+
+```env
+# 로스트아크 API (https://developer-lostark.game.onstove.com/)
+LOSTARK_API_KEY=your_api_key
+
+# Supabase (https://supabase.com/)
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+```
+
+### 3. Supabase 테이블 설정
+
+```sql
+-- 즐겨찾기 테이블
+CREATE TABLE favorites (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  character_name TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, character_name)
+);
+
+-- RLS 정책
+ALTER TABLE favorites ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can manage own favorites"
+ON favorites FOR ALL
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+```
+
+### 4. 개발 서버 실행
 
 ```bash
 npm run dev
 ```
 
-[http://localhost:3000](http://localhost:3000)에서 확인할 수 있습니다.
-
----
-
-## 🔐 환경 변수
-
-프로젝트 루트에 `.env.local` 파일을 생성하고 다음 변수를 설정하세요:
-
-```env
-# 로스트아크 API
-LOSTARK_API_KEY=your_lostark_api_key
-
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-> 💡 로스트아크 API 키는 [로스트아크 개발자 포털](https://developer-lostark.game.onstove.com/)에서 발급받을 수 있습니다.
+[http://localhost:3000](http://localhost:3000)에서 확인
 
 ---
 
@@ -239,28 +466,33 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 | 명령어 | 설명 |
 |:---|:---|
-| `npm run dev` | 개발 서버 실행 (Turbo 모드) |
+| `npm run dev` | 개발 서버 (Turbopack) |
 | `npm run build` | 프로덕션 빌드 |
-| `npm run start` | 프로덕션 서버 실행 |
+| `npm run start` | 프로덕션 서버 |
 | `npm run lint` | ESLint 검사 |
-| `npm run test` | Jest 테스트 실행 |
+| `npm run test` | Jest 테스트 |
+
+---
+
+## 📈 향후 계획
+
+- [ ] 레이드 파티 매칭 기능
+- [ ] 캐릭터 비교 기능
+- [ ] PWA 지원으로 모바일 앱 경험
+- [ ] 다크/라이트 테마 전환
+
+---
+
+## 📄 라이선스
+
+MIT License
 
 ---
 
 <div align="center">
 
-## 📄 라이선스
+**Made with ❤️ by [Your Name]**
 
-이 프로젝트는 MIT 라이선스를 따릅니다.
-
----
-
-<br />
-
-**Made with ❤️ for 로스트아크 유저들**
-
-<br />
-
-![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fyour-username%2Floaone&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=방문자&edge_flat=false)
+로스트아크 유저들의 편의를 위해 만들었습니다.
 
 </div>
