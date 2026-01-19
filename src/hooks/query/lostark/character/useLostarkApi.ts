@@ -39,17 +39,24 @@ const fetchCharacterData = async <T>(
   return response.json();
 };
 
-function useLostarkData<T>(name: string, type: CharacterDataType) {
+function useLostarkData<T>(
+  name: string,
+  type: CharacterDataType,
+  initialData?: T
+) {
   return useQuery<T>({
     queryKey: ["lostark", type, name],
     queryFn: () => fetchCharacterData<T>(name, type),
     enabled: !!name,
     staleTime: STALE_TIME,
+    initialData,
   });
 }
 
-export const useProfile = (name: string) =>
-  useLostarkData<LostArkCharacterResponse>(name, "profile");
+export const useProfile = (
+  name: string,
+  initialData?: LostArkCharacterResponse
+) => useLostarkData<LostArkCharacterResponse>(name, "profile", initialData);
 
 export const useEquipment = (name: string) =>
   useLostarkData<EquipmentItem[]>(name, "equipment");
@@ -78,8 +85,8 @@ export const useSiblings = (name: string) =>
 export const useArkgirds = (name: string) =>
   useLostarkData<any[]>(name, "arkgrid");
 
-export const useArkpassive = (name: string) =>
-  useLostarkData<ArkPassiveData>(name, "arkpassive");
+export const useArkpassive = (name: string, initialData?: ArkPassiveData) =>
+  useLostarkData<ArkPassiveData>(name, "arkpassive", initialData);
 
 export const useCharacters = (name: string) =>
   useLostarkData<SiblingCharacter[]>(name, "characters");

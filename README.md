@@ -300,19 +300,64 @@ export const cleanLostArkData = <T>(data: T): T => {
 };
 ```
 
-### 2. SSR 환경에서의 Supabase 인증
+### 2. SSR + CSR 하이브리드 렌더링 (SEO 최적화)
+
+**문제**: 완전 CSR은 검색엔진이 빈 HTML만 보고, 초기 로딩 시 흰 화면 발생
+
+**목표**: SSR로 첫 진입 시 완성된 HTML 제공 → 이후 CSR로 부드러운 인터랙션
+
+**해결**: 서버 컴포넌트에서 초기 데이터 fetch + React Query `initialData`로 hydration
+
+```typescript
+// app/page.tsx (서버 컴포넌트 - SSR)
+import { getEvents, getNotices } from "@/lib/api/server";
+import HomeClient from "@/components/home/HomeClient";
+
+export default async function Home() {
+  // 서버에서 데이터 fetch → HTML에 포함
+  const [events, notices] = await Promise.all([getEvents(), getNotices()]);
+
+  return <HomeClient initialEvents={events} initialNotices={notices} />;
+}
+
+// components/home/HomeClient.tsx (클라이언트 컴포넌트 - CSR)
+"use client";
+
+export default function HomeClient({ initialEvents, initialNotices }) {
+  // initialData로 즉시 렌더링, 이후 백그라운드에서 갱신
+  const { data: events } = useEvents(initialEvents);
+  const { data: notices } = useNotices(initialNotices);
+  // ...
+}
+
+// hooks/query/useNews.ts
+export const useEvents = (initialData?: EventItem[]) =>
+  useQuery({
+    queryKey: ["lostark", "events"],
+    queryFn: fetchEvents,
+    initialData,  // SSR 데이터로 즉시 hydration
+    staleTime: 5 * 60 * 1000,
+  });
+```
+
+**결과**:
+- 검색엔진이 완성된 HTML 크롤링 (SEO ✓)
+- 첫 진입 시 즉시 콘텐츠 표시 (FCP 개선 ✓)
+- 이후 인터랙션은 CSR로 빠른 반응 (UX ✓)
+
+### 3. SSR 환경에서의 Supabase 인증
 
 **문제**: 서버 컴포넌트에서 사용자 세션 접근 시 쿠키 처리 이슈
 
 **해결**: `@supabase/ssr` 패키지로 서버/클라이언트 통합 세션 관리
 
 ```typescript
-// src/lib/supabase/server.ts
+// src/lib/supabase/server/server.ts
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-export const createClient = () => {
-  const cookieStore = cookies();
+export const createSupabaseServer = async () => {
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -328,7 +373,7 @@ export const createClient = () => {
 };
 ```
 
-### 3. 대량 데이터의 효율적 렌더링
+### 4. 대량 데이터의 효율적 렌더링
 
 **문제**: 캐릭터 정보 페이지에서 장비, 스킬, 보석 등 대량 데이터 동시 로딩 시 성능 저하
 
@@ -389,12 +434,16 @@ src/
 │       └── useCharacterStore.ts  # 캐릭터 검색 상태
 │
 ├── lib/
+│   ├── api/
+│   │   └── server.ts             # SSR용 서버 데이터 fetch 함수
+│   ├── query/
+│   │   └── getQueryClient.ts     # React Query 클라이언트 (SSR/CSR 공유)
 │   ├── lostark/
 │   │   ├── api.ts                # 로스트아크 API 호출
 │   │   └── types.ts              # API 응답 타입 정의
 │   ├── supabase/
-│   │   ├── client.ts             # 클라이언트 Supabase
-│   │   └── server.ts             # 서버 Supabase
+│   │   ├── client/               # 클라이언트 Supabase
+│   │   └── server/               # 서버 Supabase
 │   └── lostark-utils.ts          # 데이터 정제 유틸리티
 │
 └── types/                        # 전역 타입 정의

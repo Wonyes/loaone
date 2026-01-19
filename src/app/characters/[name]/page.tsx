@@ -1,4 +1,5 @@
 import CharacterPage from "@/components/character/CharacterPage";
+import { getCharacterPageData } from "@/lib/api/server";
 import { Metadata } from "next";
 
 type Props = {
@@ -7,9 +8,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const resolvedParams = await params;
-
   const characterName = decodeURIComponent(resolvedParams.name);
-
   const tabName = "전투정보실";
 
   return {
@@ -25,7 +24,15 @@ export default async function CharacterPageRoute({
 }) {
   const resolvedParams = await params;
   const { name } = resolvedParams;
+  const decodedName = decodeURIComponent(name);
 
-  const decodedValue = decodeURIComponent(name);
-  return <CharacterPage name={decodedValue} />;
+  const { profile, arkpassive } = await getCharacterPageData(decodedName);
+
+  return (
+    <CharacterPage
+      name={decodedName}
+      initialProfile={profile}
+      initialArkpassive={arkpassive}
+    />
+  );
 }

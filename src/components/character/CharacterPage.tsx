@@ -21,14 +21,33 @@ import { CharacterListLayout } from "./CharacterList";
 import { CharacterHistory } from "./CharacterHistory";
 import { CharacterCollectible } from "./CharacterCollectible";
 import { CharacterHeaderSkeleton } from "../common/CardSkeleton";
+import type {
+  LostArkCharacterResponse,
+  ArkPassiveData,
+} from "@/types/lostark";
 
-function CharacterContent({ name }: { name: string }) {
+interface CharacterContentProps {
+  name: string;
+  initialProfile?: LostArkCharacterResponse | null;
+  initialArkpassive?: ArkPassiveData | null;
+}
+
+function CharacterContent({
+  name,
+  initialProfile,
+  initialArkpassive,
+}: CharacterContentProps) {
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "equipment";
 
-  const { data: profileData, isLoading: isProfileLoading } = useProfile(name);
-  const { data: arkpassiveData, isLoading: isAkrpassiveLoading } =
-    useArkpassive(name);
+  const { data: profileData, isLoading: isProfileLoading } = useProfile(
+    name,
+    initialProfile ?? undefined
+  );
+  const { data: arkpassiveData, isLoading: isAkrpassiveLoading } = useArkpassive(
+    name,
+    initialArkpassive ?? undefined
+  );
 
   const mainPassiveName = useMemo(() => {
     if (!profileData || !arkpassiveData) return "정보 없음";
@@ -49,7 +68,10 @@ function CharacterContent({ name }: { name: string }) {
       .slice(0, 4);
   }, [profileData]);
 
-  const isLoading = isProfileLoading || isAkrpassiveLoading;
+  const isLoading =
+    (isProfileLoading && !initialProfile) ||
+    (isAkrpassiveLoading && !initialArkpassive);
+
   if (!isLoading && (!profileData || !arkpassiveData)) {
     notFound();
   }
@@ -100,10 +122,24 @@ function CharacterContent({ name }: { name: string }) {
   );
 }
 
-export default function CharacterPage({ name }: { name: string }) {
+interface CharacterPageProps {
+  name: string;
+  initialProfile?: LostArkCharacterResponse | null;
+  initialArkpassive?: ArkPassiveData | null;
+}
+
+export default function CharacterPage({
+  name,
+  initialProfile,
+  initialArkpassive,
+}: CharacterPageProps) {
   return (
     <Suspense fallback={<Loading />}>
-      <CharacterContent name={name} />
+      <CharacterContent
+        name={name}
+        initialProfile={initialProfile}
+        initialArkpassive={initialArkpassive}
+      />
     </Suspense>
   );
 }

@@ -18,15 +18,33 @@ const fetchNewsData = async <T>(type: NewsType): Promise<T> => {
   return response.json();
 };
 
-function useNewsData<T>(type: NewsType) {
-  return useQuery<T>({
-    queryKey: ["lostark", type],
-    queryFn: () => fetchNewsData<T>(type),
+export const useNotices = (initialData?: NoticeItem[]) =>
+  useQuery<NoticeItem[]>({
+    queryKey: ["lostark", "notices"],
+    queryFn: () => fetchNewsData<NoticeItem[]>("notices"),
+    initialData,
     ...DEFAULT_QUERY_OPTIONS,
   });
-}
 
-export const useNotices = () => useNewsData<NoticeItem[]>("notices");
-export const useEvents = () => useNewsData<EventItem[]>("events");
-export const useAlarms = () => useNewsData<any[]>("alarms");
-export const useCalendar = () => useNewsData<CalendarItem[]>("calendar");
+export const useEvents = (initialData?: EventItem[]) =>
+  useQuery<EventItem[]>({
+    queryKey: ["lostark", "events"],
+    queryFn: () => fetchNewsData<EventItem[]>("events"),
+    initialData,
+    ...DEFAULT_QUERY_OPTIONS,
+  });
+
+export const useAlarms = () =>
+  useQuery<any[]>({
+    queryKey: ["lostark", "alarms"],
+    queryFn: () => fetchNewsData<any[]>("alarms"),
+    ...DEFAULT_QUERY_OPTIONS,
+  });
+
+export const useCalendar = (initialData?: CalendarItem[]) =>
+  useQuery<CalendarItem[]>({
+    queryKey: ["lostark", "calendar"],
+    queryFn: () => fetchNewsData<CalendarItem[]>("calendar"),
+    initialData,
+    ...DEFAULT_QUERY_OPTIONS,
+  });
