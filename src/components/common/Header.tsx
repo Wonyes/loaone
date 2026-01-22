@@ -71,12 +71,13 @@ function Logo({ onClick }: { onClick: () => void }) {
   return (
     <div
       onClick={onClick}
+      aria-label="로아원 홈"
       className="group relative flex cursor-pointer items-center gap-3"
     >
       <div className="relative flex h-10 w-10 items-center justify-center">
         <img
           src="/assets/logo.png"
-          alt="LOAONE"
+          alt="로아원"
           className="relative z-10 h-8 w-auto object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
         />
       </div>

@@ -73,7 +73,16 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
     apple: "/favicon.ico",
+    other: [
+      {
+        rel: "icon",
+        url: "/apple-touch-icon.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
   },
+  applicationName: "로아원",
   verification: {
     google: "e_p3eiiAVyD4jMfP98iSE0XIs9Y_nVnNbDQ-6Lsxi0c",
   },
@@ -98,6 +107,18 @@ export default function RootLayout({
           </div>
         </Providers>
       </body>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "로아원",
+            alternateName: ["Loaone", "로아 원"],
+            url: "https://loaone.vercel.app",
+          }),
+        }}
+      />
     </html>
   );
 }
