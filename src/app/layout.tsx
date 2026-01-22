@@ -30,6 +30,12 @@ export const metadata: Metadata = {
     "캘린더",
     "모험 섬",
     "카오스게이트",
+    "로아와",
+    "클로아",
+    "일로아",
+    "모코코",
+    "로아또",
+    "로아",
   ],
   authors: [{ name: "로아원" }],
   creator: "로아원",
@@ -51,7 +57,7 @@ export const metadata: Metadata = {
     siteName: "로아원",
     images: [
       {
-        url: "/og.image.png",
+        url: "/og-image-optimized.png",
         width: 1200,
         height: 630,
         alt: "로아원 로고",
@@ -66,7 +72,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    apple: "/favicon.ico",
   },
   verification: {
     google: "e_p3eiiAVyD4jMfP98iSE0XIs9Y_nVnNbDQ-6Lsxi0c",
