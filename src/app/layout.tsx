@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     siteName: "로아원",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og.image.png",
         width: 1200,
         height: 630,
         alt: "로아원 로고",
@@ -62,11 +62,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "로아원 - 로스트아크 종합 정보",
     description: "로스트아크 캘린더, 거래소, 길드, 랭킹 정보를 한눈에!",
-    images: ["/og-image.png"],
+    images: ["/og.image.png"],
   },
   icons: {
     icon: "/favicon.ico",
-    apple: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   verification: {
     google: "e_p3eiiAVyD4jMfP98iSE0XIs9Y_nVnNbDQ-6Lsxi0c",
