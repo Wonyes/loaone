@@ -83,10 +83,8 @@ export function parseAccessoryOptions(tooltip: any): AccessoryStat[] {
 
     if (!cleanName) continue;
 
-    // 축약어로 변환
     const displayName = OPTION_ABBREVIATIONS[cleanName] || cleanName;
 
-    // 중복 체크
     if (
       stats.some(
         s =>
@@ -101,7 +99,7 @@ export function parseAccessoryOptions(tooltip: any): AccessoryStat[] {
     const { tier, tierColor } = getOptionTier(cleanName, value);
 
     stats.push({
-      name: displayName, // 축약어 사용
+      name: displayName,
       value: hasPercent ? `${valueStr}%` : `+${valueStr}`,
       tier,
       tierColor,

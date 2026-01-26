@@ -49,7 +49,6 @@ export async function GET(
 
     const rawData = await response.json();
 
-    // 모든 데이터를 한번에 재귀적으로 파싱
     const cleanData = deepParseLostarkData(rawData);
 
     return NextResponse.json(cleanData);

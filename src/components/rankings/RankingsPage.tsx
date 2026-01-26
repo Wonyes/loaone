@@ -6,78 +6,8 @@ import { Trophy, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/common/Card";
 import { getClassIcon } from "@/utils/lostarkUtils";
-
-interface RankingCharacter {
-  id: string;
-  character_name: string;
-  server_name: string;
-  class: string;
-  item_level: string;
-  combat_level: number | null;
-  guild: string | null;
-  updated_at: string;
-  // 나중에 채울 필드들
-  combat_power?: string;
-  weapon?: string;
-  weapon_level?: string;
-  engraving?: string;
-}
-
-interface RankingsPageProps {
-  initialRankings: RankingCharacter[];
-}
-
-const SERVERS = [
-  "전체",
-  "루페온",
-  "실리안",
-  "아만",
-  "카마인",
-  "카제로스",
-  "카단",
-  "아브렐슈드",
-  "니나브",
-];
-
-const CLASS_GROUPS = [
-  {
-    name: "전사",
-    classes: ["버서커", "디스트로이어", "워로드", "홀리나이트", "슬레이어"],
-  },
-  {
-    name: "무도가",
-    classes: [
-      "스트라이커",
-      "배틀마스터",
-      "인파이터",
-      "기공사",
-      "창술사",
-      "브레이커",
-    ],
-  },
-  {
-    name: "헌터",
-    classes: ["데빌헌터", "블래스터", "호크아이", "스카우터", "건슬링어"],
-  },
-  {
-    name: "마법사",
-    classes: ["바드", "서머너", "아르카나", "소서리스"],
-  },
-  {
-    name: "암살자",
-    classes: ["블레이드", "데모닉", "리퍼", "소울이터"],
-  },
-  {
-    name: "스페셜리스트",
-    classes: ["도화가", "기상술사", "환수사"],
-  },
-  {
-    name: "가디언나이트",
-    classes: ["가디언나이트"],
-  },
-];
-
-const CLASSES = ["전체", ...CLASS_GROUPS.flatMap(g => g.classes)];
+import { CLASS_GROUPS, CLASSES, SERVERS } from "@/lib/constants";
+import { RankingCharacter, RankingsPageProps } from "@/types";
 
 export default function RankingsPage({ initialRankings }: RankingsPageProps) {
   const [selectedServer, setSelectedServer] = useState("전체");
@@ -115,7 +45,6 @@ export default function RankingsPage({ initialRankings }: RankingsPageProps) {
         </div>
       )}
 
-      {/* 전체 랭킹 */}
       <Card
         title="All Rankings "
         className="overflow-visible"
@@ -137,7 +66,6 @@ export default function RankingsPage({ initialRankings }: RankingsPageProps) {
           </div>
         }
       >
-        {/* 테이블 헤더 */}
         <div className="hidden border-b border-white/[0.05] px-6 py-3 text-[10px] font-bold tracking-widest text-slate-400 uppercase lg:grid lg:grid-cols-[60px_1fr_100px_100px_100px_80px_140px_120px] lg:gap-3">
           <div className="text-center text-xs font-black text-white/60">
             순위
@@ -159,21 +87,18 @@ export default function RankingsPage({ initialRankings }: RankingsPageProps) {
           <div className="text-xs font-black text-white/60">각인</div>
         </div>
 
-        {/* 랭킹 리스트 */}
         <div className="divide-y divide-white/[0.03]">
           {displayedRankings.map((char, index) => (
             <RankingRow key={char.id} char={char} rank={index + 1} />
           ))}
         </div>
 
-        {/* 결과 없음 */}
         {displayedRankings.length === 0 && (
           <div className="py-16 text-center text-sm text-slate-400">
             조건에 맞는 캐릭터가 없습니다
           </div>
         )}
 
-        {/* 더보기 */}
         {hasMore && (
           <div className="border-t border-white/[0.05] p-4">
             <button
@@ -213,13 +138,11 @@ function TopRankCard({ char, rank }: { char: RankingCharacter; rank: number }) {
           "before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-white/[0.05] before:to-transparent hover:border-white/10 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
         )}
       >
-        {/* 1. 레이저 라인 디테일 (상단 가느다란 엑센트) */}
         <div className="absolute top-0 left-0 h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         <div
           className={cn("absolute top-0 left-5 h-[1.5px] w-8", styles.accent)}
         />
 
-        {/* 2. 랭킹 넘버링 (정교한 폰트 위계) */}
         <div className="mb-8 flex items-baseline justify-between">
           <span className="font-mono text-[10px] font-medium tracking-[0.3em] text-slate-300">
             NO.0{rank}
@@ -235,7 +158,6 @@ function TopRankCard({ char, rank }: { char: RankingCharacter; rank: number }) {
           </span>
         </div>
 
-        {/* 3. 메인 정보 (압도적 가독성) */}
         <div className="mb-10 space-y-1.5">
           <h3 className="text-[18px] font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-indigo-400">
             {char.character_name}
@@ -251,7 +173,6 @@ function TopRankCard({ char, rank }: { char: RankingCharacter; rank: number }) {
           </div>
         </div>
 
-        {/* 4. 아이템 레벨 (수치 중심의 정돈된 하단) */}
         <div className="flex items-end justify-between">
           <div className="space-y-1">
             <p className="text-[9px] font-bold tracking-[0.2em] text-slate-400 uppercase">
@@ -267,14 +188,12 @@ function TopRankCard({ char, rank }: { char: RankingCharacter; rank: number }) {
             </p>
           </div>
 
-          {/* 하이엔드 디테일: 미세한 데이터 노이즈 아이콘 */}
           <div className="flex flex-col items-end gap-1 opacity-20">
             <div className="h-[1px] w-4 bg-white" />
             <div className="h-[1px] w-2 bg-white" />
           </div>
         </div>
 
-        {/* 5. 호버 시 흐르는 광택 (선으로 표현) */}
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <div className="absolute top-0 -left-full h-full w-1/2 skew-x-[45deg] bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-all duration-1000 group-hover:left-[150%]" />
         </div>
@@ -459,12 +378,10 @@ function RankingRow({ char, rank }: { char: RankingCharacter; rank: number }) {
       href={`/characters/${char.character_name}`}
       className="group grid grid-cols-[32px_40px_1fr] items-center gap-2 px-4 py-3 transition-all hover:bg-white/[0.02] lg:grid-cols-[60px_1fr_100px_100px_100px_80px_140px_120px] lg:gap-3 lg:px-6 lg:py-4"
     >
-      {/* 순위 */}
       <div className={cn("text-center", getRankStyle(rank))}>
         {getRankDisplay(rank)}
       </div>
 
-      {/* 클래스 아이콘 (모바일) */}
       <div className="lg:hidden">
         <img
           src={getClassIcon(char.class)}
@@ -473,7 +390,6 @@ function RankingRow({ char, rank }: { char: RankingCharacter; rank: number }) {
         />
       </div>
 
-      {/* 캐릭터 정보 (모바일: 확장) */}
       <div className="flex flex-col gap-0.5 lg:hidden">
         <div className="flex items-center gap-1">
           <span className="truncate text-xs font-bold text-slate-200 transition-colors group-hover:text-indigo-400">
@@ -515,21 +431,18 @@ function RankingRow({ char, rank }: { char: RankingCharacter; rank: number }) {
         </div>
       </div>
 
-      {/* 데스크탑: 캐릭터명 */}
       <div className="hidden lg:block">
         <span className="truncate text-sm font-bold text-slate-200 transition-colors group-hover:text-indigo-400">
           {char.character_name}
         </span>
       </div>
 
-      {/* 데스크탑: 아이템 레벨 */}
       <div className="hidden text-center lg:block">
         <span className="font-mono text-sm font-black tracking-tight text-slate-200">
           {char.item_level}
         </span>
       </div>
 
-      {/* 데스크탑: 전투력 */}
       <div
         className={cn(
           "hidden text-center font-mono text-sm font-bold lg:block",
@@ -539,23 +452,19 @@ function RankingRow({ char, rank }: { char: RankingCharacter; rank: number }) {
         {char.combat_level || "-"}
       </div>
 
-      {/* 데스크탑: 직업 */}
       <div className="hidden text-center text-sm text-slate-200 lg:block">
         {char.class}
       </div>
 
-      {/* 데스크탑: 서버 */}
       <div className="hidden text-center text-sm text-slate-200 lg:block">
         {char.server_name}
       </div>
 
-      {/* 데스크탑: 장비 */}
       <div className="hidden flex-col gap-0.5 lg:flex">
         <span className="text-sm font-bold text-cyan-400">-</span>
         <span className="text-xs text-slate-200">-</span>
       </div>
 
-      {/* 데스크탑: 각인 */}
       <div className="hidden items-center gap-2 lg:flex">
         <span
           className={cn(

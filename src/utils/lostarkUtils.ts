@@ -6,7 +6,6 @@ import type {
   GradeStyle,
 } from "@/types/lostark";
 
-// 타입 재내보내기
 export type { StoneInscription, CoreTooltip, ArkPassiveStyle };
 
 export function getLevelNumber(leftStr2: string): number | null {

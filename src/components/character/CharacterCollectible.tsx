@@ -60,7 +60,6 @@ export function CharacterCollectible({ name }: { name: string }) {
             className="relative cursor-pointer overflow-hidden"
             headerAction={
               <div className="relative flex items-center gap-3">
-                {/* 숫자만 */}
                 <div className="flex flex-col items-end gap-0.5">
                   <div className="flex items-baseline gap-1.5 font-mono text-sm">
                     <span className="font-black text-emerald-400">
@@ -92,7 +91,6 @@ export function CharacterCollectible({ name }: { name: string }) {
                 style={{ width: `${progress}%` }}
               />
             </div>
-            {/* 드롭다운 내용 */}
             {openType === item.Type && (
               <div className="border-t border-white/5">
                 <div className="grid grid-cols-1 gap-2 bg-white/[0.02] p-4 md:grid-cols-2 lg:grid-cols-3">
@@ -113,7 +111,6 @@ export function CharacterCollectible({ name }: { name: string }) {
                             : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
                         )}
                       >
-                        {/* 지역 이름 */}
                         <div className="flex items-center gap-2">
                           {isCompleted ? (
                             <CheckCircle2
@@ -145,7 +142,6 @@ export function CharacterCollectible({ name }: { name: string }) {
                           </div>
                         </div>
 
-                        {/* 개수 */}
                         <div className="flex items-center gap-1 font-mono text-xs">
                           <span
                             className={cn(
@@ -165,7 +161,6 @@ export function CharacterCollectible({ name }: { name: string }) {
                   })}
                 </div>
 
-                {/* 하단 요약 */}
                 <div className="flex items-center justify-between border-t border-white/10 bg-white/[0.03] p-3 text-xs">
                   <span className="text-gray-400">
                     완료:{" "}

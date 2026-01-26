@@ -1,4 +1,3 @@
-// components/CountdownTimer.tsx
 "use client";
 
 import { useEffect, useState, useMemo, memo } from "react";
@@ -11,7 +10,6 @@ interface Props {
   color: string;
 }
 
-// Date 객체를 timestamp로 비교
 function arePropsEqual(prevProps: Props, nextProps: Props) {
   return (
     prevProps.label === nextProps.label &&

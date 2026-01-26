@@ -64,7 +64,6 @@ export default function ErrorCompo() {
           </p>
         </div>
 
-        {/* 버튼 그룹 (반응형 대응) */}
         <div className="flex w-full max-w-[280px] flex-col gap-3 sm:max-w-none sm:flex-row sm:gap-4">
           <button
             onClick={() => (window.location.href = "/")}
@@ -83,7 +82,6 @@ export default function ErrorCompo() {
           </button>
         </div>
 
-        {/* 배경 부유 입자 (컴포넌트 내부에 가둠) */}
         <div className="pointer-events-none absolute top-10 left-10 h-3 w-3 animate-[float_4s_ease-in-out_infinite] rounded-full bg-emerald-400/40 blur-sm"></div>
         <div
           className="pointer-events-none absolute top-20 right-10 h-2 w-2 animate-[float_5s_ease-in-out_infinite] rounded-full bg-green-400/30 blur-sm"
@@ -94,7 +92,6 @@ export default function ErrorCompo() {
           style={{ animationDelay: "2s" }}
         ></div>
 
-        {/* 중앙 글로우 효과 */}
         <div className="pointer-events-none absolute top-1/2 left-1/2 h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 animate-pulse rounded-full bg-emerald-600/5 blur-[100px] sm:h-[500px] sm:w-[500px]"></div>
       </div>
 

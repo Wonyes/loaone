@@ -285,3 +285,23 @@ export interface PopularSearch {
   item_level: string;
   count: number;
 }
+
+// ============ 서버 및 클래스 상수 타입  ============
+export interface RankingCharacter {
+  id: string;
+  character_name: string;
+  server_name: string;
+  class: string;
+  item_level: string;
+  combat_level: number | null;
+  guild: string | null;
+  updated_at: string;
+  combat_power?: string;
+  weapon?: string;
+  weapon_level?: string;
+  engraving?: string;
+}
+
+export interface RankingsPageProps {
+  initialRankings: RankingCharacter[];
+}

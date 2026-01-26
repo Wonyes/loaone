@@ -98,7 +98,6 @@ function calculateStats(history: any[]) {
     .filter(h => h.level_change < 0)
     .reduce((sum, h) => sum + Math.abs(h.level_change), 0);
 
-  // 전투력 상승량 합산
   const cpGain = history
     .filter(h => h.cp_change > 0)
     .reduce((sum, h) => sum + h.cp_change, 0);

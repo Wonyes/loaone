@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const supabase = await createSupabaseServer();
 
-  // 1. DB에서 데이터 가져오기
   const { data, error } = await supabase
     .from("raids")
     .select("*")
