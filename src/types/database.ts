@@ -53,3 +53,23 @@ export interface LevelHistoryUpdate {
   level_change?: number;
   previous_level?: number | null;
 }
+
+export interface SearchLog {
+  id: string;
+  Character_name: string;
+  server: string;
+  class: string;
+  item_level: number;
+  searched_at: string;
+}
+
+export interface CharacterRankings {
+  id: string;
+  character_name: string;
+  server: string;
+  class: string;
+  item_level: number;
+  combat_level: number;
+  guild: string | null;
+  update_at: string;
+}

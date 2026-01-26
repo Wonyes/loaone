@@ -167,3 +167,70 @@ export const getClassIcon = (className: string) => {
 
   return `https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/${englishName}${suffix}.png`;
 };
+
+// 클래스별 직업각인 목록
+const CLASS_ENGRAVINGS: Record<string, string[]> = {
+  // 전사
+  버서커: ["광기", "광전사의 비기"],
+  디스트로이어: ["분노의 망치", "중력 수련"],
+  워로드: ["전투 태세", "고독한 기사"],
+  홀리나이트: ["축복의 오라", "심판자"],
+  슬레이어: ["처단자", "포식자"],
+  // 무도가
+  배틀마스터: ["오의 강화", "초심"],
+  인파이터: ["충격 단련", "극의: 체술"],
+  기공사: ["역천지체", "세맥타통"],
+  창술사: ["절정", "절제"],
+  스트라이커: ["오의난무", "일격필살"],
+  브레이커: ["수라의 길", "권왕파천무"],
+  // 헌터
+  데빌헌터: ["전술 탄환", "핸드거너"],
+  블래스터: ["포격 강화", "화력 강화"],
+  호크아이: ["죽음의 습격", "두 번째 동료"],
+  스카우터: ["아르데타인의 기술", "진화의 유산"],
+  건슬링어: ["피스메이커", "사냥의 시간"],
+  // 마법사
+  바드: ["절실한 구원", "진실된 용맹"],
+  서머너: ["상급 소환사", "넘치는 교감"],
+  아르카나: ["황후의 은총", "황제의 칙령"],
+  소서리스: ["점화", "환류"],
+  // 암살자
+  블레이드: ["버스트", "잔재된 기운"],
+  데모닉: ["멈출 수 없는 충동", "완벽한 억제"],
+  리퍼: ["갈증", "달의 소리"],
+  소울이터: ["만월의 집행자", "그믐의 경계"],
+  // 스페셜리스트
+  도화가: ["만개", "회귀"],
+  기상술사: ["이슬비", "질풍노도"],
+  환수사: ["야성", "환수 각성"],
+  // 가나
+  가디언나이트: ["업화의 계승자", "드레드 로어"],
+  // 발키리
+  발키리: ["빛의 기사", "해방자"],
+};
+
+export function getMainPassiveName(
+  profileData: any,
+  arkpassiveData: any
+): string {
+  if (!profileData || !arkpassiveData) return "정보 없음";
+
+  const className = profileData.CharacterClassName;
+  const validEngravings = CLASS_ENGRAVINGS[className] || [];
+
+  // Effects에서 직업각인과 일치하는 스킬명 찾기
+  for (const effect of arkpassiveData.Effects || []) {
+    if (effect.Name !== "깨달음") continue;
+
+    // Description에서 스킬명 추출
+    const match = effect.Description?.match(/\d티어\s+(.*?)\s+Lv\./);
+    if (!match) continue;
+
+    const skillName = match[1].trim();
+    if (validEngravings.includes(skillName)) {
+      return skillName;
+    }
+  }
+
+  return "정보 없음";
+}

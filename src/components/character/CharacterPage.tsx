@@ -21,10 +21,8 @@ import { CharacterListLayout } from "./CharacterList";
 import { CharacterHistory } from "./CharacterHistory";
 import { CharacterCollectible } from "./CharacterCollectible";
 import { CharacterHeaderSkeleton } from "../common/CardSkeleton";
-import type {
-  LostArkCharacterResponse,
-  ArkPassiveData,
-} from "@/types/lostark";
+import type { LostArkCharacterResponse, ArkPassiveData } from "@/types/lostark";
+import { getMainPassiveName } from "@/utils/lostarkUtils";
 
 interface CharacterContentProps {
   name: string;
@@ -44,20 +42,11 @@ function CharacterContent({
     name,
     initialProfile ?? undefined
   );
-  const { data: arkpassiveData, isLoading: isAkrpassiveLoading } = useArkpassive(
-    name,
-    initialArkpassive ?? undefined
-  );
+  const { data: arkpassiveData, isLoading: isAkrpassiveLoading } =
+    useArkpassive(name, initialArkpassive ?? undefined);
 
   const mainPassiveName = useMemo(() => {
-    if (!profileData || !arkpassiveData) return "정보 없음";
-    const className = profileData.CharacterClassName;
-    const supports = ["바드", "도화가", "홀리나이트"];
-    const targetIndex = supports.includes(className) ? 1 : 0;
-    const description =
-      arkpassiveData.Effects?.[targetIndex]?.Description || "";
-    const match = description.match(/\d티어\s+(.*?)\s+Lv\./);
-    return match ? match[1].trim() : "정보 없음";
+    return getMainPassiveName(profileData, arkpassiveData);
   }, [profileData, arkpassiveData]);
 
   const topValues = useMemo(() => {

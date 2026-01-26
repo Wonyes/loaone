@@ -1,5 +1,11 @@
 import CharacterPage from "@/components/character/CharacterPage";
 import { getCharacterPageData } from "@/lib/api/server";
+import {
+  saveSearchLog,
+  upsertCharacterRankings,
+  updateFavoritesByCharacter,
+} from "@/lib/supabase/rankings";
+import { getMainPassiveName } from "@/utils/lostarkUtils";
 import { Metadata } from "next";
 
 type Props = {
@@ -27,6 +33,36 @@ export default async function CharacterPageRoute({
   const decodedName = decodeURIComponent(name);
 
   const { profile, arkpassive } = await getCharacterPageData(decodedName);
+  console.log("profile:", profile);
+  console.log("arkpassive Effects:", JSON.stringify(arkpassive?.Effects, null, 2));
+
+  if (profile) {
+    const mainPassiveName = getMainPassiveName(profile, arkpassive);
+
+    saveSearchLog({
+      character_name: profile.CharacterName,
+      server_name: profile.ServerName,
+      class: profile.CharacterClassName,
+      item_level: profile.ItemAvgLevel,
+    });
+
+    upsertCharacterRankings({
+      character_name: profile.CharacterName,
+      server_name: profile.ServerName,
+      class: profile.CharacterClassName,
+      item_level: profile.ItemAvgLevel,
+      combat_level: profile.CombatPower,
+      guild: profile.GuildName,
+      engraving: mainPassiveName,
+    });
+
+    updateFavoritesByCharacter({
+      character_name: profile.CharacterName,
+      server_name: profile.ServerName,
+      class: profile.CharacterClassName,
+      item_level: profile.ItemAvgLevel,
+    });
+  }
 
   return (
     <CharacterPage

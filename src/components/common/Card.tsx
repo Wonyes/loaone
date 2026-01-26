@@ -30,14 +30,19 @@ export function Card({
       onClick={onClick}
     >
       {title && (
-        <div className="flex items-center justify-between border-b border-white/[0.05] px-6 py-4">
-          <div className="flex items-center gap-3">
-            {icon && <div className="shrink-0">{icon}</div>}
-            <h2 className="text-[13px] font-black tracking-[0.2em] text-white/90 uppercase">
+        <div className="flex flex-wrap items-center justify-between gap-y-3 border-b border-white/[0.05] px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            {icon && (
+              <div className="shrink-0 scale-90 sm:scale-100">{icon}</div>
+            )}
+            <h2 className="text-[14px] font-black tracking-[0.1em] whitespace-nowrap text-white/90 uppercase sm:text-[13px] sm:tracking-[0.2em]">
               {title}
             </h2>
           </div>
-          {headerAction}
+
+          <div className="ml-auto flex items-center gap-1.5 sm:ml-0 sm:gap-2">
+            {headerAction}
+          </div>
         </div>
       )}
       <div className={cn("relative", contentClassName)}>{children}</div>

@@ -265,3 +265,23 @@ export interface BadgeVariant {
 }
 
 export type HighlightColor = "emerald" | "violet" | "none";
+
+// ============ 랭킹 / 검색기록 타입  ============
+
+export interface CharacterRanking {
+  character_name: string;
+  server_name: string;
+  class: string;
+  item_level: string;
+  combat_level: number | null;
+  guild: string | null;
+  updated_at: string;
+}
+
+export interface PopularSearch {
+  character_name: string;
+  server_name: string;
+  class: string;
+  item_level: string;
+  count: number;
+}

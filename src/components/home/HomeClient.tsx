@@ -11,6 +11,7 @@ import {
   NoticeSectionSkeleton,
 } from "@/components/common/CardSkeleton";
 import type { NoticeItem, EventItem } from "@/types/lostark";
+import PopularSearchPage from "../character/PopularSearchPage";
 
 interface HomeClientProps {
   initialEvents: EventItem[];
@@ -84,6 +85,7 @@ export default function HomeClient({
 
         <aside className="sticky top-22 h-fit space-y-4 lg:col-span-3">
           <FavoritesPage />
+          <PopularSearchPage />
         </aside>
       </div>
     </div>

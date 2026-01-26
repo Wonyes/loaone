@@ -107,18 +107,6 @@ export default function RootLayout({
           </div>
         </Providers>
       </body>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "로아원",
-            alternateName: ["Loaone", "로아 원"],
-            url: "https://loaone.vercel.app",
-          }),
-        }}
-      />
     </html>
   );
 }

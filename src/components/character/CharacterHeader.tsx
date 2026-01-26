@@ -1,6 +1,7 @@
-import { Award, Gem, MapPin, Shield, Sword } from "lucide-react";
+import { Award, Cross, Crown, Flame, MapPin, Shield } from "lucide-react";
 import FavoriteButton from "./favorite/FavoriteButton";
 import { Card } from "../common/Card";
+import { cn } from "@/lib/utils";
 
 export function CharacterHeader({
   name,
@@ -11,10 +12,13 @@ export function CharacterHeader({
   profileData: any;
   mainPassiveName: string;
 }) {
+  const isSupport = (engraving: string | undefined) => {
+    if (!engraving) return false;
+    const supportEngravings = ["절실한 구원", "만개", "축복의 오라", "해방자"];
+    return supportEngravings.includes(engraving);
+  };
   return (
     <Card className="relative overflow-hidden rounded-[2rem] border-none bg-[#0c0d12] shadow-2xl">
-      {/* 1. 배경 그래디언트 & 이미지 영역 */}
-
       {profileData?.CharacterImage && (
         <div className="absolute inset-y-0 right-0 z-0 w-full overflow-hidden sm:w-[60%]">
           <img
@@ -30,12 +34,10 @@ export function CharacterHeader({
               WebkitMaskComposite: "source-in",
             }}
           />
-          {/* 이미지 주변 은은한 광원 효과 */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(168,85,247,0.15),transparent_60%)]" />
         </div>
       )}
 
-      {/* 즐겨찾기 버튼 (우측 상단 고정) */}
       <div className="absolute top-4 right-4 z-30">
         <FavoriteButton characterName={name} profileData={profileData} />
       </div>
@@ -43,7 +45,6 @@ export function CharacterHeader({
       {/* 2. 메인 컨텐츠 영역 */}
       <div className="relative z-10 flex min-h-[300px] flex-col justify-end p-8 sm:p-12 xl:min-h-[350px]">
         <div className="max-w-2xl space-y-8">
-          {/*  서버 / 클래스 / 각인 태그 */}
           <div className="flex flex-wrap gap-2.5">
             <Badge className="bg-white/5 text-gray-400">
               {profileData?.ServerName}
@@ -58,7 +59,6 @@ export function CharacterHeader({
             )}
           </div>
 
-          {/*  캐릭터 이름 & 전투 레벨 */}
           <div className="space-y-3">
             <h1 className="text-4xl font-black tracking-tighter text-white italic sm:text-5xl xl:text-6xl">
               {profileData?.CharacterName}
@@ -84,16 +84,26 @@ export function CharacterHeader({
           {/*  핵심 스펙 카드 (아이템 레벨 / 전투력) */}
           <div className="flex flex-wrap gap-4">
             <StatChip
-              icon={<Gem className="text-emerald-400" />}
+              icon={<Crown className="text-violet-400" />}
               label="Item Level"
               value={profileData?.ItemAvgLevel}
-              color="emerald"
+              color="violet"
+              valueColor="text-violet-400"
             />
             <StatChip
-              icon={<Sword className="text-violet-400" />}
+              icon={
+                isSupport(mainPassiveName) ? (
+                  <Cross className="text-green-400" />
+                ) : (
+                  <Flame className="text-red-400" />
+                )
+              }
               label="Combat Power"
               value={profileData?.CombatPower?.toLocaleString()}
-              color="violet"
+              color={isSupport(mainPassiveName) ? "green" : "red"}
+              valueColor={
+                isSupport(mainPassiveName) ? "text-green-400" : "text-red-400"
+              }
             />
           </div>
 
@@ -141,10 +151,12 @@ function Badge({
   );
 }
 
-function StatChip({ icon, label, value, color }: any) {
+function StatChip({ icon, label, value, color, valueColor }: any) {
   const colorMap: any = {
     emerald: "text-emerald-400 bg-emerald-500/5 border-emerald-500/20",
     violet: "text-violet-400 bg-violet-500/5 border-violet-500/20",
+    red: "text-red-400 bg-red-500/5 border-red-500/20",
+    green: "text-green-400 bg-green-500/5 border-green-500/20",
   };
 
   return (
@@ -156,7 +168,12 @@ function StatChip({ icon, label, value, color }: any) {
         <span className="mb-0.5 text-[12px] leading-none font-black tracking-widest opacity-40">
           {label}
         </span>
-        <span className="font-mono text-[22px] leading-none font-black tracking-tighter">
+        <span
+          className={cn(
+            "font-mono text-[22px] leading-none font-black tracking-tighter",
+            valueColor
+          )}
+        >
           {value || "0.00"}
         </span>
       </div>
