@@ -128,11 +128,11 @@ function CombatStatsCard({ top1, top2, mainPassiveName }: any) {
         <StatDisplay
           label={top2.Type}
           value={top2.Value}
-          accent="bg-slate-500"
+          accent="bg-slate-300"
         />
       </div>
       <div className="flex items-center justify-between border-t border-white/5 bg-white/[0.02] px-5 py-3">
-        <span className="text-[9px] font-black tracking-widest text-slate-500 uppercase">
+        <span className="text-[9px] font-black tracking-widest text-slate-300 uppercase">
           Main Build
         </span>
         <span className="text-xs font-bold tracking-tight text-slate-200">
@@ -153,14 +153,14 @@ function SkillPointsCard({ usingSkillPoint, totalSkillPoint }: any) {
     >
       <div className="flex flex-col justify-center p-6">
         <div className="mb-3 flex items-baseline justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+          <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
             Capacity
           </span>
           <div className="flex items-baseline gap-1">
             <span className="font-mono text-2xl font-black text-white">
               {usingSkillPoint}
             </span>
-            <span className="text-[11px] font-bold text-slate-600">
+            <span className="text-[11px] font-bold text-slate-400">
               / {totalSkillPoint}
             </span>
           </div>
@@ -198,13 +198,13 @@ function SkillListCard({ activeSkills, gemsData }: any) {
       }
     >
       <div className="hidden grid-cols-12 border-b border-white/5 bg-white/[0.01] px-6 py-3 md:grid">
-        <div className="col-span-3 text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+        <div className="col-span-3 text-[10px] font-black tracking-[0.2em] text-slate-300 uppercase">
           Skill Identity
         </div>
-        <div className="col-span-6 border-x border-white/5 text-center text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+        <div className="col-span-6 border-x border-white/5 text-center text-[10px] font-black tracking-[0.2em] text-slate-300 uppercase">
           Tripod Matrix
         </div>
-        <div className="col-span-3 text-right text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+        <div className="col-span-3 text-right text-[10px] font-black tracking-[0.2em] text-slate-300 uppercase">
           Runes & Gems
         </div>
       </div>
@@ -237,7 +237,7 @@ function StatDisplay({ label, value, accent, isMain }: any) {
             isMain && "shadow-[0_0_8px_#6366f1]"
           )}
         />
-        <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+        <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
           {label}
         </span>
       </div>

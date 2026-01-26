@@ -44,7 +44,7 @@ function IslandHeader({ island }: { island: any }) {
       />
       <div>
         <h2 className="text-lg font-bold text-white">{island.ContentsName}</h2>
-        <p className="text-xs text-slate-500">전체 보상 리스트</p>
+        <p className="text-xs text-slate-300">전체 보상 리스트</p>
       </div>
     </div>
   );

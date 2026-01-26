@@ -62,7 +62,7 @@ export function WeeklyGoldDashboard({
             <ChevronDown
               size={16}
               className={cn(
-                "xs:size-[18px] text-slate-600 transition-transform duration-500 sm:size-5",
+                "xs:size-[18px] text-slate-400 transition-transform duration-500 sm:size-5",
                 isOpen && "rotate-180 text-amber-400"
               )}
             />

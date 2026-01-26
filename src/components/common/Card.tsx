@@ -9,6 +9,7 @@ export interface CardProps {
   className?: string;
   headerAction?: ReactNode;
   onClick?: () => void;
+  borderB?: boolean;
 }
 
 export function Card({
@@ -19,6 +20,7 @@ export function Card({
   contentClassName,
   className,
   headerAction,
+  borderB = true,
 }: CardProps) {
   return (
     <div
@@ -30,7 +32,12 @@ export function Card({
       onClick={onClick}
     >
       {title && (
-        <div className="flex flex-wrap items-center justify-between gap-y-3 border-b border-white/[0.05] px-4 py-3 sm:px-6 sm:py-4">
+        <div
+          className={cn(
+            "flex flex-wrap items-center justify-between gap-y-3 border-white/[0.05] px-4 py-3 sm:px-6 sm:py-4",
+            borderB && "border-b"
+          )}
+        >
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             {icon && (
               <div className="shrink-0 scale-90 sm:scale-100">{icon}</div>

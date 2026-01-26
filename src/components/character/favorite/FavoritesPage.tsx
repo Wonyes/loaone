@@ -64,11 +64,11 @@ function FavoriteCharacter({ char }: { char: any }) {
         </span>
       </div>
       <div className="flex flex-col items-end gap-0.5 font-mono">
-        <span className="text-[11px] font-black tracking-tighter text-indigo-400/90">
-          <span className="mr-0.5 text-[9px] italic opacity-30">Lv</span>
+        <span className="font-black tracking-tighter text-indigo-400/90">
+          <span className="mr-0.5 text-[10px] text-slate-400 italic">Lv</span>
           {char.itemLevel}
         </span>
-        <span className="text-[11px] font-black tracking-tighter text-indigo-400/90">
+        <span className="text-[12px] font-black tracking-tighter text-indigo-400/90">
           {char.serverName}
         </span>
         <div className="h-px w-2 bg-white/10 transition-all group-hover:w-6 group-hover:bg-indigo-500/50" />

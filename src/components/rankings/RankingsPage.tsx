@@ -47,7 +47,7 @@ export default function RankingsPage({ initialRankings }: RankingsPageProps) {
 
       <Card
         title="All Rankings "
-        className="overflow-visible"
+        className="mx-auto w-fit overflow-visible"
         icon={<Trophy className="h-4 w-4 text-yellow-500" />}
         headerAction={
           <div className="flex gap-2">
@@ -66,7 +66,7 @@ export default function RankingsPage({ initialRankings }: RankingsPageProps) {
           </div>
         }
       >
-        <div className="hidden border-b border-white/[0.05] px-6 py-3 text-[10px] font-bold tracking-widest text-slate-400 uppercase lg:grid lg:grid-cols-[60px_1fr_100px_100px_100px_80px_140px_120px] lg:gap-3">
+        <div className="hidden border-b border-white/[0.05] px-6 py-3 text-[10px] font-bold tracking-widest text-slate-400 uppercase lg:grid lg:grid-cols-[80px_200px_120px_120px_150px_120px_150px] lg:gap-3">
           <div className="text-center text-xs font-black text-white/60">
             순위
           </div>
@@ -83,7 +83,6 @@ export default function RankingsPage({ initialRankings }: RankingsPageProps) {
           <div className="text-center text-xs font-black text-white/60">
             서버
           </div>
-          <div className="text-xs font-black text-white/60">장비</div>
           <div className="text-xs font-black text-white/60">각인</div>
         </div>
 
@@ -376,7 +375,7 @@ function RankingRow({ char, rank }: { char: RankingCharacter; rank: number }) {
   return (
     <Link
       href={`/characters/${char.character_name}`}
-      className="group grid grid-cols-[32px_40px_1fr] items-center gap-2 px-4 py-3 transition-all hover:bg-white/[0.02] lg:grid-cols-[60px_1fr_100px_100px_100px_80px_140px_120px] lg:gap-3 lg:px-6 lg:py-4"
+      className="group grid grid-cols-[32px_40px_1fr] items-center gap-2 px-4 py-3 transition-all hover:bg-white/[0.02] lg:grid-cols-[80px_200px_120px_120px_150px_120px_150px] lg:gap-3 lg:px-6 lg:py-4"
     >
       <div className={cn("text-center", getRankStyle(rank))}>
         {getRankDisplay(rank)}
@@ -458,11 +457,6 @@ function RankingRow({ char, rank }: { char: RankingCharacter; rank: number }) {
 
       <div className="hidden text-center text-sm text-slate-200 lg:block">
         {char.server_name}
-      </div>
-
-      <div className="hidden flex-col gap-0.5 lg:flex">
-        <span className="text-sm font-bold text-cyan-400">-</span>
-        <span className="text-xs text-slate-200">-</span>
       </div>
 
       <div className="hidden items-center gap-2 lg:flex">

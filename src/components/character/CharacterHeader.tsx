@@ -63,7 +63,7 @@ export function CharacterHeader({
             <h1 className="text-4xl font-black tracking-tighter text-white italic sm:text-5xl xl:text-6xl">
               {profileData?.CharacterName}
             </h1>
-            <div className="flex flex-col gap-1 font-mono text-[13px] font-bold tracking-widest text-slate-500 uppercase">
+            <div className="flex flex-col gap-1 font-mono text-[13px] font-bold tracking-widest text-slate-300 uppercase">
               <div className="flex items-center gap-2.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_#6366f1]" />
                 <span className="text-indigo-500">Level</span>

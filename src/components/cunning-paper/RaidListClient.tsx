@@ -87,7 +87,7 @@ export default function RaidListClient({ initialRaids }: RaidListClientProps) {
         </div>
 
         <div className="group relative w-full md:w-80">
-          <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-slate-500 transition-colors group-focus-within:text-indigo-400" />
+          <Search className="absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-slate-300 transition-colors group-focus-within:text-indigo-400" />
           <input
             type="text"
             placeholder="보스 이름 검색..."
@@ -106,7 +106,7 @@ export default function RaidListClient({ initialRaids }: RaidListClientProps) {
               "rounded-lg px-5 py-2 text-[11px] font-bold tracking-widest uppercase transition-all duration-300",
               activeTab === tab
                 ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20"
-                : "bg-white/5 text-slate-500 hover:bg-white/10 hover:text-slate-300"
+                : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-slate-300"
             )}
           >
             {tab}
@@ -181,7 +181,7 @@ function RaidCard({ raid }: { raid: Raid }) {
               <span className="flex items-center gap-1 text-[10px] font-black tracking-widest text-indigo-400/80 group-hover:text-indigo-300">
                 VIEW GUIDELINE <ChevronRight size={10} />
               </span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-slate-500 transition-all group-hover:bg-indigo-600 group-hover:text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-slate-300 transition-all group-hover:bg-indigo-600 group-hover:text-white">
                 <Target size={14} />
               </div>
             </div>

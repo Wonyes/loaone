@@ -112,7 +112,7 @@ function NoticeSection({
             className="group block rounded-2xl px-5 py-4 transition-all hover:bg-white/[0.05]"
           >
             <div className="mb-1 flex items-center gap-2">
-              <span className="text-[9px] font-bold tracking-tighter text-slate-600 uppercase">
+              <span className="text-[9px] font-bold tracking-tighter text-slate-400 uppercase">
                 {new Date(n.Date).toLocaleDateString()}
               </span>
               <div className="h-0.5 w-0 bg-indigo-500 transition-all duration-300 group-hover:w-4" />

@@ -63,7 +63,7 @@ export function LoginButton() {
               </span>
             </div>
 
-            <ChevronDown className="h-3 w-3 text-slate-500 transition-transform group-data-[state=open]:rotate-180" />
+            <ChevronDown className="h-3 w-3 text-slate-300 transition-transform group-data-[state=open]:rotate-180" />
 
             <div className="absolute -bottom-px left-1/2 h-[1px] w-0 -translate-x-1/2 bg-gradient-to-r from-transparent via-[#bef264]/50 to-transparent transition-all group-hover:w-1/2" />
           </button>
@@ -74,7 +74,7 @@ export function LoginButton() {
           className="mt-2 w-48 overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d12]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         >
           <div className="mb-1 flex flex-col gap-0.5 px-3 py-2.5">
-            <p className="text-[9px] font-black tracking-[0.2em] text-slate-600 uppercase">
+            <p className="text-[9px] font-black tracking-[0.2em] text-slate-400 uppercase">
               Account
             </p>
             <p className="truncate text-xs font-bold text-slate-200">

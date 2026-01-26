@@ -62,7 +62,7 @@ export function CharacterHistory({ name }: { name: string }) {
               성장 궤적
             </h2>
             <div className="flex items-center gap-3 border-t border-white/10 pt-2 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-6">
-              <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+              <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
                 Peak
               </span>
               <span className="font-mono text-sm font-black text-[#bef264]">
@@ -74,7 +74,7 @@ export function CharacterHistory({ name }: { name: string }) {
         icon={<Activity size={18} className="text-[#bef264]" />}
         headerAction={
           <div className="hidden items-center gap-3 sm:flex">
-            <span className="text-[10px] font-bold text-slate-600 uppercase">
+            <span className="text-[10px] font-bold text-slate-400 uppercase">
               Total {data?.stats?.totalChanges} Logs
             </span>
             <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#bef264]" />
@@ -158,7 +158,7 @@ function CustomTooltip({ active, payload }: any) {
           <span className="text-[12px] font-bold text-slate-200">
             {fullDate}
           </span>
-          <span className="font-mono text-[9px] text-slate-500">{time}</span>
+          <span className="font-mono text-[9px] text-slate-300">{time}</span>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col">

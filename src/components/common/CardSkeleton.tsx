@@ -598,13 +598,13 @@ export function SkillPageSkeleton() {
             }
           >
             <div className="hidden grid-cols-12 border-b border-white/5 bg-white/[0.01] px-6 py-3 md:grid">
-              <div className="col-span-3 text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+              <div className="col-span-3 text-[10px] font-black tracking-[0.2em] text-slate-300 uppercase">
                 Skill Identity
               </div>
-              <div className="col-span-6 border-x border-white/5 text-center text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+              <div className="col-span-6 border-x border-white/5 text-center text-[10px] font-black tracking-[0.2em] text-slate-300 uppercase">
                 Tripod Matrix
               </div>
-              <div className="col-span-3 text-right text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase">
+              <div className="col-span-3 text-right text-[10px] font-black tracking-[0.2em] text-slate-300 uppercase">
                 Runes & Gems
               </div>
             </div>
@@ -657,7 +657,7 @@ export function CharacterHistorySkeleton() {
               성장 궤적
             </h2>
             <div className="flex items-center gap-3 border-t border-white/10 pt-2 sm:border-t-0 sm:border-l sm:pt-0 sm:pl-6">
-              <span className="text-[10px] font-bold tracking-widest text-slate-500 uppercase">
+              <span className="text-[10px] font-bold tracking-widest text-slate-300 uppercase">
                 Peak
               </span>
               <div className="h-4 w-16 animate-pulse rounded bg-white/10" />
@@ -732,7 +732,7 @@ export function CharacterListSkeleton() {
             </div>
             <div className="flex items-center gap-8">
               <div className="h-6 w-32 animate-pulse rounded bg-white/10" />
-              <ChevronDown size={20} className="text-slate-600" />
+              <ChevronDown size={20} className="text-slate-400" />
             </div>
           </div>
         </Card>

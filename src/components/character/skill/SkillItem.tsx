@@ -32,7 +32,7 @@ export function SkillItem({ gems, skill }: { gems: any[]; skill: any }) {
               </h4>
               <GemAndRunes gems={gems} skill={skill} type="mobile" />
             </div>
-            <span className="text-[8px] font-black tracking-tighter text-slate-600 uppercase sm:text-[9px]">
+            <span className="text-[8px] font-black tracking-tighter text-slate-400 uppercase sm:text-[9px]">
               Active Skill
             </span>
           </div>
@@ -135,7 +135,7 @@ function GemAndRunes({
         )}
         {skill.Rune && (
           <div className="flex items-center gap-2 rounded-xl border border-white/5 bg-white/[0.02] py-1.5 pr-1.5 pl-3 transition-colors hover:bg-white/5">
-            <span className="text-[11px] font-bold tracking-tighter text-slate-500 uppercase">
+            <span className="text-[11px] font-bold tracking-tighter text-slate-300 uppercase">
               {skill.Rune.Name}
             </span>
             <div
@@ -189,7 +189,7 @@ function GemAndRunes({
       {/* Rune */}
       {skill.Rune && (
         <div className="flex items-center gap-2 rounded-xl border border-white/5 bg-white/[0.02] py-1.5 pr-1.5 pl-3 transition-colors hover:bg-white/5">
-          <span className="text-[11px] font-bold tracking-tighter text-slate-500 uppercase">
+          <span className="text-[11px] font-bold tracking-tighter text-slate-300 uppercase">
             {skill.Rune.Name}
           </span>
           <div

@@ -86,7 +86,7 @@ function IslandGrid({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-[10px] font-black tracking-[0.2em] text-slate-600 uppercase">
+        <h3 className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">
           Upcoming Islands
         </h3>
         <div className="ml-4 h-px flex-1 bg-white/5" />
@@ -127,7 +127,7 @@ function IslandCard({
         </div>
         <div className="flex items-center justify-between">
           <IslandRewardPreview items={island.RewardItems?.[0]?.Items} />
-          <div className="text-[10px] font-bold text-slate-500 uppercase group-hover:text-indigo-400">
+          <div className="text-[10px] font-bold text-slate-300 uppercase group-hover:text-indigo-400">
             Detail
           </div>
         </div>
@@ -144,7 +144,7 @@ function IslandCard({
             <h3 className="text-sm font-bold text-white">
               {island.ContentsName}
             </h3>
-            <p className="text-[10px] text-slate-500">전체 보상 리스트</p>
+            <p className="text-[10px] text-slate-300">전체 보상 리스트</p>
           </div>
         </div>
         <div className="scrollbar-hide max-h-[300px] space-y-2 overflow-y-auto">
@@ -228,7 +228,7 @@ const MemoizedWeekHeader = memo(function WeekHeader({
               <span
                 className={cn(
                   "text-[9px] font-bold tracking-widest",
-                  isToday ? "text-indigo-400" : "text-slate-600"
+                  isToday ? "text-indigo-400" : "text-slate-400"
                 )}
               >
                 {dayNames[i]}
@@ -238,7 +238,7 @@ const MemoizedWeekHeader = memo(function WeekHeader({
                   "text-lg",
                   isToday
                     ? "scale-110 font-bold text-white"
-                    : "font-light text-slate-500"
+                    : "font-light text-slate-300"
                 )}
               >
                 {date.getDate()}
@@ -259,7 +259,12 @@ const MemoizedIslandGrid = memo(IslandGrid);
 function EventTimerSection({
   eventTimers,
 }: {
-  eventTimers: { label: string; icon: string; targetTime: Date | null; color: string }[];
+  eventTimers: {
+    label: string;
+    icon: string;
+    targetTime: Date | null;
+    color: string;
+  }[];
 }) {
   const [now, setNow] = useState(() => new Date());
 

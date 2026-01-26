@@ -17,12 +17,12 @@ export default function RaidDetailPage() {
 
   if (isLoading)
     return (
-      <div className="p-20 text-center font-mono text-slate-500">
+      <div className="p-20 text-center font-mono text-slate-300">
         LOADING SYSTEM...
       </div>
     );
   if (!raid)
-    return <div className="p-20 text-center text-slate-500">NO DATA</div>;
+    return <div className="p-20 text-center text-slate-300">NO DATA</div>;
 
   const currentGate =
     raid.raid_gates?.find((g: any) => g.gate_number === activeGate) ||
@@ -45,7 +45,7 @@ export default function RaidDetailPage() {
           <div className="flex items-center gap-6">
             <button
               onClick={() => router.back()}
-              className="text-slate-500 transition-colors hover:text-white"
+              className="text-slate-300 transition-colors hover:text-white"
             >
               <ChevronLeft size={20} />
             </button>
@@ -61,7 +61,7 @@ export default function RaidDetailPage() {
                   {raid.difficulty}
                 </span>
                 <span className="h-1 w-1 rounded-full bg-white/10" />
-                <p className="text-[11px] font-medium text-slate-500 uppercase">
+                <p className="text-[11px] font-medium text-slate-300 uppercase">
                   {currentGate?.title}
                 </p>
               </div>
@@ -81,7 +81,7 @@ export default function RaidDetailPage() {
                   "rounded-md px-4 py-1.5 text-[10px] font-black tracking-tighter transition-all",
                   activeGate === gate.gate_number
                     ? "bg-indigo-600 text-white"
-                    : "text-slate-500 hover:text-slate-300"
+                    : "text-slate-300 hover:text-slate-300"
                 )}
               >
                 GATE {gate.gate_number}
@@ -152,7 +152,7 @@ export default function RaidDetailPage() {
                           "h-2 w-2 rounded-full border transition-all duration-300",
                           isWarning
                             ? "border-red-400 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"
-                            : "border-slate-600 bg-slate-800 group-hover:border-indigo-400 group-hover:bg-indigo-500"
+                            : "border-slate-400 bg-slate-800 group-hover:border-indigo-400 group-hover:bg-indigo-500"
                         )}
                       />
                     </div>
@@ -163,7 +163,7 @@ export default function RaidDetailPage() {
                           "block font-mono text-sm font-black tracking-tighter italic",
                           isWarning
                             ? "text-red-500"
-                            : "text-slate-500 group-hover:text-white"
+                            : "text-slate-300 group-hover:text-white"
                         )}
                       >
                         {hp.trim()}

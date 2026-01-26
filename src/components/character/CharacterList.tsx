@@ -87,7 +87,7 @@ function CharacterPillCard({ char }: { char: any }) {
             {char.CharacterName}
           </h4>
           <div className="mt-0.5 flex items-center gap-2">
-            <span className="text-[10px] font-semibold tracking-wider text-slate-500 uppercase">
+            <span className="text-[10px] font-semibold tracking-wider text-slate-300 uppercase">
               {char.CharacterClassName}
             </span>
           </div>
@@ -95,7 +95,7 @@ function CharacterPillCard({ char }: { char: any }) {
 
         <div className="flex flex-col items-end justify-center border-l border-white/5 py-1 pl-4">
           <div className="flex items-baseline gap-1 opacity-40">
-            <span className="text-[7px] font-black tracking-widest text-slate-500 uppercase">
+            <span className="text-[7px] font-black tracking-widest text-slate-300 uppercase">
               Level
             </span>
             <span className="font-mono text-[9px] font-bold text-slate-400 tabular-nums">
