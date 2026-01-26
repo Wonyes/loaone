@@ -18,8 +18,12 @@ export function Header() {
   }, [pathname]);
 
   const navLinks = [
-    { name: "PAPER", href: "/cunning-paper" },
-    { name: "RANKINGS", href: "/rankings" },
+    {
+      name: "PAPER",
+      href: "/cunning-paper",
+      title: "로스트아크 레이드 공략 컨닝페이퍼",
+    },
+    { name: "RANKINGS", href: "/rankings", title: "캐릭터 아이템 레벨 랭킹" },
   ];
 
   return (
@@ -28,12 +32,16 @@ export function Header() {
         <div className="flex items-center gap-12">
           <Logo onClick={() => router.push("/")} />
 
-          <nav className="hidden items-center gap-2 lg:flex">
+          <nav
+            className="hidden items-center gap-2 lg:flex"
+            aria-label="Main Navigation"
+          >
             {navLinks.map(link => (
               <NavLink
                 key={link.href}
                 href={link.href}
                 isActive={pathname === link.href}
+                title={link.title}
               >
                 {link.name}
               </NavLink>
@@ -52,6 +60,8 @@ export function Header() {
             <button
               className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#bef264]/20 bg-teal-900/30 text-[#bef264] transition-all hover:bg-[#bef264]/20 active:scale-95 lg:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Menu Open"
+              title="Menu Open"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -96,16 +106,19 @@ function Logo({ onClick }: { onClick: () => void }) {
 
 function NavLink({
   href,
+  title,
   isActive,
   children,
 }: {
   href: string;
+  title: string;
   isActive: boolean;
   children: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
+      title={title}
       prefetch={false}
       className={cn(
         "px-4 py-1 text-[11px] font-bold tracking-[0.2em] transition-all duration-300",
@@ -143,6 +156,7 @@ function MobileMenu({
             <Link
               key={link.href}
               href={link.href}
+              title={link.name}
               onClick={onClose}
               className={cn(
                 "flex items-center justify-between py-5 text-xl font-black tracking-tighter transition-all active:translate-x-2",

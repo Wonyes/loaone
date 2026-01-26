@@ -20,7 +20,7 @@ export default function PopularSearchPage() {
     >
       <div className="p-2">
         <div className="no-scrollbar max-h-[400px] space-y-1 overflow-y-auto">
-          {popularSearch.map((char: any, index: number) => (
+          {popularSearch.slice(0, 5).map((char: any, index: number) => (
             <FavoriteCharacter
               key={char.character_name}
               char={char}

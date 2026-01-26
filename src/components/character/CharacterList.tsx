@@ -28,7 +28,7 @@ export function CharacterListLayout({ name }: { name: string }) {
 
   if (isLoading) return <CharacterListSkeleton />;
   if (!listData) return null;
-
+  console.log(listData);
   return (
     <div className="mx-auto w-full max-w-[1600px] space-y-12 px-4 pb-20 sm:px-6">
       <WeeklyGoldDashboard characters={listData} />
