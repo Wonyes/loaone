@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Trophy, ChevronDown, Crown, Medal, Award } from "lucide-react";
+import { Trophy, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/common/Card";
 import { getClassIcon } from "@/utils/lostarkUtils";
@@ -257,7 +257,12 @@ function TopRankCard({ char, rank }: { char: RankingCharacter; rank: number }) {
             <p className="text-[9px] font-bold tracking-[0.2em] text-slate-400 uppercase">
               Current Power
             </p>
-            <p className={cn("font-mono text-2xl font-light tracking-tighter text-red-400 tabular-nums", isSupport(char.engraving) ? "text-green-400" : "text-red-400")}>
+            <p
+              className={cn(
+                "font-mono text-2xl font-light tracking-tighter text-red-400 tabular-nums",
+                isSupport(char.engraving) ? "text-green-400" : "text-red-400"
+              )}
+            >
               {char.combat_level}
             </p>
           </div>

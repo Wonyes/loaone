@@ -33,8 +33,6 @@ export default async function CharacterPageRoute({
   const decodedName = decodeURIComponent(name);
 
   const { profile, arkpassive } = await getCharacterPageData(decodedName);
-  console.log("profile:", profile);
-  console.log("arkpassive Effects:", JSON.stringify(arkpassive?.Effects, null, 2));
 
   if (profile) {
     const mainPassiveName = getMainPassiveName(profile, arkpassive);
