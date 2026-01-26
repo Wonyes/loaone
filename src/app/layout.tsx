@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "로아원 · %s",
   },
   description:
-    "로스트아크 캘린더, 거래소, 길드, 랭킹 정보를 한눈에! 실시간 이벤트 스케줄과 모험 섬 정보를 확인하세요.",
+    "로스트아크 캘린더, 랭킹, 컨닝페이퍼 정보를 한눈에! 실시간 이벤트 스케줄과 모험 섬 정보를 확인하세요.",
   keywords: [
     "로아원",
     "로스트아크",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     url: "https://loaone.vercel.app",
     title: "로아원 - 로스트아크 종합 정보",
-    description: "로스트아크 캘린더, 거래소, 길드, 랭킹 정보를 한눈에!",
+    description: "로스트아크 캘린더, 랭킹, 컨닝페이퍼 정보를 한눈에!",
     siteName: "로아원",
     images: [
       {
@@ -67,17 +67,18 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "로아원 - 로스트아크 종합 정보",
-    description: "로스트아크 캘린더, 거래소, 길드, 랭킹 정보를 한눈에!",
+    description: "로스트아크 캘린더, 랭킹, 컨닝페이퍼 정보를 한눈에!",
     images: ["/og.image.png"],
   },
   icons: {
     icon: "/favicon.ico",
     apple: "/favicon.ico",
+    shortcut: "/apple-touch-icon.png",
     other: [
       {
         rel: "icon",
         url: "/apple-touch-icon.png",
-        sizes: "512x512",
+        sizes: "192x192",
         type: "image/png",
       },
     ],
