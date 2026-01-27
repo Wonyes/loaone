@@ -86,7 +86,7 @@ export function CharacterHistory({ name }: { name: string }) {
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={chartData}
-                margin={{ top: 0, right: 10, left: -30, bottom: 0 }}
+                margin={{ top: 0, right: 10, left: -20, bottom: 30 }}
               >
                 <defs>
                   <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
@@ -112,6 +112,12 @@ export function CharacterHistory({ name }: { name: string }) {
                 <Tooltip
                   content={<CustomTooltip />}
                   cursor={{ stroke: "#bef264", strokeWidth: 0.5 }}
+                  allowEscapeViewBox={{ x: false, y: true }}
+                  wrapperStyle={{
+                    marginTop: -130,
+                    pointerEvents: 'none',
+                    zIndex: 50
+                  }}
                 />
                 <Area
                   type="monotone"
@@ -151,30 +157,24 @@ export function CharacterHistory({ name }: { name: string }) {
 
 function CustomTooltip({ active, payload }: any) {
   if (active && payload && payload.length) {
-    const { fullDate, time, level, cp } = payload[0].payload;
+    const { fullDate, time, level } = payload[0].payload;
     return (
-      <div className="shadow-3xl min-w-[180px] rounded-2xl border border-white/10 bg-[#061a1a]/95 p-4 ring-1 ring-[#bef264]/20 sm:p-5">
-        <div className="mb-3 flex items-end justify-between border-b border-white/5 pb-2">
-          <span className="text-[12px] font-bold text-slate-200">
+      <div className="shadow-3xl w-[180px] rounded-xl border border-white/10 bg-[#061a1a]/95 p-2.5 ring-1 ring-[#bef264]/20 sm:w-[180px] sm:rounded-2xl sm:p-4">
+        <div className="mb-2 flex items-end justify-between border-b border-white/5 pb-1.5 sm:mb-3 sm:pb-2">
+          <span className="text-[12px] font-bold text-slate-200 sm:text-[12px]">
             {fullDate}
           </span>
-          <span className="font-mono text-[9px] text-slate-300">{time}</span>
+          <span className="text-[10px] text-slate-300 sm:text-[10px]">
+            {time}
+          </span>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4">
           <div className="flex flex-col">
-            <span className="mb-0.5 text-[8px] font-black tracking-widest text-[#bef264] uppercase opacity-60">
+            <span className="mb-0.5 text-[10px] font-black tracking-widest text-[#bef264] uppercase opacity-60 sm:text-[8px]">
               Level
             </span>
-            <span className="font-mono text-base font-black text-white">
+            <span className="font-mono text-sm font-black text-white sm:text-base">
               {level?.toFixed(2)}
-            </span>
-          </div>
-          <div className="flex flex-col items-end text-right">
-            <span className="mb-0.5 text-[8px] font-black tracking-widest text-indigo-400 uppercase opacity-60">
-              Power
-            </span>
-            <span className="w-full truncate font-mono text-xs font-black text-slate-300">
-              {cp?.toLocaleString()}
             </span>
           </div>
         </div>
