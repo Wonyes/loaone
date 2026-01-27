@@ -71,16 +71,11 @@ export const metadata: Metadata = {
     images: ["/og.image.png"],
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/favicon.ico",
-    other: [
-      {
-        rel: "icon",
-        url: "/apple-touch-icon.png",
-        sizes: "192x192",
-        type: "image/png",
-      },
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.ico", sizes: "192x192", type: "image/png" },
     ],
+    apple: "/favicon.ico",
   },
   applicationName: "로아원",
   verification: {
