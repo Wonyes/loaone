@@ -80,6 +80,9 @@ export const metadata: Metadata = {
   applicationName: "로아원",
   verification: {
     google: "e_p3eiiAVyD4jMfP98iSE0XIs9Y_nVnNbDQ-6Lsxi0c",
+    other: {
+      "naver-site-verification": "ae52ff2264da4f5fbe14da0907a1d1b5342755fa",
+    },
   },
   alternates: {
     canonical: "https://loaone.vercel.app",

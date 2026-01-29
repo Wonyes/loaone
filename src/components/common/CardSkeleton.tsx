@@ -714,8 +714,228 @@ export function CharacterCollectibleSkeleton() {
   );
 }
 
-// 내 캐릭 리스트 스켈레톤
+// 랭킹 페이지 스켈레톤
+export function RankingsPageSkeleton() {
+  return (
+    <div className="mx-auto space-y-4">
+      {/* 포디움 Top 3 */}
+      <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-3">
+        {[2, 1, 3].map(rank => (
+          <RankingTopCardSkeleton key={rank} rank={rank} />
+        ))}
+      </div>
 
+      {/* 랭킹 리스트 */}
+      <Card
+        title="All Rankings"
+        className="mx-auto w-fit overflow-visible"
+        icon={<Trophy className="h-4 w-4 text-yellow-500" />}
+        headerAction={
+          <div className="flex gap-2">
+            <div className="h-8 w-24 animate-pulse rounded-lg bg-white/10" />
+            <div className="h-8 w-24 animate-pulse rounded-lg bg-white/10" />
+          </div>
+        }
+      >
+        <div className="hidden border-b border-white/[0.05] px-6 py-3 lg:grid lg:grid-cols-[80px_200px_120px_120px_150px_120px_150px] lg:gap-3">
+          {["순위", "캐릭터", "아이템 레벨", "전투력", "클래스", "서버", "각인"].map(
+            (label, i) => (
+              <div
+                key={label}
+                className={cn(
+                  "text-xs font-black text-white/60",
+                  i === 0 || (i >= 2 && i <= 5) ? "text-center" : ""
+                )}
+              >
+                {label}
+              </div>
+            )
+          )}
+        </div>
+
+        <div className="divide-y divide-white/[0.03]">
+          {[...Array(10)].map((_, i) => (
+            <RankingRowSkeleton key={i} rank={i + 1} />
+          ))}
+        </div>
+
+        <div className="border-t border-white/[0.05] p-4">
+          <div className="h-12 w-full animate-pulse rounded-xl bg-white/[0.03]" />
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+function RankingTopCardSkeleton({ rank }: { rank: number }) {
+  const accentColor = {
+    1: "bg-amber-400",
+    2: "bg-slate-300",
+    3: "bg-orange-600",
+  }[rank as 1 | 2 | 3];
+
+  return (
+    <div className="overflow-hidden rounded-[2rem] border border-white/[0.04] bg-white/[0.02] p-5 shadow-2xl">
+      <div className="absolute top-0 left-0 h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className={cn("absolute top-0 left-5 h-[1.5px] w-8", accentColor)} />
+
+      <div className="mb-8 flex items-baseline justify-between">
+        <span className="font-mono text-[10px] font-medium tracking-[0.3em] text-slate-300">
+          NO.0{rank}
+        </span>
+        <div className="mx-4 h-[1px] flex-1 bg-white/[0.3]" />
+        <SkeletonBox className="h-3 w-8" />
+      </div>
+
+      <div className="mb-10 space-y-1.5">
+        <SkeletonBox className="h-6 w-32" />
+        <div className="flex items-center gap-2">
+          <SkeletonBox className="h-3 w-16" />
+          <span className="h-[2px] w-[2px] rounded-full bg-slate-800" />
+          <SkeletonBox className="h-3 w-12" />
+        </div>
+      </div>
+
+      <div className="flex items-end justify-between">
+        <div className="space-y-1">
+          <p className="text-[9px] font-bold tracking-[0.2em] text-slate-400 uppercase">
+            Current Power
+          </p>
+          <SkeletonBox className="h-8 w-24" />
+        </div>
+        <div className="flex flex-col items-end gap-1 opacity-20">
+          <div className="h-[1px] w-4 bg-white" />
+          <div className="h-[1px] w-2 bg-white" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RankingRowSkeleton({ rank }: { rank: number }) {
+  const badge = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
+
+  return (
+    <div className="grid grid-cols-[32px_40px_1fr] items-center gap-2 px-4 py-3 lg:grid-cols-[80px_200px_120px_120px_150px_120px_150px] lg:gap-3 lg:px-6 lg:py-4">
+      <div className="text-center text-sm font-mono text-slate-400">
+        {badge || rank.toString().padStart(2, "0")}
+      </div>
+
+      <div className="lg:hidden">
+        <SkeletonCircle className="h-8 w-8" />
+      </div>
+
+      <div className="flex flex-col gap-0.5 lg:hidden">
+        <div className="flex items-center gap-1">
+          <SkeletonBox className="h-3 w-20" />
+          <span className="text-slate-400">·</span>
+          <SkeletonBox className="h-3 w-12" />
+        </div>
+        <div className="flex items-center gap-2">
+          <SkeletonBox className="h-3 w-14" />
+          <SkeletonBox className="h-3 w-14" />
+        </div>
+        <SkeletonBox className="h-3 w-16" />
+      </div>
+
+      <div className="hidden lg:block">
+        <SkeletonBox className="h-4 w-28" />
+      </div>
+      <div className="hidden lg:flex lg:justify-center">
+        <SkeletonBox className="h-4 w-16" />
+      </div>
+      <div className="hidden lg:flex lg:justify-center">
+        <SkeletonBox className="h-4 w-20" />
+      </div>
+      <div className="hidden lg:flex lg:justify-center">
+        <SkeletonBox className="h-4 w-16" />
+      </div>
+      <div className="hidden lg:flex lg:justify-center">
+        <SkeletonBox className="h-4 w-14" />
+      </div>
+      <div className="hidden lg:block">
+        <SkeletonBox className="h-4 w-20" />
+      </div>
+    </div>
+  );
+}
+
+// 컨닝페이퍼 페이지 스켈레톤
+export function CunningPaperSkeleton() {
+  const categories = ["ALL", "카제로스", "군단장", "어비스", "가디언"];
+
+  return (
+    <div className="mx-auto max-w-[1200px] space-y-10 p-6 py-12">
+      <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+        <div className="space-y-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1">
+            <Zap size={12} className="fill-indigo-400 text-indigo-400" />
+            <span className="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">
+              Ver 2.0 Live
+            </span>
+          </div>
+          <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic sm:text-5xl">
+            Raid
+            <span className="bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+              Paper
+            </span>
+          </h1>
+          <p className="text-sm font-medium tracking-tight text-slate-400">
+            숙련을 넘어 숙제로, 핵심 기믹의 정수만 담았습니다.
+          </p>
+        </div>
+
+        <div className="relative w-full md:w-80">
+          <div className="w-full rounded-xl border border-white/5 bg-white/5 py-3.5 pr-4 pl-11">
+            <SkeletonBox className="h-4 w-32" />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex gap-2 overflow-x-auto pb-2">
+        {categories.map((tab, i) => (
+          <div
+            key={tab}
+            className={cn(
+              "rounded-lg px-5 py-2 text-[11px] font-bold tracking-widest uppercase",
+              i === 0
+                ? "bg-indigo-600 text-white"
+                : "bg-white/5 text-slate-300"
+            )}
+          >
+            {tab}
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {[...Array(9)].map((_, i) => (
+          <RaidCardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RaidCardSkeleton() {
+  return (
+    <Card
+      className="h-full border-white/5"
+      title={<SkeletonBox className="h-5 w-16 rounded-md" />}
+      headerAction={<SkeletonBox className="h-3 w-24" />}
+    >
+      <div className="relative space-y-4 p-6 pt-2">
+        <SkeletonBox className="h-6 w-40" />
+        <div className="flex items-center justify-between border-t border-white/[0.03] pt-4">
+          <SkeletonBox className="h-3 w-24" />
+          <SkeletonBox className="h-8 w-8 rounded-xl" />
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+// 내 캐릭 리스트 스켈레톤
 export function CharacterListSkeleton() {
   return (
     <div className="mx-auto w-full max-w-[1600px] space-y-12 px-4 pb-20 sm:px-6">

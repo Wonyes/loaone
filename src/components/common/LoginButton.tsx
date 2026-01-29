@@ -46,7 +46,7 @@ export function LoginButton() {
     return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <button className="group relative flex items-center gap-2.5 rounded-full border border-teal-500/20 bg-teal-950/20 py-1 pr-3 pl-1 transition-all outline-none hover:border-teal-500/40 hover:bg-teal-900/30 active:scale-95">
+          <button className="group relative flex cursor-pointer items-center gap-2.5 rounded-full border border-teal-500/20 bg-teal-950/20 py-1 pr-3 pl-1 transition-all outline-none hover:border-teal-500/40 hover:bg-teal-900/30 active:scale-95">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-[#bef264]/20 opacity-0 blur-[8px] transition-opacity group-hover:opacity-100" />
               <Avatar className="h-7 w-7 border border-white/10 ring-1 ring-teal-500/20">
