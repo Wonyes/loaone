@@ -24,6 +24,7 @@ export function Header() {
       title: "로스트아크 레이드 공략 컨닝페이퍼",
     },
     { name: "RANKINGS", href: "/rankings", title: "캐릭터 아이템 레벨 랭킹" },
+    { name: "SHOWCASE", href: "/showcase", title: "아바타 자랑 갤러리" },
   ];
 
   return (

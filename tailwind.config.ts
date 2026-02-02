@@ -13,6 +13,7 @@ const config: Config = {
       },
       animation: {
         slide: "slide 2s ease-in-out infinite",
+        "spin-slow": "spin 4s linear infinite",
       },
       keyframes: {
         slide: {

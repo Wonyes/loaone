@@ -41,7 +41,9 @@ export function LoginButton() {
   if (user) {
     const avatarUrl = user.user_metadata.avatar_url;
     const username =
-      user.user_metadata.full_name || user.user_metadata.name || "User";
+      user.user_metadata.custom_claims.global_name ||
+      user.user_metadata.full_name ||
+      "User";
 
     return (
       <DropdownMenu modal={false}>
@@ -55,7 +57,7 @@ export function LoginButton() {
             </div>
 
             <div className="flex min-w-[60px] flex-col items-start">
-              <span className="mb-0.5 text-[11px] leading-none font-black tracking-tight text-slate-100">
+              <span className="mb-0.5 truncate text-xs leading-none font-black tracking-tight text-white">
                 {username}
               </span>
               <span className="text-[8px] leading-none font-bold tracking-widest text-teal-500/60 uppercase">
@@ -73,21 +75,26 @@ export function LoginButton() {
           align="end"
           className="mt-2 w-48 overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d12]/95 p-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
         >
-          <div className="mb-1 flex flex-col gap-0.5 px-3 py-2.5">
-            <p className="text-[9px] font-black tracking-[0.2em] text-slate-400 uppercase">
-              Account
-            </p>
-            <p className="truncate text-xs font-bold text-slate-200">
-              {user.email}
-            </p>
+          <div className="flex">
+            <Avatar className="h-12 w-12 border border-white/10 ring-1 ring-teal-500/20">
+              <AvatarImage src={avatarUrl} alt={username} />
+            </Avatar>
+            <div className="mb-1 flex flex-col gap-0.5 px-3 py-2.5">
+              <p className="text-[9px] font-black tracking-[0.2em] text-slate-400 uppercase">
+                Account
+              </p>
+              <p className="max-w-[110px] truncate text-xs font-bold text-slate-200">
+                {user.email}
+              </p>
+            </div>
           </div>
 
           <DropdownMenuItem
             onClick={handleLogout}
             className="flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-[11px] font-bold text-rose-400 transition-all hover:bg-rose-500/10 focus:bg-rose-500/10 focus:text-rose-300"
           >
-            <span>로그아웃</span>
-            <LogOut className="h-3.5 w-3.5 opacity-50" />
+            <span className="text-xs">로그아웃</span>
+            <LogOut className="h-2 w-2" />
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

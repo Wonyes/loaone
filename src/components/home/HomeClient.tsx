@@ -28,11 +28,6 @@ export default function HomeClient({
 
   return (
     <div className="relative mx-auto max-w-[1400px] antialiased">
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute top-[10%] left-[15%] h-[600px] w-[600px] rounded-full bg-indigo-500/[0.08] blur-[120px]" />
-        <div className="absolute right-[10%] bottom-[10%] h-[500px] w-[500px] rounded-full bg-emerald-500/[0.05] blur-[100px]" />
-      </div>
-
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         <div className="space-y-4 lg:col-span-9">
           {eventLoading ? (
@@ -64,10 +59,7 @@ export default function HomeClient({
                 <NoticeSection
                   title="Official Notice"
                   data={noticeData
-                    ?.filter(
-                      (n: NoticeItem) =>
-                        n.Type === "공지" && !n.Title.includes("업데이트")
-                    )
+                    ?.filter((n: NoticeItem) => !n.Title.includes("업데이트"))
                     .slice(0, 4)}
                   icon={<Bell size={18} className="text-indigo-400" />}
                 />
