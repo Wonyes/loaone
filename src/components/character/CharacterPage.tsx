@@ -163,7 +163,7 @@ export function TabNavigation({
                   : "text-teal-100/20 hover:bg-white/[0.02] hover:text-teal-100/70"
               )}
             >
-              <span className="relative z-10 text-[13px] font-black font-bold tracking-[0.05em] uppercase italic">
+              <span className="relative z-10 text-[12px] font-black tracking-[0.05em] uppercase italic">
                 {tab.label}
               </span>
 

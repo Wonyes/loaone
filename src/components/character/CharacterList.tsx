@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { WeeklyGoldDashboard } from "./list/WeeklyGoldDashboard";
 import Link from "next/link";
 import { CharacterListSkeleton } from "../common/CardSkeleton";
+import { EmptyCard } from "../common";
+import { BadgeInfoIcon } from "lucide-react";
 
 export function CharacterListLayout({ name }: { name: string }) {
   const { data: listData, isLoading } = useSiblings(name);
@@ -26,9 +28,20 @@ export function CharacterListLayout({ name }: { name: string }) {
     }, {});
   }, [listData]);
 
+  if (!listData)
+    return (
+      <EmptyCard
+        title={
+          <div className="flex gap-2">
+            <BadgeInfoIcon className="h-6 w-6 text-amber-500" />
+            <span>내 캐릭터</span>
+          </div>
+        }
+        message="캐릭터 정보가 없거나 점검으로 인해 정보가 없습니다."
+      />
+    );
   if (isLoading) return <CharacterListSkeleton />;
-  if (!listData) return null;
-  console.log(listData);
+
   return (
     <div className="mx-auto w-full max-w-[1600px] space-y-12 px-4 pb-20 sm:px-6">
       <WeeklyGoldDashboard characters={listData} />

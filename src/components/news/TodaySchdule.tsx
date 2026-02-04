@@ -30,7 +30,7 @@ export function TodaySchedule() {
     nextResetTime,
     lostArkDayStr
   );
-  if (isLoading || !calendar) {
+  if (isLoading) {
     return (
       <div className="relative mx-auto max-w-3xl space-y-4 bg-transparent p-4">
         <div className="border-b border-white/5 pb-5">

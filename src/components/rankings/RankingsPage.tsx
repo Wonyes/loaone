@@ -133,8 +133,7 @@ function TopRankCard({ char, rank }: { char: RankingCharacter; rank: number }) {
     >
       <div
         className={cn(
-          "overflow-hidden rounded-[2rem] rounded-xl border border-white/[0.1] border-white/[0.04] bg-white/[0.02] p-5 shadow-2xl transition-all duration-700",
-          "before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-white/[0.05] before:to-transparent hover:border-white/10 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.05)]"
+          "overflow-hidden rounded-2xl border border-white/[0.1] border-white/[0.04] bg-white/[0.02] p-5 shadow-2xl transition-all duration-700"
         )}
       >
         <div className="absolute top-0 left-0 h-[1px] w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -186,15 +185,6 @@ function TopRankCard({ char, rank }: { char: RankingCharacter; rank: number }) {
               {char.combat_level}
             </p>
           </div>
-
-          <div className="flex flex-col items-end gap-1 opacity-20">
-            <div className="h-[1px] w-4 bg-white" />
-            <div className="h-[1px] w-2 bg-white" />
-          </div>
-        </div>
-
-        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute top-0 -left-full h-full w-1/2 skew-x-[45deg] bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-all duration-1000 group-hover:left-[150%]" />
         </div>
       </div>
     </Link>
