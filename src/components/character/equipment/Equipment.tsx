@@ -115,7 +115,16 @@ export default function Equipment({
             {isEngravingsLoading ? (
               <EngravingsSkeleton />
             ) : (
-              <EngravingsPanel engravingsData={engravingsData} />
+              <EngravingsPanel
+                engravingsData={engravingsData}
+                stoneInscriptions={(() => {
+                  if (!equipmentData) return [];
+                  const stone = Object.values(equipmentData).find(
+                    (i: any) => i.Type === "어빌리티 스톤"
+                  ) as any;
+                  return stone ? parseStoneInscriptions(stone.tooltip) : [];
+                })()}
+              />
             )}
           </div>
 
@@ -647,7 +656,7 @@ function StoneCard({ item }: { item: any }) {
       {totalTopTwoLevel >= 5 && (
         <div className="animate-in zoom-in fade-in absolute -top-3 -left-18 z-20 flex items-center gap-1 rounded-full bg-gradient-to-r from-yellow-700 to-blue-700 px-1 py-0.5">
           <Star size={12} className="fill-yellow-500 text-yellow-500" />
-          <span className="text-xs text-yellow-500">{totalTopTwoLevel}</span>
+          <span className="text-xs text-yellow-500">Lv.{totalTopTwoLevel}</span>
         </div>
       )}
 
@@ -755,7 +764,13 @@ function StatsPanel({
 }
 
 // --- 각인 섹션 ---
-function EngravingsPanel({ engravingsData }: { engravingsData: any }) {
+function EngravingsPanel({
+  engravingsData,
+  stoneInscriptions = [],
+}: {
+  engravingsData: any;
+  stoneInscriptions?: { name: string; level: string; isDebuff: boolean }[];
+}) {
   if (!engravingsData?.ArkPassiveEffects) return null;
 
   return (
@@ -764,20 +779,39 @@ function EngravingsPanel({ engravingsData }: { engravingsData: any }) {
       icon={<ScrollText size={18} className="text-cyan-400" />}
     >
       <div className="grid grid-cols-1 gap-2 p-4">
-        {engravingsData.ArkPassiveEffects.map((eng: any, idx: number) => (
-          <div
-            key={idx}
-            className="flex items-center justify-between rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-3"
-          >
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
-              <span className="text-sm font-black text-white">{eng.Name}</span>
+        {engravingsData.ArkPassiveEffects.map((eng: any, idx: number) => {
+          const stoneMatch = stoneInscriptions.find(
+            ins => ins.name === eng.Name
+          );
+          return (
+            <div
+              key={idx}
+              className="flex items-center justify-between rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-3"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-black text-white">
+                  {eng.Name}
+                </span>
+              </div>
+              <div className="flex gap-2">
+                {stoneMatch && (
+                  <div className="flex items-center gap-1">
+                    <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_0_rgba(0,0,0,0)] shadow-cyan-400/80" />
+                    <span className="text-xs font-black text-cyan-400 italic">
+                      Lv. {stoneMatch.level}
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-red-400 shadow-[0_0_8px_0_rgba(0,0,0,0)] shadow-red-400/80" />
+                  <span className="text-xs font-black text-red-400 italic">
+                    Lv. {eng.Level}
+                  </span>
+                </div>
+              </div>
             </div>
-            <span className="text-xs font-black text-cyan-400">
-              Level {eng.Level}
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </Card>
   );
