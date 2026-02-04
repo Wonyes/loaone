@@ -17,6 +17,8 @@ export function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  if (pathname === "/setup-character") return null;
+
   const navLinks = [
     {
       name: "paper",
@@ -47,7 +49,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 isActive={
-                  pathname === link.href ||
+                  pathname.includes(link.href) ||
                   (link.in && pathname.includes(link.in))
                 }
                 title={link.title}

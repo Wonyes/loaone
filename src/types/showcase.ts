@@ -8,15 +8,16 @@ export interface AvatarShowcase {
   item_level: string | null;
   character_image: string | null;
   description: string | null;
+  discord_name: string | null;
+  discord_avatar: string | null;
+  avatar_items: any[] | null;
   created_at: string;
   updated_at: string;
 }
 
-// 갤러리 표시용 (통계 + Discord 정보 포함)
+// 갤러리 표시용 (통계 포함)
 export interface ShowcaseWithStats extends AvatarShowcase {
   like_count: number;
-  discord_avatar: string | null;
-  discord_name: string | null;
   is_liked?: boolean;
 }
 
@@ -28,6 +29,7 @@ export interface ShowcaseUpsertRequest {
   item_level?: string;
   character_image?: string;
   description?: string;
+  avatar_items?: any[];
 }
 
 // 좋아요 정보

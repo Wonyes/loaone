@@ -56,7 +56,7 @@ export const EventSlider = memo(function EventSlider({
                   setCurrentIndex(idx);
                 }
               }}
-              className="relative h-1.5 overflow-hidden rounded-full transition-all duration-300"
+              className="relative h-1.5 cursor-pointer overflow-hidden rounded-full transition-all duration-300"
               style={{ width: idx === currentIndex ? 24 : 8 }}
             >
               <div className="absolute inset-0 bg-white/20" />

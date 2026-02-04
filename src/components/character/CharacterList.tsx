@@ -9,9 +9,11 @@ import Link from "next/link";
 import { CharacterListSkeleton } from "../common/CardSkeleton";
 import { EmptyCard } from "../common";
 import { BadgeInfoIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function CharacterListLayout({ name }: { name: string }) {
   const { data: listData, isLoading } = useSiblings(name);
+  const pathname = usePathname();
 
   const groupedServers = useMemo(() => {
     if (!listData) return {};
@@ -43,7 +45,12 @@ export function CharacterListLayout({ name }: { name: string }) {
   if (isLoading) return <CharacterListSkeleton />;
 
   return (
-    <div className="mx-auto w-full max-w-[1600px] space-y-12 px-4 pb-20 sm:px-6">
+    <div
+      className={cn(
+        "mx-auto w-full max-w-[1400px] space-y-12 px-4 pb-20 sm:px-6",
+        pathname === "/profile" && "pt-4"
+      )}
+    >
       <WeeklyGoldDashboard characters={listData} />
 
       {Object.entries(groupedServers).map(([serverName, characters]: any) => (
@@ -108,10 +115,10 @@ function CharacterPillCard({ char }: { char: any }) {
 
         <div className="flex flex-col items-end justify-center border-l border-white/5 py-1 pl-4">
           <div className="flex items-baseline gap-1 opacity-40">
-            <span className="text-[7px] font-black tracking-widest text-slate-300 uppercase">
+            <span className="text-[9px] font-black tracking-widest text-slate-200 uppercase">
               Level
             </span>
-            <span className="font-mono text-[9px] font-bold text-slate-400 tabular-nums">
+            <span className="font-mono text-[9px] font-bold text-white tabular-nums">
               {char.CharacterLevel}
             </span>
           </div>

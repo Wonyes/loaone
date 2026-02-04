@@ -14,7 +14,7 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] transition-all hover:border-white/10 hover:bg-white/[0.03]">
-      <Link href={`/characters/${showcase.character_name}`}>
+      <Link href={`/showcase/${showcase.id}`}>
         <div className="relative h-[280px] overflow-hidden bg-[#15181D]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#1e1b4b_0%,transparent_60%)] opacity-50" />
 
@@ -22,7 +22,7 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
             <img
               src={characterImage}
               alt={showcase.character_name}
-              className="relative z-10 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="relative z-10 h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
               style={{
                 maskImage:
                   "linear-gradient(to bottom, transparent 0%, black 10%, black 80%, transparent 100%)",
@@ -71,7 +71,10 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
         <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8 border border-white/10">
             {showcase.discord_avatar ? (
-              <AvatarImage src={showcase.discord_avatar} alt={showcase.discord_name || ""} />
+              <AvatarImage
+                src={showcase.discord_avatar}
+                alt={showcase.discord_name || ""}
+              />
             ) : (
               <AvatarFallback className="bg-indigo-600 text-xs font-bold text-white">
                 {showcase.discord_name?.charAt(0)?.toUpperCase() || "?"}
@@ -89,7 +92,7 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
         </div>
 
         {showcase.description && (
-          <p className="text-xs leading-relaxed text-gray-400 line-clamp-2">
+          <p className="line-clamp-2 text-xs leading-relaxed text-gray-400">
             "{showcase.description}"
           </p>
         )}

@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       *,
       avatar_likes(count)
     `, { count: "exact" })
-    .eq("is_public", true);
+;
 
   // 정렬
   if (sort === "popular") {
@@ -48,16 +48,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // Discord 정보 및 좋아요 수 처리
+  // 좋아요 수 및 상태 처리
   const showcasesWithStats = await Promise.all(
     (showcases || []).map(async (showcase: any) => {
-      // Discord 정보 가져오기
-      const { data: userData } = await supabase
-        .from("users")
-        .select("raw_user_meta_data")
-        .eq("id", showcase.user_id)
-        .single();
-
       // 현재 유저의 좋아요 상태 확인
       let isLiked = false;
       if (user) {
@@ -70,13 +63,9 @@ export async function GET(request: NextRequest) {
         isLiked = !!likeData;
       }
 
-      const discordMeta = userData?.raw_user_meta_data;
-
       return {
         ...showcase,
         like_count: showcase.avatar_likes?.[0]?.count || 0,
-        discord_avatar: discordMeta?.avatar_url || null,
-        discord_name: discordMeta?.full_name || discordMeta?.name || null,
         is_liked: isLiked,
       };
     })

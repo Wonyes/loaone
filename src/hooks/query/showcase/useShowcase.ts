@@ -2,25 +2,25 @@ import { useUser } from "@/hooks/useUesr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AvatarShowcase, ShowcaseUpsertRequest } from "@/types/showcase";
 
-// 내 showcase 조회
-export function useShowcase() {
+// 내 showcase 목록 조회
+export function useMyShowcases() {
   const { user } = useUser();
 
   return useQuery({
     queryKey: ["showcase", user?.id],
-    queryFn: async (): Promise<AvatarShowcase | null> => {
+    queryFn: async (): Promise<AvatarShowcase[]> => {
       const res = await fetch("/api/showcase");
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
-      return data.showcase;
+      return data.showcases;
     },
     enabled: !!user,
     staleTime: 1000 * 60 * 5,
   });
 }
 
-// showcase 등록/수정
-export function useUpsertShowcase() {
+// showcase 등록
+export function useCreateShowcase() {
   const queryClient = useQueryClient();
   const { user } = useUser();
 
@@ -47,14 +47,14 @@ export function useUpsertShowcase() {
   });
 }
 
-// showcase 삭제
+// showcase 삭제 (ID 기반)
 export function useDeleteShowcase() {
   const queryClient = useQueryClient();
   const { user } = useUser();
 
   return useMutation({
-    mutationFn: async () => {
-      const res = await fetch("/api/showcase", {
+    mutationFn: async (showcaseId: string) => {
+      const res = await fetch(`/api/showcase/${showcaseId}`, {
         method: "DELETE",
       });
 

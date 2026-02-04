@@ -1,14 +1,14 @@
 "use client";
 
 import { useUser } from "@/hooks/useUesr";
-import { useShowcase } from "@/hooks/query/showcase";
 import ShowcaseGallery from "@/components/showcase/ShowcaseGallery";
 import Link from "next/link";
 import { Sparkles, Plus, Settings } from "lucide-react";
+import { useMyShowcases } from "@/hooks/query/showcase";
 
 export default function ShowcasePageClient() {
   const { user } = useUser();
-  const { data: myShowcase } = useShowcase();
+  const { data: myShowcase } = useMyShowcases();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -31,16 +31,14 @@ export default function ShowcasePageClient() {
               href="/showcase/register"
               className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white"
             >
-              <Settings className="h-4 w-4" />
-              내 캐릭터 관리
+              <Settings className="h-4 w-4" />내 캐릭터 관리
             </Link>
           ) : (
             <Link
               href="/showcase/register"
               className="flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-2 text-sm font-bold text-white transition-all hover:from-indigo-500 hover:to-purple-500"
             >
-              <Plus className="h-4 w-4" />
-              내 캐릭터 등록하기
+              <Plus className="h-4 w-4" />내 캐릭터 등록하기
             </Link>
           )}
         </div>

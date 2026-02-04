@@ -54,19 +54,15 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // showcase 존재 및 공개 여부 확인
+  // showcase 존재 확인
   const { data: showcase, error: showcaseError } = await supabase
     .from("avatar_showcase")
-    .select("id, is_public")
+    .select("id")
     .eq("id", showcaseId)
     .single();
 
   if (showcaseError || !showcase) {
     return NextResponse.json({ error: "Showcase not found" }, { status: 404 });
-  }
-
-  if (!showcase.is_public) {
-    return NextResponse.json({ error: "Showcase is not public" }, { status: 403 });
   }
 
   // 기존 좋아요 확인

@@ -2,7 +2,7 @@ import { createSupabaseServer } from "@/lib/supabase/server/server";
 import { NextRequest, NextResponse } from "next/server";
 import { ShowcaseUpsertRequest } from "@/types/showcase";
 
-// GET: 내 showcase 조회
+// GET: 내 showcase 목록 조회
 export async function GET() {
   const supabase = await createSupabaseServer();
   const {
@@ -11,28 +11,28 @@ export async function GET() {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    return NextResponse.json({ showcase: null });
+    return NextResponse.json({ showcases: [] });
   }
 
   const { data, error } = await supabase
     .from("avatar_showcase")
     .select("*")
     .eq("user_id", user.id)
-    .maybeSingle();
+    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Showcase fetch error:", error);
-    return NextResponse.json({ error: "Failed to fetch showcase" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch showcases" }, { status: 500 });
   }
 
-  return NextResponse.json({ showcase: data });
+  return NextResponse.json({ showcases: data || [] });
 }
 
-// POST: 등록/수정 (upsert)
+// POST: 새 showcase 등록
 export async function POST(request: NextRequest) {
   try {
     const body: ShowcaseUpsertRequest = await request.json();
-    const { character_name, server_name, class_name, item_level, character_image, description } = body;
+    const { character_name, server_name, class_name, item_level, character_image, description, avatar_items } = body;
 
     if (!character_name) {
       return NextResponse.json(
@@ -51,26 +51,32 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // upsert (user_id 기준 unique)
+    // 디스코드 정보 추출
+    const discordName =
+      user.user_metadata?.custom_claims?.global_name ||
+      user.user_metadata?.full_name ||
+      null;
+    const discordAvatar = user.user_metadata?.avatar_url || null;
+
     const { data, error } = await supabase
       .from("avatar_showcase")
-      .upsert(
-        {
-          user_id: user.id,
-          character_name,
-          server_name: server_name || null,
-          class_name: class_name || null,
-          item_level: item_level || null,
-          character_image: character_image || null,
-          description: description || null,
-        },
-        { onConflict: "user_id" }
-      )
+      .insert({
+        user_id: user.id,
+        character_name,
+        server_name: server_name || null,
+        class_name: class_name || null,
+        item_level: item_level || null,
+        character_image: character_image || null,
+        description: description || null,
+        discord_name: discordName,
+        discord_avatar: discordAvatar,
+        avatar_items: avatar_items || null,
+      })
       .select()
       .single();
 
     if (error) {
-      console.error("Showcase upsert error:", error);
+      console.error("Showcase insert error:", error);
       return NextResponse.json(
         { error: "Failed to save showcase" },
         { status: 500 }
@@ -85,32 +91,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-// DELETE: 내 showcase 삭제
-export async function DELETE() {
-  const supabase = await createSupabaseServer();
-  const {
-    data: { user },
-    error: userError,
-  } = await supabase.auth.getUser();
-
-  if (userError || !user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  const { error } = await supabase
-    .from("avatar_showcase")
-    .delete()
-    .eq("user_id", user.id);
-
-  if (error) {
-    console.error("Showcase delete error:", error);
-    return NextResponse.json(
-      { error: "Failed to delete showcase" },
-      { status: 500 }
-    );
-  }
-
-  return NextResponse.json({ success: true });
 }

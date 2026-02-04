@@ -1,6 +1,7 @@
 "use client";
 
-import { LogOut, ChevronDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LogOut, ChevronDown, UserPen, User } from "lucide-react";
 import { FaDiscord } from "react-icons/fa";
 import {
   DropdownMenu,
@@ -14,6 +15,7 @@ import { useUser } from "@/hooks/useUesr";
 
 export function LoginButton() {
   const { user, loading } = useUser();
+  const router = useRouter();
 
   const handleLogin = async () => {
     try {
@@ -44,6 +46,7 @@ export function LoginButton() {
       user.user_metadata.custom_claims.global_name ||
       user.user_metadata.full_name ||
       "User";
+    const mainCharacter = user.user_metadata?.main_character;
 
     return (
       <DropdownMenu modal={false}>
@@ -61,7 +64,7 @@ export function LoginButton() {
                 {username}
               </span>
               <span className="text-[8px] leading-none font-bold tracking-widest text-teal-500/60 uppercase">
-                Authorized
+                {mainCharacter || "Authorized"}
               </span>
             </div>
 
@@ -86,8 +89,29 @@ export function LoginButton() {
               <p className="max-w-[110px] truncate text-xs font-bold text-slate-200">
                 {user.email}
               </p>
+              {mainCharacter && (
+                <p className="max-w-[110px] truncate text-[10px] font-bold text-teal-400">
+                  {mainCharacter}
+                </p>
+              )}
             </div>
           </div>
+
+          <DropdownMenuItem
+            onClick={() => router.push("/profile")}
+            className="flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-[11px] font-bold text-slate-300 transition-all hover:bg-white/5 focus:bg-white/5 focus:text-white"
+          >
+            <span className="text-xs">프로필</span>
+            <User className="h-3 w-3" />
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onClick={() => router.push("/setup-character")}
+            className="flex cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-[11px] font-bold text-slate-300 transition-all hover:bg-white/5 focus:bg-white/5 focus:text-white"
+          >
+            <span className="text-xs">대표 캐릭터 변경</span>
+            <UserPen className="h-3 w-3" />
+          </DropdownMenuItem>
 
           <DropdownMenuItem
             onClick={handleLogout}
