@@ -17,8 +17,10 @@ import {
   BarChart3,
   ScrollText,
   Trophy,
+  Star,
 } from "lucide-react";
 import { parseAccessoryOptions } from "@/utils/accessoryParser";
+import { CharacterBracelet } from "@/components/character/equipment/CharacterBracelet";
 import {
   ARK_PAS,
   EQUIPMENT_AEC,
@@ -26,7 +28,6 @@ import {
   SPRITEPOSITIONS,
 } from "@/constants/lostark/option";
 import { EmptyCard } from "@/components/common/NoItems";
-import { CharacterBracelet } from "@/components/character/equipment/CharacterBracelet";
 import { CharacterGems } from "@/components/character/equipment/CharacterGems";
 import { CharacterCards } from "@/components/character/equipment/CharacterCards";
 import { Badge } from "@/components/common/Badge";
@@ -114,7 +115,16 @@ export default function Equipment({
             {isEngravingsLoading ? (
               <EngravingsSkeleton />
             ) : (
-              <EngravingsPanel engravingsData={engravingsData} />
+              <EngravingsPanel
+                engravingsData={engravingsData}
+                stoneInscriptions={(() => {
+                  if (!equipmentData) return [];
+                  const stone = Object.values(equipmentData).find(
+                    (i: any) => i.Type === "어빌리티 스톤"
+                  ) as any;
+                  return stone ? parseStoneInscriptions(stone.tooltip) : [];
+                })()}
+              />
             )}
           </div>
 
@@ -496,7 +506,6 @@ function EquipmentTab({ equipmentData, gemsData, engravingsCard }: any) {
       <Card
         title="장비 및 장신구"
         icon={<Shield size={18} className="text-blue-400" />}
-        className="overflow-hidden"
       >
         <div className="grid grid-cols-1 gap-3 p-2 md:grid-cols-2 md:gap-2 xl:grid-cols-2">
           <div className="space-y-2">
@@ -633,27 +642,44 @@ function AccessoryCard({ item }: { item: any }) {
 function StoneCard({ item }: { item: any }) {
   const inscriptions = parseStoneInscriptions(item.tooltip);
 
+  const totalTopTwoLevel = inscriptions.slice(0, 2).reduce((acc, ins) => {
+    const lv = Number(ins.level);
+    const effectiveLv = lv === 0 ? 1 : lv;
+    return acc + effectiveLv;
+  }, 0);
   return (
     <ItemCard item={item} showTierBadge={false}>
       <p className="mb-1 text-[10px] leading-none font-bold text-gray-500 uppercase">
         Ability Stone
       </p>
+
+      {totalTopTwoLevel >= 5 && (
+        <div className="animate-in zoom-in fade-in absolute -top-3 -left-18 z-20 flex items-center gap-1 rounded-full bg-gradient-to-r from-yellow-700 to-blue-700 px-1 py-0.5">
+          <Star size={12} className="fill-yellow-500 text-yellow-500" />
+          <span className="text-xs text-yellow-500">Lv.{totalTopTwoLevel}</span>
+        </div>
+      )}
+
       <div>
-        {inscriptions.map((ins, i) => (
-          <div key={i} className="flex items-center gap-1.5 leading-none">
-            <span
-              className={cn(
-                "text-[10px] font-black",
-                ins.isDebuff ? "text-red-500" : "text-blue-400"
-              )}
-            >
-              Lv.{ins.level}
-            </span>
-            <span className="truncate text-[10px] text-gray-300">
-              {ins.name}
-            </span>
-          </div>
-        ))}
+        {inscriptions.map((ins, i) => {
+          return (
+            <>
+              <div key={i} className="flex items-center gap-1.5 leading-none">
+                <span
+                  className={cn(
+                    "text-[10px] font-black",
+                    ins.isDebuff ? "text-red-500" : "text-blue-400"
+                  )}
+                >
+                  Lv.{ins.level}
+                </span>
+                <span className="truncate text-[10px] text-gray-300">
+                  {ins.name}
+                </span>
+              </div>
+            </>
+          );
+        })}
       </div>
     </ItemCard>
   );
@@ -738,7 +764,13 @@ function StatsPanel({
 }
 
 // --- 각인 섹션 ---
-function EngravingsPanel({ engravingsData }: { engravingsData: any }) {
+function EngravingsPanel({
+  engravingsData,
+  stoneInscriptions = [],
+}: {
+  engravingsData: any;
+  stoneInscriptions?: { name: string; level: string; isDebuff: boolean }[];
+}) {
   if (!engravingsData?.ArkPassiveEffects) return null;
 
   return (
@@ -747,20 +779,39 @@ function EngravingsPanel({ engravingsData }: { engravingsData: any }) {
       icon={<ScrollText size={18} className="text-cyan-400" />}
     >
       <div className="grid grid-cols-1 gap-2 p-4">
-        {engravingsData.ArkPassiveEffects.map((eng: any, idx: number) => (
-          <div
-            key={idx}
-            className="flex items-center justify-between rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-3"
-          >
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
-              <span className="text-sm font-black text-white">{eng.Name}</span>
+        {engravingsData.ArkPassiveEffects.map((eng: any, idx: number) => {
+          const stoneMatch = stoneInscriptions.find(
+            ins => ins.name === eng.Name
+          );
+          return (
+            <div
+              key={idx}
+              className="flex items-center justify-between rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-3"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-black text-white">
+                  {eng.Name}
+                </span>
+              </div>
+              <div className="flex gap-2">
+                {stoneMatch && (
+                  <div className="flex items-center gap-1">
+                    <div className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_8px_0_rgba(0,0,0,0)] shadow-cyan-400/80" />
+                    <span className="text-xs font-black text-cyan-400 italic">
+                      Lv. {stoneMatch.level}
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center gap-1">
+                  <div className="h-2 w-2 rounded-full bg-red-400 shadow-[0_0_8px_0_rgba(0,0,0,0)] shadow-red-400/80" />
+                  <span className="text-xs font-black text-red-400 italic">
+                    Lv. {eng.Level}
+                  </span>
+                </div>
+              </div>
             </div>
-            <span className="text-xs font-black text-cyan-400">
-              Level {eng.Level}
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </Card>
   );

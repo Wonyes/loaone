@@ -12,24 +12,35 @@ export function CharacterHeader({
   profileData: any;
   mainPassiveName: string;
 }) {
+  const SPECIALIST_CLASSES = ["환수사", "기상술사", "도화가"];
+
   const isSupport = (engraving: string | undefined) => {
     if (!engraving) return false;
     const supportEngravings = ["절실한 구원", "만개", "축복의 오라", "해방자"];
+
     return supportEngravings.includes(engraving);
   };
   return (
     <Card className="relative overflow-hidden rounded-[2rem] border-none bg-[#0c0d12] shadow-2xl">
       {profileData?.CharacterImage && (
-        <div className="absolute inset-y-0 right-0 z-0 w-full overflow-hidden sm:w-[60%]">
+        <div
+          className={cn(
+            "absolute inset-y-0 right-0 z-0 w-full overflow-hidden sm:w-[60%]"
+          )}
+        >
           <img
             src={profileData.CharacterImage}
             alt={profileData.CharacterName}
-            className="h-full w-full object-cover object-[50%_15%] opacity-80 mix-blend-lighten"
+            className={cn(
+              "h-full w-full object-cover object-[50%_15%]",
+              SPECIALIST_CLASSES.includes(profileData?.CharacterClassName) &&
+                "object-[50%_35%]"
+            )}
             style={{
               maskImage:
-                "linear-gradient(to left, black 40%, transparent 95%), linear-gradient(to top, transparent 5%, black 40%)",
+                "linear-gradient(to left, black 80%, transparent 95%), linear-gradient(to top, transparent 1%, black 20%)",
               WebkitMaskImage:
-                "linear-gradient(to left, black 40%, transparent 95%), linear-gradient(to top, transparent 5%, black 40%)",
+                "linear-gradient(to left, black 80%, transparent 95%), linear-gradient(to top, transparent 1%, black 20%)",
               maskComposite: "intersect",
               WebkitMaskComposite: "source-in",
             }}

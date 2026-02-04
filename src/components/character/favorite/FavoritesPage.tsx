@@ -64,7 +64,7 @@ function FavoriteCharacter({ char }: { char: any }) {
         </span>
       </div>
       <div className="flex flex-col items-end gap-0.5 font-mono">
-        <span className="font-black tracking-tighter text-indigo-400/90">
+        <span className="text-[11px] font-black tracking-tighter text-indigo-400/90">
           <span className="mr-0.5 text-[10px] text-slate-400 italic">Lv</span>
           {char.itemLevel}
         </span>

@@ -221,13 +221,17 @@ export function getMainPassiveName(
   for (const effect of arkpassiveData.Effects || []) {
     if (effect.Name !== "깨달음") continue;
 
-    // Description에서 스킬명 추출
     const match = effect.Description?.match(/\d티어\s+(.*?)\s+Lv\./);
     if (!match) continue;
 
-    const skillName = match[1].trim();
-    if (validEngravings.includes(skillName)) {
-      return skillName;
+    const extractedName = match[1].trim();
+
+    const matchedEngraving = validEngravings.find(eng =>
+      extractedName.includes(eng)
+    );
+
+    if (matchedEngraving) {
+      return matchedEngraving;
     }
   }
 

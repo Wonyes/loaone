@@ -7,9 +7,13 @@ import { cn } from "@/lib/utils";
 import { WeeklyGoldDashboard } from "./list/WeeklyGoldDashboard";
 import Link from "next/link";
 import { CharacterListSkeleton } from "../common/CardSkeleton";
+import { EmptyCard } from "../common";
+import { BadgeInfoIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function CharacterListLayout({ name }: { name: string }) {
   const { data: listData, isLoading } = useSiblings(name);
+  const pathname = usePathname();
 
   const groupedServers = useMemo(() => {
     if (!listData) return {};
@@ -26,11 +30,27 @@ export function CharacterListLayout({ name }: { name: string }) {
     }, {});
   }, [listData]);
 
+  if (!listData)
+    return (
+      <EmptyCard
+        title={
+          <div className="flex gap-2">
+            <BadgeInfoIcon className="h-6 w-6 text-amber-500" />
+            <span>내 캐릭터</span>
+          </div>
+        }
+        message="캐릭터 정보가 없거나 점검으로 인해 정보가 없습니다."
+      />
+    );
   if (isLoading) return <CharacterListSkeleton />;
-  if (!listData) return null;
-  console.log(listData);
+
   return (
-    <div className="mx-auto w-full max-w-[1600px] space-y-12 px-4 pb-20 sm:px-6">
+    <div
+      className={cn(
+        "mx-auto w-full max-w-[1400px] space-y-12 px-4 pb-20 sm:px-6",
+        pathname === "/profile" && "pt-4"
+      )}
+    >
       <WeeklyGoldDashboard characters={listData} />
 
       {Object.entries(groupedServers).map(([serverName, characters]: any) => (
@@ -95,10 +115,10 @@ function CharacterPillCard({ char }: { char: any }) {
 
         <div className="flex flex-col items-end justify-center border-l border-white/5 py-1 pl-4">
           <div className="flex items-baseline gap-1 opacity-40">
-            <span className="text-[7px] font-black tracking-widest text-slate-300 uppercase">
+            <span className="text-[9px] font-black tracking-widest text-slate-200 uppercase">
               Level
             </span>
-            <span className="font-mono text-[9px] font-bold text-slate-400 tabular-nums">
+            <span className="font-mono text-[9px] font-bold text-white tabular-nums">
               {char.CharacterLevel}
             </span>
           </div>

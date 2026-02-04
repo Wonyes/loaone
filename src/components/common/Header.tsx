@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LoginButton } from "./LoginButton";
 import { CharacterSearch } from "../character/CharacterSearch";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Leaf } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -17,13 +17,21 @@ export function Header() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  if (pathname === "/setup-character") return null;
+
   const navLinks = [
     {
-      name: "PAPER",
+      name: "paper",
       href: "/cunning-paper",
       title: "로스트아크 레이드 공략 컨닝페이퍼",
     },
-    { name: "RANKINGS", href: "/rankings", title: "캐릭터 아이템 레벨 랭킹" },
+    {
+      name: "ranking",
+      href: "/rankings",
+      in: "character",
+      title: "캐릭터 아이템 레벨 랭킹",
+    },
+    { name: "avatar", href: "/showcase", title: "아바타 자랑 갤러리" },
   ];
 
   return (
@@ -40,11 +48,13 @@ export function Header() {
               <NavLink
                 key={link.href}
                 href={link.href}
-                isActive={pathname === link.href}
+                isActive={
+                  pathname.includes(link.href) ||
+                  (link.in && pathname.includes(link.in))
+                }
                 title={link.title}
-              >
-                {link.name}
-              </NavLink>
+                name={link.name}
+              ></NavLink>
             ))}
           </nav>
         </div>
@@ -91,12 +101,12 @@ function Logo({ onClick }: { onClick: () => void }) {
         <img
           src="/assets/logo.png"
           alt="로아원"
-          className="relative z-10 h-8 w-auto object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
+          className="relative z-10 h-12 w-auto object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
         />
       </div>
-      <span className="hidden text-[18px] font-black tracking-tighter text-white sm:block">
+      <span className="hidden text-[18px] font-black tracking-tighter text-white italic sm:block">
         LOA
-        <span className="text-[#bef264] drop-shadow-[0_0_8px_rgba(190,242,100,0.4)]">
+        <span className="text-[#bef264] italic drop-shadow-[0_0_8px_rgba(190,242,100,0.4)]">
           ONE
         </span>
       </span>
@@ -106,14 +116,14 @@ function Logo({ onClick }: { onClick: () => void }) {
 
 function NavLink({
   href,
+  name,
   title,
   isActive,
-  children,
 }: {
+  name: string;
   href: string;
   title: string;
-  isActive: boolean;
-  children: React.ReactNode;
+  isActive: boolean | undefined | "";
 }) {
   return (
     <Link
@@ -121,13 +131,23 @@ function NavLink({
       title={title}
       prefetch={false}
       className={cn(
-        "px-4 py-1 text-[11px] font-bold tracking-[0.2em] transition-all duration-300",
+        "relative px-4 py-1 text-[12px] tracking-[0.1em] uppercase italic transition-all duration-300",
         isActive
           ? "border-b border-[#bef264]/50 text-[#bef264]"
-          : "text-teal-100/40 hover:text-[#bef264]"
+          : "text-teal-100/60 hover:text-[#bef264]"
       )}
     >
-      {children}
+      {name}
+      {isActive && (
+        <>
+          <div className="animate-in zoom-in fade-in absolute -top-0.5 -right-0.5 z-20 duration-500">
+            <Leaf
+              size={14}
+              className="rotate-[15deg] fill-[#bef264] text-[#bef264] drop-shadow-[0_0_5px_rgba(190,242,100,0.8)]"
+            />
+          </div>
+        </>
+      )}
     </Link>
   );
 }

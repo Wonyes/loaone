@@ -3,9 +3,17 @@
 import { GRADE_STYLES } from "@/constants/lostark/styles";
 import { Card } from "../../common/Card";
 import { Gem } from "lucide-react";
+import { EmptyCard } from "@/components/common";
 
 export function CharacterGems({ gemsData }: { gemsData: any }) {
-  if (!gemsData?.Effects?.Skills || !gemsData?.Gems) return null;
+  if (!gemsData?.Effects?.Skills || !gemsData?.Gems)
+    return (
+      <EmptyCard
+        title="보석"
+        className="h-full"
+        icon={<Gem size={18} className="h-full text-indigo-400" />}
+      />
+    );
 
   const getGradeStyle = (gem: any) => {
     const level = gem?.Level || 0;
@@ -40,43 +48,49 @@ export function CharacterGems({ gemsData }: { gemsData: any }) {
           className="grid gap-1"
           style={{ gridTemplateColumns: `repeat(${totalGems}, 1fr)` }}
         >
-          {cooldownGems.map(({ skill, gem }: any, idx: number) => {
-            const gradeStyle = getGradeStyle(gem);
-            return (
-              <div key={`cool-${idx}`} className="relative">
-                {idx === 0 && (
-                  <div className="absolute -top-6 left-0 text-xs font-semibold whitespace-nowrap text-blue-400">
-                    쿨감 {cooldownGems.length}
+          {gemsData ? (
+            <>
+              {cooldownGems.map(({ skill, gem }: any, idx: number) => {
+                const gradeStyle = getGradeStyle(gem);
+                return (
+                  <div key={`cool-${idx}`} className="relative">
+                    {idx === 0 && (
+                      <div className="absolute -top-6 left-0 text-xs font-semibold whitespace-nowrap text-blue-400">
+                        쿨감 {cooldownGems.length}
+                      </div>
+                    )}
+                    <GemItem
+                      skill={skill}
+                      gem={gem}
+                      gradeStyle={gradeStyle}
+                      labelColor="text-blue-400"
+                    />
                   </div>
-                )}
-                <GemItem
-                  skill={skill}
-                  gem={gem}
-                  gradeStyle={gradeStyle}
-                  labelColor="text-blue-400"
-                />
-              </div>
-            );
-          })}
+                );
+              })}
 
-          {damageGems.map(({ skill, gem }: any, idx: number) => {
-            const gradeStyle = getGradeStyle(gem);
-            return (
-              <div key={`dmg-${idx}`} className="relative">
-                {idx === 0 && (
-                  <div className="absolute -top-6 left-0 text-xs font-semibold whitespace-nowrap text-red-400">
-                    딜증 {damageGems.length}
+              {damageGems.map(({ skill, gem }: any, idx: number) => {
+                const gradeStyle = getGradeStyle(gem);
+                return (
+                  <div key={`dmg-${idx}`} className="relative">
+                    {idx === 0 && (
+                      <div className="absolute -top-6 left-0 text-xs font-semibold whitespace-nowrap text-red-400">
+                        딜증 {damageGems.length}
+                      </div>
+                    )}
+                    <GemItem
+                      skill={skill}
+                      gem={gem}
+                      gradeStyle={gradeStyle}
+                      labelColor="text-red-400"
+                    />
                   </div>
-                )}
-                <GemItem
-                  skill={skill}
-                  gem={gem}
-                  gradeStyle={gradeStyle}
-                  labelColor="text-red-400"
-                />
-              </div>
-            );
-          })}
+                );
+              })}
+            </>
+          ) : (
+            <EmptyCard title="보석 정보 없음" />
+          )}
         </div>
       </div>
     </Card>

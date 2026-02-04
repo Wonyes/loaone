@@ -8,12 +8,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn-lostark.game.onstove.com",
-        pathname: "/efui_iconatlas/**",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn-lostark.game.onstove.com",
-        pathname: "/uploadfiles/banner/**",
+        pathname: "/**",
       },
     ],
   },
