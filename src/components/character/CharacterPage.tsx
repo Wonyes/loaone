@@ -123,45 +123,47 @@ export function TabNavigation({
   characterName,
 }: TabNavigationProps) {
   return (
-    <nav
-      className={cn(
-        "mx-auto flex w-fit items-center gap-1 overflow-x-auto rounded-full bg-[#061a1a] px-2 py-1.5 shadow-[0_6px_20px_rgba(0,0,0,0.25),0_3px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]",
-        "scrollbar-thin [&::-webkit-scrollbar]:h-[3px]",
-        "[&::-webkit-scrollbar-track]:bg-transparent",
-        "[&::-webkit-scrollbar-thumb]:rounded-full",
-        "[&::-webkit-scrollbar-thumb]:bg-[#bef264]/10",
-        "hover:[&::-webkit-scrollbar-thumb]:bg-[#bef264]/30"
-      )}
-    >
-      {TABS.map(tab => {
-        const isActive = activeTab === tab.id;
-        return (
-          <Link
-            key={tab.id}
-            href={`/characters/${characterName}?tab=${tab.id}`}
-            className={cn(
-              "group relative flex min-w-[70px] shrink-0 items-center justify-center rounded-xl px-3.5 py-2 text-[11px] font-black tracking-[0.1em] uppercase transition-all duration-300 sm:min-w-[85px]",
-              isActive
-                ? "bg-[#0a2020] text-[#bef264] shadow-[0_4px_12px_rgba(0,0,0,0.25),0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]"
-                : "text-teal-100/40 hover:text-teal-100/60"
-            )}
-          >
-            <span className="relative z-10 text-[12px] font-black tracking-[0.05em] uppercase italic">
-              {tab.label}
-            </span>
+    <div className="relative mx-auto flex w-full max-w-[1400px] justify-center px-1">
+      <nav
+        className={cn(
+          "mx-auto flex items-center gap-1 overflow-x-auto rounded-full bg-[#061a1a] px-2 py-1.5 shadow-[0_6px_20px_rgba(0,0,0,0.25),0_3px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]",
+          "scrollbar-thin [&::-webkit-scrollbar]:h-[3px]",
+          "[&::-webkit-scrollbar-track]:bg-transparent",
+          "[&::-webkit-scrollbar-thumb]:rounded-full",
+          "[&::-webkit-scrollbar-thumb]:bg-[#bef264]/10",
+          "hover:[&::-webkit-scrollbar-thumb]:bg-[#bef264]/30"
+        )}
+      >
+        {TABS.map(tab => {
+          const isActive = activeTab === tab.id;
+          return (
+            <Link
+              key={tab.id}
+              href={`/characters/${characterName}?tab=${tab.id}`}
+              className={cn(
+                "group relative flex min-w-[70px] shrink-0 items-center justify-center rounded-xl px-3.5 py-2 text-[11px] font-black tracking-[0.1em] uppercase transition-all duration-300 sm:min-w-[85px]",
+                isActive
+                  ? "bg-[#0a2020] text-[#bef264] shadow-[0_4px_12px_rgba(0,0,0,0.25),0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]"
+                  : "text-teal-100/40 hover:text-teal-100/60"
+              )}
+            >
+              <span className="relative z-10 text-[12px] font-black tracking-[0.05em] uppercase italic">
+                {tab.label}
+              </span>
 
-            {isActive && (
-              <div className="animate-in zoom-in fade-in absolute -top-0.5 -right-0.5 z-20 duration-500">
-                <Leaf
-                  size={14}
-                  className="rotate-[15deg] fill-[#bef264] text-[#bef264] drop-shadow-[0_0_5px_rgba(190,242,100,0.8)]"
-                />
-              </div>
-            )}
-          </Link>
-        );
-      })}
-    </nav>
+              {isActive && (
+                <div className="animate-in zoom-in fade-in absolute -top-0.5 -right-0.5 z-20 duration-500">
+                  <Leaf
+                    size={14}
+                    className="rotate-[15deg] fill-[#bef264] text-[#bef264] drop-shadow-[0_0_5px_rgba(190,242,100,0.8)]"
+                  />
+                </div>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
   );
 }
 
