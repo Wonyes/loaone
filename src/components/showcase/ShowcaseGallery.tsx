@@ -10,13 +10,8 @@ import { cn } from "@/lib/utils";
 
 export default function ShowcaseGallery() {
   const [sort, setSort] = useState<ShowcaseSortOption>("latest");
-  const {
-    data,
-    isLoading,
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-  } = useShowcaseGallery(sort);
+  const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useShowcaseGallery(sort);
 
   const observerRef = useRef<IntersectionObserver>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -48,7 +43,7 @@ export default function ShowcaseGallery() {
     };
   }, [handleObserver]);
 
-  const showcases = data?.pages.flatMap((page) => page.showcases) || [];
+  const showcases = data?.pages.flatMap(page => page.showcases) || [];
 
   return (
     <div className="space-y-6">
@@ -83,7 +78,7 @@ export default function ShowcaseGallery() {
       ) : (
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {showcases.map((showcase) => (
+            {showcases.map(showcase => (
               <ShowcaseCard key={showcase.id} showcase={showcase} />
             ))}
           </div>

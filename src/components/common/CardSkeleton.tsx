@@ -426,7 +426,7 @@ export function CollectibleSkeleton() {
 // 아바타 페이지 스켈레톤
 export function AvatarPageSkeleton() {
   return (
-    <div className="flex flex-col gap-3 p-1">
+    <div className="flex flex-col gap-3">
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <Card className="relative h-full max-h-[550px] overflow-hidden border-none bg-[#15181D]">

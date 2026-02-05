@@ -25,7 +25,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "relative rounded-[2rem] border border-white/[0.1] bg-white/[0.02] shadow-2xl",
+        "relative rounded-[2rem] border border-white/[0.1] bg-white/[0.02] shadow-[0_6px_20px_rgba(0,0,0,0.25),0_3px_8px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]",
         "before:absolute before:inset-0 before:-z-10 before:rounded-[2rem] before:bg-gradient-to-br before:from-white/[0.05] before:to-transparent",
         className
       )}
@@ -34,7 +34,7 @@ export function Card({
       {title && (
         <div
           className={cn(
-            "flex flex-wrap items-center justify-between gap-y-3 border-white/[0.05] px-4 py-3 sm:px-6 sm:py-4",
+            "flex flex-wrap items-center justify-between gap-y-3 border-white/[0.05] p-3 sm:p-4",
             borderB && "border-b"
           )}
         >

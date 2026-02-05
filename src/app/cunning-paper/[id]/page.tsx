@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, Sword, Shield, Target, AlertCircle } from "lucide-react";
+import { ChevronLeft, Sword, Shield, Target, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Card } from "@/components/common/Card";
 import { useParams, useRouter } from "next/navigation";
 import { useCunningEnd } from "@/hooks/query/lostark/paper/usePaper";
+import { Card } from "@/components/common";
 
 export default function RaidDetailPage() {
   const router = useRouter();
@@ -17,8 +17,8 @@ export default function RaidDetailPage() {
 
   if (isLoading)
     return (
-      <div className="p-20 text-center font-mono text-slate-300">
-        LOADING SYSTEM...
+      <div className="flex h-screen items-center justify-center font-mono text-xs tracking-[0.2em] text-indigo-500/50">
+        LOADING_RAID_DATA...
       </div>
     );
   if (!raid)
@@ -39,170 +39,142 @@ export default function RaidDetailPage() {
   const items = parseItems(currentGate?.subtitle);
 
   return (
-    <Card
-      title={
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-6">
+    <div className="relative max-w-[1400px] p-6 text-slate-200">
+      {/* 상단 헤더: 택티컬 브리핑 스타일 */}
+      <header className="mb-12">
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-5">
             <button
               onClick={() => router.back()}
-              className="text-slate-300 transition-colors hover:text-white"
+              className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all hover:border-indigo-500/50 hover:bg-indigo-500/10"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft
+                size={20}
+                className="text-slate-400 group-hover:text-indigo-400"
+              />
             </button>
-            <div>
-              <h1 className="flex items-center gap-3 text-2xl font-black tracking-tight text-white">
-                {raid.name}
-                <span className="rounded bg-indigo-500/10 px-2 py-0.5 text-sm font-bold tracking-normal text-indigo-500">
-                  G{activeGate}
+            <div className="space-y-1">
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[11px] tracking-[0.3em] text-indigo-500 uppercase">
+                  Tactical Briefing
                 </span>
-              </h1>
-              <div className="mt-1 flex items-center gap-2">
-                <span className="text-[10px] font-bold tracking-widest text-red-500 uppercase">
-                  {raid.difficulty}
-                </span>
-                <span className="h-1 w-1 rounded-full bg-white/10" />
-                <p className="text-[11px] font-medium text-slate-300 uppercase">
-                  {currentGate?.title}
-                </p>
+                <span className="h-px w-8 bg-indigo-500/30" />
               </div>
+              <h1 className="text-4xl font-black tracking-tighter text-white">
+                {raid.name}
+              </h1>
+              <p className="w-fit rounded border border-purple-500/30 bg-purple-500/10 px-2 py-1 text-sm tracking-widest text-purple-400">
+                {raid.difficulty}
+              </p>
             </div>
           </div>
+
+          <nav className="flex items-center gap-1 rounded-xl border border-white/5 bg-black/40 p-1.5 backdrop-blur-md">
+            {raid.raid_gates
+              ?.sort((a: any, b: any) => a.gate_number - b.gate_number)
+              .map((gate: any) => (
+                <button
+                  key={gate.id}
+                  onClick={() => setActiveGate(gate.gate_number)}
+                  className={cn(
+                    "relative flex h-9 items-center justify-center rounded-lg px-5 font-mono text-[11px] font-bold transition-all",
+                    activeGate === gate.gate_number
+                      ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)]"
+                      : "text-slate-500 hover:text-slate-300"
+                  )}
+                >
+                  G{gate.gate_number}
+                </button>
+              ))}
+          </nav>
         </div>
-      }
-      headerAction={
-        <div className="flex rounded-lg border border-white/5 bg-white/5 p-1">
-          {raid.raid_gates
-            ?.sort((a: any, b: any) => a.gate_number - b.gate_number)
-            .map((gate: any) => (
-              <button
-                key={gate.id}
-                onClick={() => setActiveGate(gate.gate_number)}
-                className={cn(
-                  "rounded-md px-4 py-1.5 text-[10px] font-black tracking-tighter transition-all",
-                  activeGate === gate.gate_number
-                    ? "bg-indigo-600 text-white"
-                    : "text-slate-300 hover:text-slate-300"
-                )}
-              >
-                GATE {gate.gate_number}
-              </button>
-            ))}
-        </div>
-      }
-      className="mx-auto max-w-[1000px] space-y-4"
-    >
-      <div className="grid grid-cols-1 items-start gap-8 px-4 py-2 lg:grid-cols-[280px_1fr]">
-        <aside className="space-y-4 lg:sticky lg:top-8">
+      </header>
+
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[300px_1fr]">
+        {/* 사이드바: 정보 모듈화 */}
+        <aside className="space-y-6">
           <Card
-            className="overflow-hidden border-white/5 bg-transparent"
-            title="LOADOUT"
+            title={"Recommended Loadout"}
+            icon={<Zap size={18} className="text-indigo-400" />}
+            className="rounded-xl before:rounded-xl"
           >
-            <div className="space-y-4 p-5">
-              <div className="flex items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2 font-bold text-indigo-400">
-                  <Sword size={12} /> DEALER
+            <div className="space-y-6 p-4">
+              <div className="group relative">
+                <div className="mb-2 flex items-center gap-2 text-[13px] font-bold text-indigo-400 uppercase">
+                  <Sword size={14} /> Dealer Items
                 </div>
-                <div className="text-right font-medium text-slate-300">
+                <div className="rounded-lg border border-white/5 bg-white/5 p-3 text-sm leading-relaxed text-slate-300 transition-colors group-hover:border-indigo-500/30">
                   {items.dealer}
                 </div>
               </div>
-              <div className="h-px bg-white/5" />
-              <div className="flex items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2 font-bold text-emerald-400">
-                  <Shield size={12} /> SUPPORT
+
+              <div className="group relative">
+                <div className="mb-2 flex items-center gap-2 text-[13px] font-bold text-emerald-400 uppercase">
+                  <Shield size={14} /> Support Items
                 </div>
-                <div className="text-right font-medium text-slate-300">
+                <div className="rounded-lg border border-white/5 bg-white/5 p-3 text-sm leading-relaxed text-slate-300 transition-colors group-hover:border-emerald-500/30">
                   {items.support}
                 </div>
               </div>
             </div>
           </Card>
-
-          <div className="flex gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-4">
-            <AlertCircle size={14} className="mt-0.5 text-slate-400" />
-            <p className="text-[12px] leading-relaxed font-black text-slate-400">
-              보스 기믹 실패 시 전멸 위험이 있는 구간은 붉은색으로 강조되어
-              있습니다.
-            </p>
-          </div>
         </aside>
 
-        <section className="relative pl-2">
-          <div className="absolute top-4 left-[38px] h-[calc(100%-32px)] w-[1px] bg-white/5" />
+        {/* 메인 섹션: 타임라인 스타일 */}
+        <div className="relative">
+          {/* 수직 타임라인 레일 */}
+          <div className="absolute top-4 bottom-4 left-[21px] w-[1px] bg-indigo-900 opacity-80" />
 
-          <div className="space-y-1">
+          <section className="space-y-8">
             {currentGate?.raid_sections
               ?.sort((a: any, b: any) => a.order_index - b.order_index)
               .map((section: any) => {
-                const isWarning =
-                  section.title.includes("즉사") ||
-                  section.title.includes("전멸") ||
-                  section.title.includes("저가");
                 const [hp, ...titleParts] = section.title.split(":");
                 const titleText = titleParts.join(":").trim() || hp;
 
                 return (
-                  <div
-                    key={section.id}
-                    className="group relative flex items-start gap-4 rounded-xl px-2 py-5 transition-all hover:bg-white/[0.02] md:gap-6"
-                  >
-                    <div className="relative z-10 mt-[-4px] flex h-8 w-8 shrink-0 items-center justify-center">
+                  <div key={section.id} className="group relative pl-12">
+                    <div
+                      className={
+                        "absolute top-1 left-0 z-10 flex h-[42px] w-[42px] items-center justify-center rounded-full border-4 border-slate-900 bg-slate-900 text-indigo-500 transition-transform group-hover:scale-110"
+                      }
+                    >
                       <div
-                        className={cn(
-                          "h-2 w-2 rounded-full border transition-all duration-300",
-                          isWarning
-                            ? "border-red-400 bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"
-                            : "border-slate-400 bg-slate-800 group-hover:border-indigo-400 group-hover:bg-indigo-500"
-                        )}
-                      />
-                    </div>
-
-                    <div className="w-14 shrink-0 pt-0.5">
-                      <span
-                        className={cn(
-                          "block font-mono text-sm font-black tracking-tighter italic",
-                          isWarning
-                            ? "text-red-500"
-                            : "text-slate-300 group-hover:text-white"
-                        )}
+                        className={
+                          "flex h-full w-full items-center justify-center rounded-full border border-indigo-500/50 bg-indigo-500/10"
+                        }
                       >
-                        {hp.trim()}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-1 flex-col gap-2 md:flex-row md:items-start md:justify-between lg:gap-12">
-                      <div className="min-w-0 flex-1">
-                        <h3
-                          className={cn(
-                            "text-[15px] leading-snug font-medium tracking-tight transition-colors",
-                            isWarning
-                              ? "text-red-400"
-                              : "text-slate-200 group-hover:text-indigo-300"
-                          )}
-                        >
-                          {titleText}
-                        </h3>
-                      </div>
-
-                      <div className="md:w-3/5 lg:w-1/2">
-                        <p className="text-[13px] leading-relaxed font-bold text-violet-400 transition-colors group-hover:text-slate-300 md:text-right">
-                          {section.subtitle}
-                        </p>
-
-                        <div className="mt-2 h-px w-4 bg-white/5 md:hidden" />
+                        <Target size={14} />
                       </div>
                     </div>
 
-                    <Target
-                      size={14}
-                      className="mt-1 hidden opacity-0 transition-opacity group-hover:opacity-20 lg:block"
-                    />
+                    <Card
+                      className={
+                        "relative overflow-hidden rounded-xl transition-all before:rounded-xl hover:bg-white/[0.04]"
+                      }
+                      title={
+                        <div className="flex items-center gap-1">
+                          <span
+                            className={"text-[14px] font-black text-indigo-400"}
+                          >
+                            {hp.trim()}
+                          </span>
+                          <h3 className={"text-[12px] text-slate-300"}>
+                            {titleText}
+                          </h3>
+                        </div>
+                      }
+                    >
+                      <p className="max-w-[600px] p-4 text-sm leading-relaxed text-slate-300 transition-colors group-hover:text-slate-300">
+                        {section.subtitle}
+                      </p>
+                    </Card>
                   </div>
                 );
               })}
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 }

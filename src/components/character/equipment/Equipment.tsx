@@ -663,21 +663,19 @@ function StoneCard({ item }: { item: any }) {
       <div>
         {inscriptions.map((ins, i) => {
           return (
-            <>
-              <div key={i} className="flex items-center gap-1.5 leading-none">
-                <span
-                  className={cn(
-                    "text-[10px] font-black",
-                    ins.isDebuff ? "text-red-500" : "text-blue-400"
-                  )}
-                >
-                  Lv.{ins.level}
-                </span>
-                <span className="truncate text-[10px] text-gray-300">
-                  {ins.name}
-                </span>
-              </div>
-            </>
+            <div key={i} className="flex items-center gap-1.5 leading-none">
+              <span
+                className={cn(
+                  "text-[10px] font-black",
+                  ins.isDebuff ? "text-red-500" : "text-blue-400"
+                )}
+              >
+                Lv.{ins.level}
+              </span>
+              <span className="truncate text-[10px] text-gray-300">
+                {ins.name}
+              </span>
+            </div>
           );
         })}
       </div>

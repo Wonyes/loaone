@@ -4,6 +4,7 @@ import { ShowcaseWithStats } from "@/types/showcase";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import ShowcaseLikeButton from "./ShowcaseLikeButton";
 import Link from "next/link";
+import { Card } from "../common";
 
 interface ShowcaseCardProps {
   showcase: ShowcaseWithStats;
@@ -13,7 +14,7 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
   const characterImage = showcase.character_image;
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] transition-all hover:border-white/10 hover:bg-white/[0.03]">
+    <Card className="group relative overflow-hidden rounded-2xl transition-all before:rounded-2xl">
       <Link href={`/showcase/${showcase.id}`}>
         <div className="relative h-[280px] overflow-hidden bg-[#15181D]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#1e1b4b_0%,transparent_60%)] opacity-50" />
@@ -98,6 +99,6 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
           </p>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

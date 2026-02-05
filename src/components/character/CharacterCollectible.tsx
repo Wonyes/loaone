@@ -34,7 +34,7 @@ export function CharacterCollectible({ name }: { name: string }) {
   const totalProgress = ((totalPoints / totalMaxPoints) * 100).toFixed(1);
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6 p-4 sm:p-6">
+    <div className="mx-auto flex max-w-3xl flex-col gap-6">
       <TotalProgressWidget totalProgress={Number(totalProgress)} />
 
       <div className="flex flex-col gap-3">

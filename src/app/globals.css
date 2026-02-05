@@ -40,6 +40,8 @@
 }
 
 @theme inline {
+  --breakpoint-nav: 1130px;
+
   --font-sans: "Poppins", "AppleSDGothicNeo", sans-serif;
 
   --color-background: var(--background);
@@ -158,6 +160,9 @@
   body {
     font-family: "Poppins", "AppleSDGothicNeo", sans-serif;
     @apply bg-background text-foreground;
+  }
+  button {
+    cursor: pointer;
   }
 }
 

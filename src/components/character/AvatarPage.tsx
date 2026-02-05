@@ -39,7 +39,7 @@ export default function AvatarPage({
   ];
 
   return (
-    <div className="flex flex-col gap-3 p-1">
+    <div className="flex flex-col gap-3">
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <Card className="relative h-full max-h-[550px] overflow-hidden border-none bg-[#15181D]">
@@ -54,7 +54,7 @@ export default function AvatarPage({
             <div className="relative flex h-full items-end justify-center pb-24">
               {profileData?.CharacterImage ? (
                 <img
-                  src={profileData.CharacterImage}
+                  src={`${profileData.CharacterImage}?t=${Date.now()}`}
                   alt="preview"
                   className="relative z-20 h-auto w-full max-w-[400px] scale-[1.2] object-cover drop-shadow-[0_20px_80px_rgba(0,0,0,1)] transition-transform duration-1000 ease-out hover:scale-[1.25]"
                   style={{

@@ -51,7 +51,7 @@ export function LoginButton() {
     return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <button className="group relative flex cursor-pointer items-center gap-2.5 rounded-full border border-teal-500/20 bg-teal-950/20 py-1 pr-3 pl-1 transition-all outline-none hover:border-teal-500/40 hover:bg-teal-900/30 active:scale-95">
+          <button className="group relative flex cursor-pointer items-center gap-2.5 rounded-full border border-teal-500/20 bg-teal-950/20 py-1 pr-3 pl-1 shadow-[0_4px_12px_rgba(0,0,0,0.25),0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all outline-none hover:border-teal-500/40 hover:bg-teal-900/30 active:scale-95">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-[#bef264]/20 opacity-0 blur-[8px] transition-opacity group-hover:opacity-100" />
               <Avatar className="h-7 w-7 border border-white/10 ring-1 ring-teal-500/20">
@@ -128,7 +128,7 @@ export function LoginButton() {
   return (
     <button
       onClick={handleLogin}
-      className="group relative flex items-center gap-3 overflow-hidden rounded-full border border-indigo-500/30 bg-indigo-600/10 px-6 py-2.5 transition-all hover:bg-indigo-600/20 active:scale-95"
+      className="group relative flex items-center gap-3 overflow-hidden rounded-full border border-indigo-500/30 bg-indigo-600/10 px-6 py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.25),0_2px_4px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all hover:bg-indigo-600/20 active:scale-95"
     >
       <div className="absolute inset-0 bg-indigo-500/5 opacity-0 transition-opacity group-hover:opacity-100" />
 

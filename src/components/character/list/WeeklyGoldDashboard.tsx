@@ -33,10 +33,10 @@ export function WeeklyGoldDashboard({
 
   return (
     <div className="mb-6 w-full px-1">
-      <Card className="overflow-hidden border border-[#bef264]/10 shadow-2xl transition-all">
+      <Card>
         <div
           onClick={() => setIsOpen(!isOpen)}
-          className="xs:px-4 xs:py-3.5 flex cursor-pointer items-center justify-between px-3 py-3 transition-colors hover:bg-white/[0.02] sm:px-6"
+          className="xs:px-4 xs:py-3.5 flex cursor-pointer items-center justify-between px-3 py-3 sm:px-6"
         >
           <div className="xs:gap-2 flex items-center gap-1.5 sm:gap-3">
             <div className="xs:h-6 xs:w-6 flex h-5 w-5 items-center justify-center rounded-lg bg-[#bef264]/10 sm:h-7 sm:w-7">
@@ -82,7 +82,7 @@ export function WeeklyGoldDashboard({
                   {processedData.map((char, idx) => (
                     <Card
                       key={idx}
-                      className="group flex flex-col justify-between p-4 shadow-lg transition-all hover:border-[#bef264]/30 hover:bg-white/[0.01]"
+                      className="group flex flex-col justify-between p-4 transition-all hover:border-[#bef264]/30 hover:bg-white/[0.01]"
                     >
                       <div className="flex items-start justify-between border-b border-white/5 pb-3">
                         <div className="flex min-w-0 flex-col leading-tight">
@@ -141,7 +141,7 @@ export function WeeklyGoldDashboard({
                         )}
                       </div>
 
-                      <div className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-gradient-to-r from-[#bef264] to-transparent opacity-0 transition-all duration-500 group-hover:w-full group-hover:opacity-100" />
+                      <div className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-gradient-to-r from-[#bef264] to-transparent opacity-0 transition-all duration-500" />
                     </Card>
                   ))}
                 </div>

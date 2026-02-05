@@ -68,22 +68,21 @@ export default function FavoriteButton({
     );
   };
 
-  if (!user) return null;
   if (loading || isLoading) return <Loading />;
 
   return (
     <>
       <button
         onClick={handleClick}
-        className="group absolute top-3 right-3 z-99 transition-all active:scale-75"
+        className="group z-99 transition-all active:scale-75"
       >
-        <div className="absolute inset-0 -z-10 scale-0 rounded-full bg-yellow-400/20 blur-xl transition-transform duration-500 group-hover:scale-150" />
+        <div className="inset-0 -z-10 scale-0 rounded-full bg-yellow-400/20 blur-xl transition-transform duration-500 group-hover:scale-150" />
         <Star
           className={cn(
             "h-9 w-9 cursor-pointer transition-all duration-300",
             data?.favorited && user
               ? "fill-yellow-400 text-yellow-400 drop-shadow-[0_0_12px_rgba(250,204,21,0.5)]"
-              : "text-gray-500 group-hover:text-gray-200"
+              : "fill-gray-300 text-gray-300 group-hover:text-gray-200"
           )}
         />
       </button>

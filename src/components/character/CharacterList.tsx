@@ -5,11 +5,10 @@ import { useSiblings } from "@/hooks/query/lostark/character/useLostarkApi";
 import { getClassIcon } from "@/utils/lostarkUtils";
 import { cn } from "@/lib/utils";
 import { WeeklyGoldDashboard } from "./list/WeeklyGoldDashboard";
-import Link from "next/link";
 import { CharacterListSkeleton } from "../common/CardSkeleton";
-import { EmptyCard } from "../common";
+import { Card, EmptyCard } from "../common";
 import { BadgeInfoIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export function CharacterListLayout({ name }: { name: string }) {
   const { data: listData, isLoading } = useSiblings(name);
@@ -82,37 +81,39 @@ export function CharacterListLayout({ name }: { name: string }) {
 function CharacterPillCard({ char }: { char: any }) {
   const displayIcon =
     char.CharacterImage || getClassIcon(char.CharacterClassName);
-
+  const router = useRouter();
   return (
-    <Link
-      href={`/characters/${char.CharacterName}`}
-      className="group relative flex h-[66px] w-full items-center rounded-full border border-white/5 bg-white/[0.02] px-5 shadow-lg transition-all duration-500 hover:translate-y-[-1px] hover:border-white/20 hover:bg-white/[0.05]"
-    >
-      <div className="grid w-full grid-cols-[44px_1fr_90px] items-center gap-4">
-        <div className="relative h-11 w-11 shrink-0">
-          <div className="relative h-full w-full overflow-hidden rounded-full border border-white/10 bg-slate-900 shadow-inner transition-transform duration-500 group-hover:scale-105">
-            <img
-              src={displayIcon}
-              alt=""
-              className={cn(
-                "h-full w-full rounded-full object-cover grayscale-[0.2] transition-all group-hover:grayscale-0",
-                !char.CharacterImage && "scale-110"
-              )}
-            />
+    <Card
+      onClick={() => router.push(`/characters/${char.CharacterName}`)}
+      className="group relative h-fit cursor-pointer rounded-full transition-all duration-500 hover:translate-y-[-1px]"
+      title={
+        <div className="flex items-center gap-4">
+          <div className="relative h-11 w-11 shrink-0">
+            <div className="relative h-full w-full overflow-hidden rounded-full border border-white/10 bg-slate-900 shadow-inner transition-transform duration-500 group-hover:scale-105">
+              <img
+                src={displayIcon}
+                alt=""
+                className={cn(
+                  "h-full w-full rounded-full object-cover grayscale-[0.2] transition-all group-hover:grayscale-0",
+                  !char.CharacterImage && "scale-110"
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="flex min-w-0 flex-col leading-tight">
+            <h4 className="truncate text-[15px] font-bold tracking-tight text-slate-200 transition-colors group-hover:text-white">
+              {char.CharacterName}
+            </h4>
+            <div className="mt-0.5 flex items-center gap-2">
+              <span className="text-[10px] font-semibold tracking-wider text-slate-300 uppercase">
+                {char.CharacterClassName}
+              </span>
+            </div>
           </div>
         </div>
-
-        <div className="ml-1 flex min-w-0 flex-col leading-tight">
-          <h4 className="truncate text-[15px] font-bold tracking-tight text-slate-200 transition-colors group-hover:text-white">
-            {char.CharacterName}
-          </h4>
-          <div className="mt-0.5 flex items-center gap-2">
-            <span className="text-[10px] font-semibold tracking-wider text-slate-300 uppercase">
-              {char.CharacterClassName}
-            </span>
-          </div>
-        </div>
-
+      }
+      headerAction={
         <div className="flex flex-col items-end justify-center border-l border-white/5 py-1 pl-4">
           <div className="flex items-baseline gap-1 opacity-40">
             <span className="text-[9px] font-black tracking-widest text-slate-200 uppercase">
@@ -126,7 +127,8 @@ function CharacterPillCard({ char }: { char: any }) {
             {char.ItemAvgLevel}
           </span>
         </div>
-      </div>
-    </Link>
+      }
+      borderB={false}
+    />
   );
 }

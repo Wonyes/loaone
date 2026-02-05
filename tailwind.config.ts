@@ -2,15 +2,22 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      nav: "1130px",
+      xl: "1280px",
+      desktop: "1400px",
+      "2xl": "1536px",
+    },
     extend: {
-      screens: {
-        desktop: "1400px",
-      },
       animation: {
         slide: "slide 2s ease-in-out infinite",
         "spin-slow": "spin 4s linear infinite",

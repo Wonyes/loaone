@@ -62,11 +62,5 @@ export default async function CharacterPageRoute({
     });
   }
 
-  return (
-    <CharacterPage
-      name={decodedName}
-      initialProfile={profile}
-      initialArkpassive={arkpassive}
-    />
-  );
+  return <CharacterPage name={decodedName} initialArkpassive={arkpassive} />;
 }

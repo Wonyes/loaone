@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Award, Cross, Crown, Flame, MapPin, Shield } from "lucide-react";
 import FavoriteButton from "./favorite/FavoriteButton";
 import { Card } from "../common/Card";
@@ -14,15 +17,26 @@ export function CharacterHeader({
 }) {
   const SPECIALIST_CLASSES = ["환수사", "기상술사", "도화가"];
 
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown(prev => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
   const isSupport = (engraving: string | undefined) => {
     if (!engraving) return false;
     const supportEngravings = ["절실한 구원", "만개", "축복의 오라", "해방자"];
 
     return supportEngravings.includes(engraving);
   };
+
   return (
-    <Card className="relative overflow-hidden rounded-[2rem] border-none bg-[#0c0d12] shadow-2xl">
-      {profileData?.CharacterImage && (
+    <Card className="relative overflow-hidden rounded-[2rem] bg-[#0c0d12]">
+      {profileData && (
         <div
           className={cn(
             "absolute inset-y-0 right-0 z-0 w-full overflow-hidden sm:w-[60%]"
@@ -49,7 +63,7 @@ export function CharacterHeader({
         </div>
       )}
 
-      <div className="absolute top-4 right-4 z-30">
+      <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
         <FavoriteButton characterName={name} profileData={profileData} />
       </div>
 
