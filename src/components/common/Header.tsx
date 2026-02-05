@@ -7,17 +7,49 @@ import { CharacterSearch } from "../character/CharacterSearch";
 import { Menu, X, ArrowUpRight, Leaf } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useNoticeStore } from "@/hooks/store/useNoticeStore";
+import { useUser } from "@/hooks/useUesr";
+import { signInWithDiscord } from "@/lib/supabase/discode/discode";
 
 export function Header() {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  const { user } = useUser();
+
+  const showAlert = useNoticeStore(state => state.showAlert);
+
+  const toggleLogin = (e: React.MouseEvent, title: string) => {
+    if (!user && title === "profile") {
+      e.preventDefault();
+      showAlert(
+        "로그인이 필요합니다.",
+        "프로필 입장은 로그인이 필요합니다.",
+        "디스코드로 로그인하기",
+        handleLogin
+      );
+      return;
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithDiscord();
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
+  };
+
   if (pathname === "/setup-character") return null;
+
+  const mobileProfile = (e: React.MouseEvent, title: string) => {
+    toggleLogin(e, title);
+    setMobileMenuOpen(false);
+  };
 
   const navLinks = [
     {
@@ -45,7 +77,7 @@ export function Header() {
 
   return (
     <header className="sticky top-4 z-50 mb-4 w-full rounded-full border-b border-[#bef264]/10 bg-gradient-to-r from-[#041d1d] via-[#062c2c] to-[#041d1d] shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
-      <div className="mx-auto flex h-14 max-w-[1600px] items-center justify-between px-6">
+      <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
         <div className="flex items-center gap-12">
           <Logo onClick={() => router.push("/")} />
 
@@ -57,6 +89,7 @@ export function Header() {
               <NavLink
                 key={link.href}
                 href={link.href}
+                onClick={(e) => toggleLogin(e, link.name)}
                 isActive={
                   pathname.includes(link.href) ||
                   (link.in && pathname.includes(link.in))
@@ -92,7 +125,7 @@ export function Header() {
         <MobileMenu
           navLinks={navLinks}
           pathname={pathname}
-          onClose={() => setMobileMenuOpen(false)}
+          onClose={mobileProfile}
         />
       )}
     </header>
@@ -127,17 +160,20 @@ function NavLink({
   href,
   name,
   title,
+  onClick,
   isActive,
 }: {
   name: string;
   href: string;
   title: string;
   isActive: boolean | undefined | "";
+  onClick: (e: React.MouseEvent, title: string) => void;
 }) {
   return (
     <Link
       href={href}
       title={title}
+      onClick={(e) => onClick(e, name)}
       prefetch={false}
       className={cn(
         "relative px-4 py-1 text-[12px] tracking-[0.1em] uppercase italic transition-all duration-300",
@@ -168,7 +204,7 @@ function MobileMenu({
 }: {
   navLinks: Array<{ name: string; href: string; in?: string }>;
   pathname: string;
-  onClose: () => void;
+  onClose: (e: React.MouseEvent, title: string) => void;
 }) {
   return (
     <div className="animate-in fade-in slide-in-from-top-2 absolute inset-x-0 top-20 z-40 max-w-[1400px] rounded-lg bg-gradient-to-b from-[#062c2c] to-[#041d1d] p-6 duration-300 lg:hidden">
@@ -186,7 +222,7 @@ function MobileMenu({
               key={link.href}
               href={link.href}
               title={link.name}
-              onClick={onClose}
+              onClick={(e) => onClose(e, link.name)}
               className={cn(
                 "relative flex items-center justify-between py-5 text-xl font-black tracking-tighter uppercase transition-all active:translate-x-2",
                 idx > 0 && "border-t border-white/5",

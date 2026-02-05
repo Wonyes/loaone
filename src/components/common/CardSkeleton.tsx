@@ -738,19 +738,25 @@ export function RankingsPageSkeleton() {
         }
       >
         <div className="hidden border-b border-white/[0.05] px-6 py-3 lg:grid lg:grid-cols-[80px_200px_120px_120px_150px_120px_150px] lg:gap-3">
-          {["순위", "캐릭터", "아이템 레벨", "전투력", "클래스", "서버", "각인"].map(
-            (label, i) => (
-              <div
-                key={label}
-                className={cn(
-                  "text-xs font-black text-white/60",
-                  i === 0 || (i >= 2 && i <= 5) ? "text-center" : ""
-                )}
-              >
-                {label}
-              </div>
-            )
-          )}
+          {[
+            "순위",
+            "캐릭터",
+            "아이템 레벨",
+            "전투력",
+            "클래스",
+            "서버",
+            "각인",
+          ].map((label, i) => (
+            <div
+              key={label}
+              className={cn(
+                "text-xs font-black text-white/60",
+                i === 0 || (i >= 2 && i <= 5) ? "text-center" : ""
+              )}
+            >
+              {label}
+            </div>
+          ))}
         </div>
 
         <div className="divide-y divide-white/[0.03]">
@@ -813,11 +819,12 @@ function RankingTopCardSkeleton({ rank }: { rank: number }) {
 }
 
 function RankingRowSkeleton({ rank }: { rank: number }) {
-  const badge = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
+  const badge =
+    rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : null;
 
   return (
     <div className="grid grid-cols-[32px_40px_1fr] items-center gap-2 px-4 py-3 lg:grid-cols-[80px_200px_120px_120px_150px_120px_150px] lg:gap-3 lg:px-6 lg:py-4">
-      <div className="text-center text-sm font-mono text-slate-400">
+      <div className="text-center font-mono text-sm text-slate-400">
         {badge || rank.toString().padStart(2, "0")}
       </div>
 
@@ -898,9 +905,7 @@ export function CunningPaperSkeleton() {
             key={tab}
             className={cn(
               "rounded-lg px-5 py-2 text-[11px] font-bold tracking-widest uppercase",
-              i === 0
-                ? "bg-indigo-600 text-white"
-                : "bg-white/5 text-slate-300"
+              i === 0 ? "bg-indigo-600 text-white" : "bg-white/5 text-slate-300"
             )}
           >
             {tab}
@@ -938,7 +943,7 @@ function RaidCardSkeleton() {
 // 내 캐릭 리스트 스켈레톤
 export function CharacterListSkeleton() {
   return (
-    <div className="mx-auto w-full max-w-[1600px] space-y-12 px-4 pb-20 sm:px-6">
+    <div className="mx-auto w-full max-w-[1400px] space-y-12 px-4 pb-20 sm:px-6">
       <div className="mb-6 w-full px-1">
         <Card className="overflow-hidden border border-[#bef264]/10 shadow-2xl">
           <div className="flex cursor-pointer items-center justify-between px-6 py-3.5">
