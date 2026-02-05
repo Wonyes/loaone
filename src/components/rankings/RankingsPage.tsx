@@ -46,8 +46,8 @@ export default function RankingsPage({ initialRankings }: RankingsPageProps) {
       )}
 
       <Card
-        title="All Rankings "
-        className="mx-auto w-fit overflow-visible"
+        title="All Rankings"
+        className="mx-auto max-w-5xl overflow-visible"
         icon={<Trophy className="h-4 w-4 text-yellow-500" />}
         headerAction={
           <div className="flex gap-2">

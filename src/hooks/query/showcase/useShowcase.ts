@@ -1,6 +1,21 @@
 import { useUser } from "@/hooks/useUesr";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AvatarShowcase, ShowcaseUpsertRequest } from "@/types/showcase";
+import { AvatarShowcase, ShowcaseUpsertRequest, ShowcaseWithStats } from "@/types/showcase";
+
+// 단건 showcase 조회
+export function useShowcaseDetail(id: string) {
+  return useQuery({
+    queryKey: ["showcaseDetail", id],
+    queryFn: async (): Promise<ShowcaseWithStats> => {
+      const res = await fetch(`/api/showcase/${id}`);
+      if (!res.ok) throw new Error("Failed to fetch showcase");
+      const data = await res.json();
+      return data.showcase;
+    },
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+  });
+}
 
 // 내 showcase 목록 조회
 export function useMyShowcases() {

@@ -57,12 +57,17 @@ export async function POST(
   // showcase 존재 확인
   const { data: showcase, error: showcaseError } = await supabase
     .from("avatar_showcase")
-    .select("id")
+    .select("id, user_id")
     .eq("id", showcaseId)
     .single();
 
   if (showcaseError || !showcase) {
     return NextResponse.json({ error: "Showcase not found" }, { status: 404 });
+  }
+
+  // 본인 쇼케이스에는 좋아요 불가
+  if (showcase.user_id === user.id) {
+    return NextResponse.json({ error: "Cannot like own showcase" }, { status: 403 });
   }
 
   // 기존 좋아요 확인

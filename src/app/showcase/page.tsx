@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import ShowcasePageClient from "./ShowcasePageClient";
+import ShowcasePageClient from "../../components/character/ShowcasePageClient";
 
 export const metadata: Metadata = {
   title: "아바타 자랑 - SHOWCASE",

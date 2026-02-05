@@ -39,6 +39,7 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
           <div className="absolute top-3 right-3 z-20">
             <ShowcaseLikeButton
               showcaseId={showcase.id}
+              showcaseUserId={showcase.user_id}
               likeCount={showcase.like_count}
               isLiked={showcase.is_liked || false}
             />

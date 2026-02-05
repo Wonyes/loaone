@@ -31,7 +31,16 @@ export function Header() {
       in: "character",
       title: "캐릭터 아이템 레벨 랭킹",
     },
-    { name: "avatar", href: "/showcase", title: "아바타 자랑 갤러리" },
+    {
+      name: "avatar",
+      href: "/showcase",
+      title: "아바타 자랑 갤러리",
+    },
+    {
+      name: "profile",
+      href: "/profile",
+      title: "내 프로필",
+    },
   ];
 
   return (
@@ -157,7 +166,7 @@ function MobileMenu({
   pathname,
   onClose,
 }: {
-  navLinks: Array<{ name: string; href: string }>;
+  navLinks: Array<{ name: string; href: string; in?: string }>;
   pathname: string;
   onClose: () => void;
 }) {
@@ -179,13 +188,25 @@ function MobileMenu({
               title={link.name}
               onClick={onClose}
               className={cn(
-                "flex items-center justify-between py-5 text-xl font-black tracking-tighter transition-all active:translate-x-2",
+                "relative flex items-center justify-between py-5 text-xl font-black tracking-tighter uppercase transition-all active:translate-x-2",
                 idx > 0 && "border-t border-white/5",
-                pathname === link.href ? "text-[#bef264]" : "text-teal-50/70"
+                pathname.includes(link.href) ||
+                  (link.in && pathname.includes(link.in))
+                  ? "text-[#bef264]"
+                  : "text-teal-50/70"
               )}
             >
               {link.name}
               <ArrowUpRight size={20} className="text-[#bef264] opacity-20" />
+              {(pathname.includes(link.href) ||
+                (link.in && pathname.includes(link.in))) && (
+                <div className="animate-in zoom-in fade-in absolute top-4 -left-2.5 z-90 duration-500">
+                  <Leaf
+                    size={14}
+                    className="rotate-[280deg] fill-[#bef264] text-[#bef264] drop-shadow-[0_0_5px_rgba(190,242,100,0.8)]"
+                  />
+                </div>
+              )}
             </Link>
           ))}
         </nav>

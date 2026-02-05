@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/hooks/useUesr";
+import { useNoticeStore } from "@/hooks/store/useNoticeStore";
 import { getClassIcon } from "@/utils/lostarkUtils";
 import { CharacterListSkeleton, EmptyCard } from "../common";
 
@@ -35,6 +36,7 @@ export default function ShowcaseRegisterForm() {
   const { data: avatarData, isLoading: avatarLoading } =
     useAvatars(selectedName);
   const createMutation = useCreateShowcase();
+  const showToast = useNoticeStore(state => state.showToast);
 
   const handleRegister = async () => {
     if (!profileData) return;
@@ -49,9 +51,11 @@ export default function ShowcaseRegisterForm() {
         description: description.trim() || undefined,
         avatar_items: avatarData || undefined,
       });
+      showToast("아바타가 등록되었습니다!");
       router.push("/showcase");
     } catch (error) {
       console.error("등록 실패:", error);
+      showToast("등록에 실패했습니다. 다시 시도해주세요.");
     }
   };
 

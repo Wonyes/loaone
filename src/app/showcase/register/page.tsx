@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import ShowcaseRegisterClient from "./ShowcaseRegisterClient";
+import ShowcaseRegisterClient from "../../../components/character/ShowcaseRegisterClient";
 
 export const metadata: Metadata = {
   title: "아바타 등록 - SHOWCASE",
