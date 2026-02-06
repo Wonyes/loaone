@@ -1,19 +1,45 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Card } from "@/components/common/Card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import ShowcaseLikeButton from "@/components/showcase/ShowcaseLikeButton";
 import DyeInfo from "@/components/character/avatar/DyeInfo";
-import { ArrowLeft, Layers, Loader2, Quote } from "lucide-react";
+import { ArrowLeft, Layers, Loader2, Quote, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getGradeStyle } from "@/utils/lostarkUtils";
 import Link from "next/link";
-import { useShowcaseDetail } from "@/hooks/query/showcase";
+import { useShowcaseDetail, useDeleteShowcase } from "@/hooks/query/showcase";
+import { useUser } from "@/hooks/useUesr";
+import { useNoticeStore } from "@/hooks/store/useNoticeStore";
 
 export default function ShowcaseDetailClient() {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const { user } = useUser();
   const { data: showcase, isLoading, isError } = useShowcaseDetail(id);
+  const deleteMutation = useDeleteShowcase();
+  const showAlert = useNoticeStore(state => state.showAlert);
+  const showToast = useNoticeStore(state => state.showToast);
+
+  const isOwner = !!user && !!showcase && user.id === showcase.user_id;
+
+  const handleDelete = () => {
+    showAlert(
+      "삭제 확인",
+      "이 게시글을 정말 삭제하시겠습니까?",
+      "삭제",
+      async () => {
+        try {
+          await deleteMutation.mutateAsync(id);
+          showToast("게시글이 삭제되었습니다.");
+          router.push("/showcase");
+        } catch {
+          showToast("삭제에 실패했습니다.");
+        }
+      }
+    );
+  };
 
   if (isLoading) {
     return (
@@ -62,13 +88,26 @@ export default function ShowcaseDetailClient() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-4 px-4 py-6">
-      <Link
-        href="/showcase"
-        className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        목록으로
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link
+          href="/showcase"
+          className="inline-flex items-center gap-2 text-sm text-gray-400 transition-colors hover:text-white"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          목록으로
+        </Link>
+
+        {isOwner && (
+          <button
+            onClick={handleDelete}
+            disabled={deleteMutation.isPending}
+            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold text-red-400 transition-all hover:bg-red-500/10"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+            삭제
+          </button>
+        )}
+      </div>
 
       {/* 상단: 캐릭터 + 소개글 + 유저 정보 */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">

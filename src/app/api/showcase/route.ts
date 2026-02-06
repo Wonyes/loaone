@@ -28,6 +28,46 @@ export async function GET() {
   return NextResponse.json({ showcases: data || [] });
 }
 
+// 캐릭터 이미지를 다운로드하여 Supabase Storage에 업로드 (스냅샷 보존)
+async function uploadCharacterImage(
+  supabase: Awaited<ReturnType<typeof createSupabaseServer>>,
+  imageUrl: string,
+  userId: string,
+  characterName: string
+): Promise<string | null> {
+  try {
+    const response = await fetch(imageUrl);
+    if (!response.ok) return null;
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const contentType = response.headers.get("content-type") || "image/png";
+    const ext = contentType.includes("jpeg") || contentType.includes("jpg") ? "jpg" : "png";
+    const fileName = `${userId}/${characterName}_${Date.now()}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("showcase-images")
+      .upload(fileName, buffer, {
+        contentType,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error("Image upload error:", uploadError);
+      return null;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from("showcase-images")
+      .getPublicUrl(fileName);
+
+    return publicUrlData.publicUrl;
+  } catch (err) {
+    console.error("Image upload failed:", err);
+    return null;
+  }
+}
+
 // POST: 새 showcase 등록
 export async function POST(request: NextRequest) {
   try {
@@ -58,6 +98,21 @@ export async function POST(request: NextRequest) {
       null;
     const discordAvatar = user.user_metadata?.avatar_url || null;
 
+    // 캐릭터 이미지를 Storage에 업로드하여 스냅샷 보존
+    let savedImageUrl: string | null = null;
+    if (character_image) {
+      savedImageUrl = await uploadCharacterImage(
+        supabase,
+        character_image,
+        user.id,
+        character_name
+      );
+      // Storage 업로드 실패 시 원본 URL 폴백
+      if (!savedImageUrl) {
+        savedImageUrl = character_image;
+      }
+    }
+
     const { data, error } = await supabase
       .from("avatar_showcase")
       .insert({
@@ -66,7 +121,7 @@ export async function POST(request: NextRequest) {
         server_name: server_name || null,
         class_name: class_name || null,
         item_level: item_level || null,
-        character_image: character_image || null,
+        character_image: savedImageUrl,
         description: description || null,
         discord_name: discordName,
         discord_avatar: discordAvatar,

@@ -68,6 +68,14 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // 삭제 전 이미지 URL 조회 (Storage 정리용)
+  const { data: showcase } = await supabase
+    .from("avatar_showcase")
+    .select("character_image")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .single();
+
   // 본인 소유 확인 후 삭제
   const { error } = await supabase
     .from("avatar_showcase")
@@ -81,6 +89,17 @@ export async function DELETE(
       { error: "Failed to delete showcase" },
       { status: 500 }
     );
+  }
+
+  // Storage에 업로드된 이미지라면 함께 삭제
+  if (showcase?.character_image?.includes("/showcase-images/")) {
+    try {
+      const url = new URL(showcase.character_image);
+      const path = url.pathname.split("/showcase-images/")[1];
+      if (path) {
+        await supabase.storage.from("showcase-images").remove([decodeURIComponent(path)]);
+      }
+    } catch {}
   }
 
   return NextResponse.json({ success: true });
