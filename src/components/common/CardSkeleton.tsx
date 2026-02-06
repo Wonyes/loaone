@@ -18,6 +18,7 @@ import {
   Star,
   Sword,
   Swords,
+  Target,
   Trophy,
   Zap,
 } from "lucide-react";
@@ -937,6 +938,95 @@ function RaidCardSkeleton() {
         </div>
       </div>
     </Card>
+  );
+}
+
+// 컨닝페이퍼 엔드페이지 스켈레톤
+export function CunningPaperEndSkeleton() {
+  return (
+    <div className="relative max-w-[1400px] space-y-8 p-4 text-slate-200 sm:p-6">
+      {/* 헤더 스켈레톤 */}
+      <header className="space-y-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-center gap-4 sm:gap-5">
+            <div className="h-10 w-10 animate-pulse rounded-full bg-white/10" />
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <SkeletonBox className="h-3 w-28" />
+                <span className="h-px w-8 bg-indigo-500/30" />
+              </div>
+              <SkeletonBox className="h-8 w-48 sm:h-10" />
+              <SkeletonBox className="h-6 w-20 rounded" />
+            </div>
+          </div>
+
+          {/* 게이트 네비 */}
+          <div className="flex items-center gap-1 self-start rounded-xl border border-white/5 bg-black/40 p-1.5">
+            {[1, 2, 3, 4].map(i => (
+              <div
+                key={i}
+                className={cn(
+                  "h-9 w-12 animate-pulse rounded-lg",
+                  i === 1 ? "bg-indigo-600/50" : "bg-white/5"
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* 메인 콘텐츠 */}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr] lg:gap-12">
+        {/* 사이드바 */}
+        <aside className="space-y-6">
+          <Card
+            title="Recommended Loadout"
+            icon={<Zap size={18} className="text-indigo-400" />}
+            className="rounded-xl before:rounded-xl"
+          >
+            <div className="space-y-6 p-4">
+              <div>
+                <div className="mb-2 flex items-center gap-2 text-[13px] font-bold text-indigo-400 uppercase">
+                  <Sword size={14} /> Dealer Items
+                </div>
+                <SkeletonBox className="h-16 w-full rounded-lg" />
+              </div>
+              <div>
+                <div className="mb-2 flex items-center gap-2 text-[13px] font-bold text-emerald-400 uppercase">
+                  <Shield size={14} /> Support Items
+                </div>
+                <SkeletonBox className="h-16 w-full rounded-lg" />
+              </div>
+            </div>
+          </Card>
+        </aside>
+
+        {/* 메인 타임라인 */}
+        <div className="relative">
+          <div className="absolute top-4 bottom-4 left-[21px] hidden w-[1px] bg-indigo-900 opacity-80 sm:block" />
+          <div className="space-y-6 sm:space-y-8">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="group relative sm:pl-12">
+                <div className="absolute top-1 left-0 z-10 hidden h-[42px] w-[42px] animate-pulse items-center justify-center rounded-full border-4 border-slate-900 bg-indigo-500/10 sm:flex">
+                  <Target size={14} className="text-indigo-500/50" />
+                </div>
+                <Card className="overflow-hidden rounded-xl before:rounded-xl">
+                  <div className="flex items-center gap-2 border-b border-white/5 p-3 sm:p-4">
+                    <SkeletonBox className="h-4 w-16" />
+                    <SkeletonBox className="h-3 w-32" />
+                  </div>
+                  <div className="space-y-2 p-4">
+                    <SkeletonBox className="h-4 w-full" />
+                    <SkeletonBox className="h-4 w-4/5" />
+                    <SkeletonBox className="h-4 w-3/5" />
+                  </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 

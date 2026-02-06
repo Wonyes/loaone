@@ -158,7 +158,7 @@ function ArkGridPanel({ arkgridData }: { arkgridData: any }) {
       title="아크 그리드"
       icon={<LayoutGrid size={18} className="text-indigo-400" />}
     >
-      <div className="grid grid-cols-2 gap-3 p-4">
+      <div className="grid grid-cols-1 gap-3 p-4 sm:grid-cols-2">
         {allItems.map((item, idx) =>
           item.type === "slot" ? (
             <ArkGridSlot key={`slot-${idx}`} slot={item.data} />

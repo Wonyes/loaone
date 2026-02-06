@@ -43,28 +43,39 @@ export function CharacterListLayout({ name }: { name: string }) {
     );
   if (isLoading) return <CharacterListSkeleton />;
 
+  const isProfilePage = pathname === "/profile";
+
   return (
     <div
       className={cn(
-        "mx-auto w-full max-w-[1400px] space-y-12 px-4 pb-20 sm:px-6",
-        pathname === "/profile" && "pt-4"
+        "w-full space-y-8",
+        !isProfilePage && "mx-auto max-w-[1400px] px-4 pb-20 sm:px-6",
+        isProfilePage && "p-4"
       )}
     >
       <WeeklyGoldDashboard characters={listData} />
 
       {Object.entries(groupedServers).map(([serverName, characters]: any) => (
-        <section key={serverName} className="space-y-6">
-          <div className="flex items-center gap-4 px-2">
-            <h2 className="text-xl font-black tracking-tighter text-white uppercase">
+        <section key={serverName} className="space-y-4">
+          <div className="flex items-center gap-3">
+            <h2 className={cn(
+              "font-black tracking-tighter text-white uppercase",
+              isProfilePage ? "text-base" : "text-xl px-2"
+            )}>
               {serverName}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
-            <span className="text-[12px] font-bold tracking-widest text-slate-300 uppercase">
+            <span className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">
               {characters.length} CHARACTERS
             </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className={cn(
+            "grid gap-3",
+            isProfilePage
+              ? "grid-cols-1 sm:grid-cols-2"
+              : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+          )}>
             {characters.map((char: any, idx: number) => (
               <CharacterPillCard
                 key={`${char.CharacterName}-${idx}`}

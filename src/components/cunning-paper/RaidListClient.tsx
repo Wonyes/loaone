@@ -70,7 +70,7 @@ export default function RaidListClient({
   });
 
   return (
-    <div className="mx-auto max-w-[1200px] px-8 py-16 text-zinc-100 antialiased">
+    <div className="mx-auto max-w-[1200px] px-4 text-zinc-100 antialiased sm:px-6 md:px-8">
       <header className="mb-12 flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <div className="space-y-2">
           <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic sm:text-5xl">

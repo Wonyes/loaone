@@ -205,7 +205,7 @@ function MobileMenu({
   onClose: (e: React.MouseEvent, title: string) => void;
 }) {
   return (
-    <div className="animate-in fade-in slide-in-from-top-2 nav:hidden absolute inset-x-0 top-20 z-40 max-w-[1400px] rounded-lg bg-gradient-to-b from-[#062c2c] to-[#041d1d] p-6 duration-300">
+    <div className="animate-in fade-in slide-in-from-top-2 nav:hidden absolute inset-x-0 top-20 z-40 mx-4 rounded-lg bg-gradient-to-b from-[#062c2c] to-[#041d1d] p-6 duration-300">
       <div className="flex flex-col gap-2">
         <div className="space-y-4">
           <p className="px-1 text-[10px] font-black tracking-[0.2em] text-[#bef264]/60 uppercase">

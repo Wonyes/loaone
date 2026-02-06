@@ -9,7 +9,7 @@ import { useNoticeStore } from "@/hooks/store/useNoticeStore";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/common/Card";
 import { Trash2 } from "lucide-react";
-import { Crown, Flame, Shield, MapPin, UserPen } from "lucide-react";
+import { Crown, Flame, Shield, MapPin, UserPen, User, Sparkles, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CharacterListLayout } from "@/components/character/CharacterList";
 
@@ -58,7 +58,7 @@ export default function ProfileLayoutPage() {
   return (
     <div className="mx-auto max-w-[800px] space-y-4">
       {/* 상단: 유저 정보 카드 */}
-      <Card className="overflow-hidden">
+      <Card icon={<User className="h-4 w-4 text-teal-400" />} title="프로필" className="overflow-hidden">
         <div className="flex items-center gap-5 p-6">
           <Avatar className="h-20 w-20 border-2 border-white/10">
             <AvatarImage src={avatarUrl} alt={username} />
@@ -92,6 +92,7 @@ export default function ProfileLayoutPage() {
 
       {/* 중단: 대표 캐릭터 상세 */}
       <Card
+        icon={<Crown className="h-4 w-4 text-violet-400" />}
         title="대표 캐릭터"
         headerAction={
           <div
@@ -228,12 +229,11 @@ export default function ProfileLayoutPage() {
       </Card>
 
       {/* 하단: 활동 내역 */}
-      <Card className="overflow-hidden">
-        <div className="border-b border-white/[0.05] px-6 py-3">
-          <h2 className="text-[13px] font-black tracking-[0.2em] text-white/90 uppercase">
-            활동 내역
-          </h2>
-        </div>
+      <Card
+        icon={<Sparkles className="h-4 w-4 text-amber-400" />}
+        title="활동 내역"
+        className="overflow-hidden"
+      >
 
         {showcaseLoading ? (
           <div className="flex items-center justify-center py-12">
@@ -288,7 +288,7 @@ export default function ProfileLayoutPage() {
           </div>
         )}
       </Card>
-      <Card title="내 캐릭터">
+      <Card icon={<Users className="h-4 w-4 text-emerald-400" />} title="내 캐릭터">
         <CharacterListLayout name={mainCharacter} />
       </Card>
     </div>

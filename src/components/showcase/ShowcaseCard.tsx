@@ -16,7 +16,7 @@ export default function ShowcaseCard({ showcase }: ShowcaseCardProps) {
   return (
     <Card className="group relative overflow-hidden rounded-2xl transition-all before:rounded-2xl">
       <Link href={`/showcase/${showcase.id}`}>
-        <div className="relative h-[280px] overflow-hidden bg-[#15181D]">
+        <div className="relative h-[220px] overflow-hidden bg-[#15181D] sm:h-[280px]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,#1e1b4b_0%,transparent_60%)] opacity-50" />
 
           {characterImage ? (

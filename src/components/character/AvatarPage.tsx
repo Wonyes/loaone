@@ -85,7 +85,7 @@ export default function AvatarPage({
                 <div className="h-px w-6 bg-white/30" />
               </div>
 
-              <h2 className="text-3xl font-black tracking-tighter text-white italic drop-shadow-2xl">
+              <h2 className="text-xl font-black tracking-tighter text-white italic drop-shadow-2xl sm:text-2xl md:text-3xl">
                 {profileData?.CharacterName}
               </h2>
 
@@ -105,7 +105,7 @@ export default function AvatarPage({
               icon={<Layers size={16} className="text-indigo-400" />}
               className="h-full lg:col-span-3"
             >
-              <div className="grid grid-cols-4 gap-4 p-5">
+              <div className="grid grid-cols-3 gap-3 p-4 sm:grid-cols-4 sm:gap-4 sm:p-5">
                 {avatarSlots === null
                   ? undefined
                   : avatarSlots.map(slotType => (
